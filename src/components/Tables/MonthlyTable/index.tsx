@@ -1,11 +1,12 @@
 import { format } from "date-fns";
 import DefaultTable from "..";
-import { FormValues } from "@/contexts/CreateFormContext";
 import { useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemMonthlyTable } from "@/components/Tables/MonthlyTable/ItemMonthlyTable";
+import { selectForm, setFieldValue, setType } from "@/store/features/form/formSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
-export default function MonthlyTable({ header, data, action, setForm }: any) {
+export default function MonthlyTable({ header, data, action }: any) {
     const [monthlyData, setMonthlyData] = useState<BillsDataItemType[]>(data.filter((item: any) => (item.type === "monthly")));
     const [total, setTotal] = useState(monthlyData.reduce((partialSum, a) => partialSum + a.value, 0));
 
@@ -13,14 +14,12 @@ export default function MonthlyTable({ header, data, action, setForm }: any) {
         <ItemMonthlyTable key={item.id} item={item} />
     ));
 
+    const formState = useAppSelector(selectForm);
+    const dispatch = useAppDispatch();
+
     return (
         <DefaultTable title="Mensais" action={action} onAddAction={() => {
-            setForm(((prevValues: FormValues) => {
-                return {
-                    ...prevValues,
-                    type: "monthly"
-                }
-            }))
+            dispatch(setType("monthly"));
             action.open();
         }}>
             <thead>

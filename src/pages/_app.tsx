@@ -1,9 +1,10 @@
 import type { AppProps } from 'next/app';
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { useState } from 'react';
-import DataProvider from '@/contexts/DataContext';
 import { setCookie, getCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -28,9 +29,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           colorScheme
         }}
       >
-        <DataProvider>
+        <Provider store={store}>
           <Component {...pageProps} />
-        </DataProvider>
+        </Provider>
       </MantineProvider>
     </ColorSchemeProvider>
   )

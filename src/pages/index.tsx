@@ -7,10 +7,11 @@ import MonthlyTable from '@/components/Tables/MonthlyTable';
 import InstallmentsTable from '@/components/Tables/InstallmentsTable';
 import AddBill from '@/components/Layout/Components/AddBill';
 import { useDisclosure } from '@mantine/hooks';
-import { FormValues } from '@/contexts/CreateFormContext';
 import userData from "data";
 import { v4 as uuidv4 } from 'uuid';
 import { format, getTags } from '@/utils/index';
+import { IForm, selectForm } from '@/store/features/form/formSlice';
+import { useAppSelector } from '../store';
 
 export default function Home() {
 
@@ -21,21 +22,7 @@ export default function Home() {
 
   const [openedModal, actionsModal] = useDisclosure(false);
 
-  const [formValues, setFormValues] = useState<FormValues>({
-    label: '',
-    value: 0,
-    date: new Date("1/1/2023"),
-    type: 'monthly',
-    tags: ["Outro"],
-    installments: {
-      current: 1,
-      total: 2,
-      dueDay: 1
-    },
-    fixed: {
-      dueDay: 1
-    }
-  });
+  const formState = useAppSelector(selectForm);
 
   return (
     <>
@@ -48,7 +35,7 @@ export default function Home() {
       <Layout>
         <Flex justify="space-between">
           <Title order={1} mb="1rem">Bem-vindo, {allData.user.name.split(" ")[0]}!</Title>
-          <AddBill values={formValues} tags={tags} setTags={setTags} state={openedModal} actions={actionsModal} setValues={setFormValues} />
+          <AddBill tags={tags} state={openedModal} actions={actionsModal} />
         </Flex>
         <Paper mb="1rem" p="1rem" px="2rem">
           <Title order={2}>{format(activeData.initialMonth, "MMMM' de 'yyyy")}</Title>
@@ -78,9 +65,9 @@ export default function Home() {
             { minWidth: 1700, cols: 4 },
           ]}
         >
-          <FixedTable data={activeData.items} setForm={setFormValues} header={["Nome", "Valor", "Data"]} action={actionsModal} />
-          <InstallmentsTable data={activeData.items} setForm={setFormValues} header={["Nome", "Valor", "Parcela", "Prazo"]} action={actionsModal} />
-          <MonthlyTable data={activeData.items} setForm={setFormValues} header={["Nome", "Valor", "Data"]} action={actionsModal} />
+          <FixedTable data={activeData.items} header={["Nome", "Valor", "Data"]} action={actionsModal} />
+          <InstallmentsTable data={activeData.items} header={["Nome", "Valor", "Parcela", "Prazo"]} action={actionsModal} />
+          <MonthlyTable data={activeData.items} header={["Nome", "Valor", "Data"]} action={actionsModal} />
         </SimpleGrid>
       </Layout>
     </>

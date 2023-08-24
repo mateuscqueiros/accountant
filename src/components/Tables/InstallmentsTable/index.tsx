@@ -1,8 +1,9 @@
 import DefaultTable from "..";
-import { FormValues } from "@/contexts/CreateFormContext";
 import { useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemInstallmentTable } from "./ItemInstallmentTable";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectForm, setFieldValue, setType } from "@/store/features/form/formSlice";
 
 export default function InstallmentsTable({ header, data, action, setForm }: any) {
     const [installmentsData, setInstallmentsData] = useState<BillsDataItemType[]>(data.filter((item: any) => (item.type === "installment")));
@@ -12,14 +13,12 @@ export default function InstallmentsTable({ header, data, action, setForm }: any
         <ItemInstallmentTable key={item.id} item={item} />
     ));
 
+    const formState = useAppSelector(selectForm);
+    const dispatch = useAppDispatch();
+
     return (
         <DefaultTable title="Parcelados" action={action} onAddAction={() => {
-            setForm(((prevValues: FormValues) => {
-                return {
-                    ...prevValues,
-                    type: "installment"
-                }
-            }))
+            dispatch(setType("installment"));
             action.open()
         }}>
             <thead>

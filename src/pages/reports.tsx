@@ -1,16 +1,14 @@
 import Layout from '@/components/Layout';
-import { DataContext } from '@/contexts/DataContext';
-import { Flex, Group, Paper, RingProgress, SimpleGrid, Text, Title } from '@mantine/core';
+import { Button, Title } from '@mantine/core';
 import Head from 'next/head';
 import { useContext } from 'react';
-import FixedTable from '@/components/Tables/FixedTable';
-import MonthlyTable from '@/components/Tables/MonthlyTable';
-import InstallmentsTable from '@/components/Tables/InstallmentsTable';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { increment, incrementByAmount, selectCount } from '@/store/features/counter/counterSlice';
 
 export default function Home() {
 
-    const { data } = useContext(DataContext);
-    const { billsData } = data;
+    const counter = useAppSelector(selectCount);
+    const dispatch = useAppDispatch();
 
     return (
         <>
@@ -22,7 +20,7 @@ export default function Home() {
             </Head>
             <Layout>
                 <Title order={1} mb="1rem">Relatórios</Title>
-
+                <Button onClick={() => { dispatch(incrementByAmount(5)) }}>{counter}</Button>
             </Layout>
         </>
     )

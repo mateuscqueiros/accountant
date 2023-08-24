@@ -1,16 +1,8 @@
 import Layout from '@/components/Layout'
-import { DataContext } from '@/contexts/DataContext'
-import { Flex, Group, Paper, RingProgress, SimpleGrid, Text, Title } from '@mantine/core'
+import { Title } from '@mantine/core'
 import Head from 'next/head'
-import { useContext } from 'react'
-import FixedTable from '@/components/Tables/FixedTable'
-import MonthlyTable from '@/components/Tables/MonthlyTable'
-import InstallmentsTable from '@/components/Tables/InstallmentsTable'
 
 export default function Home() {
-
-    const { data } = useContext(DataContext);
-    const { billsData } = data;
 
     return (
         <>

@@ -1,79 +1,24 @@
 import { ActionIcon, Box, Button, Flex, Group, Modal, MultiSelect, NumberInput, Select, TextInput, Tooltip, useMantineTheme } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { useForm, yupResolver } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
-import { useEffect } from "react";
-import { FormValues } from "@/contexts/CreateFormContext";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
-import * as Yup from 'yup';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { IForm, createNewItem, resetValues, selectForm, setFieldValue, setValues } from "@/store/features/form/formSlice";
+import validateForm, { FormErrorType, transformForm } from "@/utils/validateForm";
 
-const schema = Yup.object().shape({
-    label: Yup.string()
-        .min(2, "Nome deve ter pelo menos 2 caracteres"),
-    value: Yup.number()
-        .typeError("Por favor insira um valor")
-        .positive("Deve ser maior que 0"),
-    date: Yup.date()
-        .typeError("Deve ser uma data"),
-    installments: Yup.object().shape({
-        current: Yup.number().when('type', {
-            is: (val: string) => val === "installment",
-            then: (schema) => schema
-                .typeError("Por favor insira um valor")
-                .min(1, "O valor mínimo é 1")
-                .integer("Deve ser um número inteiro")
-                .test(
-                    'max',
-                    'O valor é maior ou igual ao total',
-                    (value, context) => (value || 0) < context.parent.total,
-                ),
-            otherwise: (schema) => schema.notRequired(),
-        }),
-        total: Yup.number().when('type', {
-            is: (val: string) => (val === "installment"),
-            then: (schema) => schema.typeError("Por favor insira um valor").min(1, "O valor mínimo é 1"),
-            otherwise: (schema) => schema.notRequired()
-        }),
-        dueDay: Yup.number().when('type', {
-            is: (val: string) => val === "installment",
-            then: (schema) => schema.typeError("Por favor insira um valor")
-                .min(1, "O valor deve estar entre 1-31")
-                .max(31, "O valor deve estar entre 1-31")
-                .integer("O número deve ser inteiro"),
-            otherwise: (schema) => schema.notRequired(),
-        })
-    }),
-    fixed: Yup.object().shape({
-        dueDay: Yup.number().when('type', {
-            is: (val: string) => val === "fixed",
-            then: (schema) => schema
-                .typeError("Por favor insira um valor")
-                .min(1, "O valor deve estar entre 1-31")
-                .max(31, "O valor deve estar entre 1-31")
-                .integer("O número deve ser inteiro"),
-            otherwise: (schema) => schema.notRequired(),
-        })
-    })
-});
-
-// Yup.number()
-//             .typeError("Por favor insira um valor")
-//             .min(1, "O valor deve estar entre 1-31")
-//             .max(31, "O valor deve estar entre 1-31")
-//             .integer("O número deve ser inteiro")
+function getFieldErrorMessages(items: FormErrorType[], field: string): Array<FormErrorType> {
+    return items.filter(item => {
+        return item.field === field
+    });
+}
 
 export default function AddBill({
     tags,
-    setTags,
-    setValues,
-    values,
     state,
     actions
 }: {
     tags: string[],
-    setTags: any,
-    setValues: any,
-    values: FormValues,
     state: boolean,
     actions: {
         open: () => void;
@@ -82,56 +27,86 @@ export default function AddBill({
     }
 }) {
     const theme = useMantineTheme();
+    // Reducer - Form
+    const formState = useAppSelector(selectForm);
+    const dispatch = useAppDispatch();
+
+    const initialValues: IForm = {
+        label: '',
+        value: 0,
+        date: new Date().toString(),
+        type: 'monthly',
+        tags: ["Outro"],
+        installments: {
+            current: 1,
+            total: 2,
+            dueDay: 1
+        },
+        fixed: {
+            dueDay: 1
+        }
+    }
+
     const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-
-    const form = useForm<FormValues>({
-        initialValues: values,
-        validate: yupResolver(schema),
-        transformValues: (values) => ({
-            ...values,
-            tags: values.tags.length ? values.tags : ["Outro"]
-        })
-    });
-
-    const validate = () => {
-        console.log(form.values)
-        form.validate()
-    }
-
-    const handleSubmit = (values: FormValues) => {
-        console.log(values);
-        actions.close();
-        form.reset();
-    }
+    // const [formValues, setFormValues] = useState<IForm>(initialValues);
+    const [formErrors, setFormErrors] = useState<FormErrorType[]>([]);
 
     useEffect(() => {
-        form.setValues(values)
-    }, [values]);
+        setFormErrors([]);
+    }, [formState])
+
+    const handleSubmit = () => {
+        const errors = validateForm(formState)
+        if (errors.length === 0) {
+            actions.close();
+            console.log(formState);
+            dispatch(resetValues());
+            dispatch(createNewItem());
+        } else {
+            setFormErrors(errors);
+            console.log("Erro ao criar: ");
+            console.table(errors);
+        };
+    }
 
     return (
         <>
             <Modal opened={state} onClose={() => {
                 actions.close();
-                form.reset();
             }} title="Criar novo item">
                 <Box p="1rem" pt={0}>
-                    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+                    <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
                         <TextInput
                             withAsterisk
+                            error={getFieldErrorMessages(formErrors, "label")[0]?.message}
                             label="Nome"
                             placeholder="Nome do item"
                             mb="md"
-                            {...form.getInputProps('label')}
+                            value={formState.label}
+                            onChange={(e) => dispatch(setFieldValue({ field: "type", newValue: e }))}
                         />
                         <NumberInput
                             withAsterisk
+                            error={getFieldErrorMessages(formErrors, "value")[0]?.message}
                             label="Valor"
-                            placeholder="R$ 5,00"
+                            placeholder="$ 5,00"
                             mb="md"
-                            {...form.getInputProps('value')}
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                            formatter={(value) =>
+                                !Number.isNaN(parseFloat(value))
+                                    ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+                                    : '$ '
+                            }
+                            value={formState.value}
+                            onChange={(e) => setFormValues({
+                                ...formState,
+                                value: e
+                            })}
                         />
+                        <Button>{formState.type}</Button>
                         <Select
                             withAsterisk
+                            error={getFieldErrorMessages(formErrors, "type")[0]?.message}
                             label="Tipo"
                             placeholder="Escolha um tipo"
                             mb="md"
@@ -140,69 +115,108 @@ export default function AddBill({
                                 { value: 'installment', label: 'Parcelada' },
                                 { value: 'fixed', label: 'Fixa' },
                             ]}
-                            {...form.getInputProps('type')}
+                            // value={formValues.type}
+                            value={formState.type}
+                            onChange={(e) => {
+                                dispatch(setFieldValue({ field: "type", newValue: e }))
+                                // setFormValues({
+                                //     ...formValues,
+                                //     type: e ? e : ""
+                                // })
+                            }}
                         />
-                        {form.values.type === "installment" && (
+                        {formValues.type === "installment" && (
                             <Flex justify="space-between" direction={extraSmallScreen ? "column" : "row"} sx={{ gap: "0.5rem" }}>
                                 <NumberInput
                                     withAsterisk
+                                    error={getFieldErrorMessages(formErrors, "installments.current")[0]?.message}
                                     label="Parcela atual"
                                     placeholder="Menor que o total"
                                     mb="md"
-                                    {...form.getInputProps("installments.current")}
+                                    value={formValues.installments.current}
+                                    onChange={(e) => setFormValues({
+                                        ...formValues,
+                                        installments: {
+                                            ...formValues.installments,
+                                            current: e
+                                        }
+                                    })}
                                 />
                                 <NumberInput
                                     withAsterisk
+                                    error={getFieldErrorMessages(formErrors, "installments.total")[0]?.message}
                                     label="Total de parcelas"
                                     placeholder="Número"
                                     mb="md"
-                                    {...form.getInputProps('installments.total')}
+                                    value={formValues.installments.total}
+                                    onChange={(e) => setFormValues({
+                                        ...formValues,
+                                        installments: {
+                                            ...formValues.installments,
+                                            total: e
+                                        }
+                                    })}
                                 />
                                 <NumberInput
                                     withAsterisk
+                                    error={getFieldErrorMessages(formErrors, "installments.dueDay")[0]?.message}
                                     label="Vencimento"
                                     placeholder="Número"
                                     mb="md"
-                                    {...form.getInputProps('installments.dueDay')}
+                                    value={formValues.installments.dueDay}
+                                    onChange={(e) => setFormValues({
+                                        ...formValues,
+                                        installments: {
+                                            ...formValues.installments,
+                                            dueDay: e
+                                        }
+                                    })}
                                 />
                             </Flex>
                         )}
-                        {form.values.type === "fixed" && (
+                        {formValues.type === "fixed" && (
                             <NumberInput
                                 withAsterisk
+                                error={getFieldErrorMessages(formErrors, "fixed.dueDay")[0]?.message}
                                 label="Vencimento"
                                 placeholder="Dia"
                                 mb="md"
-                                {...form.getInputProps("fixed.dueDay")}
+                                value={formValues.fixed.dueDay}
+                                onChange={(e) => setFormValues({
+                                    ...formValues,
+                                    fixed: {
+                                        ...formValues.fixed,
+                                        dueDay: e
+                                    }
+                                })}
                             />
                         )}
                         <DateInput
-                            clearable
+                            error={getFieldErrorMessages(formErrors, "date")[0]?.message}
                             label="Data"
                             placeholder="01/01/2023"
                             mb="md"
-                            {...form.getInputProps('date')}
+                            value={new Date(formValues.date)}
+                            onChange={(e) => setFormValues({ ...formValues, date: new Date(e || "").toString() })}
                         />
                         <MultiSelect
+                            error={getFieldErrorMessages(formErrors, "tags")[0]?.message}
                             label="Tags"
                             placeholder="Selecione etiquetas"
                             mb="md"
                             data={tags}
                             searchable
-                            creatable
-                            getCreateLabel={(query) => `+ Criar ${query}`}
-                            onCreate={(query) => {
-                                const item = query;
-                                setTags((current: any) => [...current, item]);
-                                return item;
-                            }}
-                            {...form.getInputProps('tags')}
+                            value={formValues.tags}
+                            onChange={(e) => setFormValues({ ...formValues, tags: e })}
                         />
                         <Group position="right" mt="xl">
-                            <Button variant="outline" onClick={() => validate()}>Verificar</Button>
+                            <Button variant="outline" onClick={() => {
+                                setFormErrors([]);
+                                setFormValues(initialValues);
+                            }}>Resetar</Button>
                             <Button variant="outline" onClick={() => {
                                 actions.close();
-                                form.reset();
+                                setFormValues(initialValues);
                             }}>Cancelar</Button>
                             <Button type="submit">Salvar</Button>
                         </Group>
