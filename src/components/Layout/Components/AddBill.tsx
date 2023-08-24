@@ -4,7 +4,7 @@ import { DateInput } from "@mantine/dates";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { IForm, createNewItem, resetValues, selectForm, setFieldValue, setValues } from "@/store/features/form/formSlice";
+import { IForm, createNewItem, resetErrors, resetValues, selectForm, setFieldValue, setFixedValues, setInstallmentsValues, setValues, transformValues, validateValues } from "@/store/features/form/formSlice";
 import validateForm, { FormErrorType, transformForm } from "@/utils/validateForm";
 
 function getFieldErrorMessages(items: FormErrorType[], field: string): Array<FormErrorType> {
@@ -26,46 +26,24 @@ export default function AddBill({
         toggle: () => void;
     }
 }) {
-    const theme = useMantineTheme();
+
     // Reducer - Form
     const formState = useAppSelector(selectForm);
     const dispatch = useAppDispatch();
 
-    const initialValues: IForm = {
-        label: '',
-        value: 0,
-        date: new Date().toString(),
-        type: 'monthly',
-        tags: ["Outro"],
-        installments: {
-            current: 1,
-            total: 2,
-            dueDay: 1
-        },
-        fixed: {
-            dueDay: 1
-        }
-    }
-
+    const theme = useMantineTheme();
     const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-    // const [formValues, setFormValues] = useState<IForm>(initialValues);
-    const [formErrors, setFormErrors] = useState<FormErrorType[]>([]);
-
-    useEffect(() => {
-        setFormErrors([]);
-    }, [formState])
 
     const handleSubmit = () => {
-        const errors = validateForm(formState)
-        if (errors.length === 0) {
-            actions.close();
-            console.log(formState);
+        dispatch(resetErrors());
+        dispatch(validateValues());
+        if (!formState.errors.length) {
+            dispatch(transformValues());
             dispatch(resetValues());
             dispatch(createNewItem());
+            // actions.close();
         } else {
-            setFormErrors(errors);
-            console.log("Erro ao criar: ");
-            console.table(errors);
+            console.table(formState.errors);
         };
     }
 
@@ -78,16 +56,16 @@ export default function AddBill({
                     <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
                         <TextInput
                             withAsterisk
-                            error={getFieldErrorMessages(formErrors, "label")[0]?.message}
+                            error={getFieldErrorMessages(formState.errors, "label")[0]?.message}
                             label="Nome"
                             placeholder="Nome do item"
                             mb="md"
-                            value={formState.label}
-                            onChange={(e) => dispatch(setFieldValue({ field: "type", newValue: e }))}
+                            value={formState.fields.label}
+                            onChange={(e) => dispatch(setFieldValue({ field: "label", newValue: e.currentTarget.value }))}
                         />
                         <NumberInput
                             withAsterisk
-                            error={getFieldErrorMessages(formErrors, "value")[0]?.message}
+                            error={getFieldErrorMessages(formState.errors, "value")[0]?.message}
                             label="Valor"
                             placeholder="$ 5,00"
                             mb="md"
@@ -97,16 +75,12 @@ export default function AddBill({
                                     ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
                                     : '$ '
                             }
-                            value={formState.value}
-                            onChange={(e) => setFormValues({
-                                ...formState,
-                                value: e
-                            })}
+                            value={formState.fields.value}
+                            onChange={(e) => dispatch(setFieldValue({ field: "value", newValue: e }))}
                         />
-                        <Button>{formState.type}</Button>
                         <Select
                             withAsterisk
-                            error={getFieldErrorMessages(formErrors, "type")[0]?.message}
+                            error={getFieldErrorMessages(formState.errors, "type")[0]?.message}
                             label="Tipo"
                             placeholder="Escolha um tipo"
                             mb="md"
@@ -115,108 +89,84 @@ export default function AddBill({
                                 { value: 'installment', label: 'Parcelada' },
                                 { value: 'fixed', label: 'Fixa' },
                             ]}
-                            // value={formValues.type}
-                            value={formState.type}
+                            value={formState.fields.type}
                             onChange={(e) => {
                                 dispatch(setFieldValue({ field: "type", newValue: e }))
-                                // setFormValues({
-                                //     ...formValues,
-                                //     type: e ? e : ""
-                                // })
                             }}
                         />
-                        {formValues.type === "installment" && (
+                        {formState.fields.type === "installment" && (
                             <Flex justify="space-between" direction={extraSmallScreen ? "column" : "row"} sx={{ gap: "0.5rem" }}>
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formErrors, "installments.current")[0]?.message}
+                                    error={getFieldErrorMessages(formState.errors, "installments.current")[0]?.message}
                                     label="Parcela atual"
                                     placeholder="Menor que o total"
                                     mb="md"
-                                    value={formValues.installments.current}
-                                    onChange={(e) => setFormValues({
-                                        ...formValues,
-                                        installments: {
-                                            ...formValues.installments,
-                                            current: e
-                                        }
-                                    })}
+                                    value={formState.fields.installments.current}
+                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "current", newValue: e }))}
                                 />
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formErrors, "installments.total")[0]?.message}
+                                    error={getFieldErrorMessages(formState.errors, "installments.total")[0]?.message}
                                     label="Total de parcelas"
                                     placeholder="Número"
                                     mb="md"
-                                    value={formValues.installments.total}
-                                    onChange={(e) => setFormValues({
-                                        ...formValues,
-                                        installments: {
-                                            ...formValues.installments,
-                                            total: e
-                                        }
-                                    })}
+                                    value={formState.fields.installments.total}
+                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "total", newValue: e }))}
                                 />
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formErrors, "installments.dueDay")[0]?.message}
+                                    error={getFieldErrorMessages(formState.errors, "installments.dueDay")[0]?.message}
                                     label="Vencimento"
                                     placeholder="Número"
                                     mb="md"
-                                    value={formValues.installments.dueDay}
-                                    onChange={(e) => setFormValues({
-                                        ...formValues,
-                                        installments: {
-                                            ...formValues.installments,
-                                            dueDay: e
-                                        }
-                                    })}
+                                    value={formState.fields.installments.dueDay}
+                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "dueDay", newValue: e }))}
                                 />
                             </Flex>
                         )}
-                        {formValues.type === "fixed" && (
+                        {formState.fields.type === "fixed" && (
                             <NumberInput
                                 withAsterisk
-                                error={getFieldErrorMessages(formErrors, "fixed.dueDay")[0]?.message}
+                                error={getFieldErrorMessages(formState.errors, "fixed.dueDay")[0]?.message}
                                 label="Vencimento"
                                 placeholder="Dia"
                                 mb="md"
-                                value={formValues.fixed.dueDay}
-                                onChange={(e) => setFormValues({
-                                    ...formValues,
-                                    fixed: {
-                                        ...formValues.fixed,
-                                        dueDay: e
-                                    }
-                                })}
+                                value={formState.fields.fixed.dueDay}
+                                onChange={(e) => dispatch(setFixedValues({ field: "dueDay", newValue: e }))}
                             />
                         )}
                         <DateInput
-                            error={getFieldErrorMessages(formErrors, "date")[0]?.message}
+                            withAsterisk
+                            error={getFieldErrorMessages(formState.errors, "date")[0]?.message}
                             label="Data"
                             placeholder="01/01/2023"
                             mb="md"
-                            value={new Date(formValues.date)}
-                            onChange={(e) => setFormValues({ ...formValues, date: new Date(e || "").toString() })}
+                            value={new Date(formState.fields.date !== "" ? formState.fields.date : new Date())}
+                            onChange={(e) => dispatch(setFieldValue({ field: "date", newValue: e?.toString() }))}
                         />
                         <MultiSelect
-                            error={getFieldErrorMessages(formErrors, "tags")[0]?.message}
+                            error={getFieldErrorMessages(formState.errors, "tags")[0]?.message}
                             label="Tags"
                             placeholder="Selecione etiquetas"
                             mb="md"
                             data={tags}
                             searchable
-                            value={formValues.tags}
-                            onChange={(e) => setFormValues({ ...formValues, tags: e })}
+                            value={formState.fields.tags}
+                            onChange={(e) => dispatch(setFieldValue({ field: "tags", newValue: e?.toString() }))}
                         />
                         <Group position="right" mt="xl">
                             <Button variant="outline" onClick={() => {
-                                setFormErrors([]);
-                                setFormValues(initialValues);
+                                dispatch(resetErrors());
+                                dispatch(validateValues());
+                            }}>Validar</Button>
+                            <Button variant="outline" onClick={() => {
+                                dispatch(resetErrors());
+                                dispatch(resetValues());
                             }}>Resetar</Button>
                             <Button variant="outline" onClick={() => {
                                 actions.close();
-                                setFormValues(initialValues);
+                                dispatch(resetValues());
                             }}>Cancelar</Button>
                             <Button type="submit">Salvar</Button>
                         </Group>

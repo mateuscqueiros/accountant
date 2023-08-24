@@ -1,9 +1,8 @@
-import { format } from "date-fns";
 import DefaultTable from "..";
 import { useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemMonthlyTable } from "@/components/Tables/MonthlyTable/ItemMonthlyTable";
-import { selectForm, setFieldValue, setType } from "@/store/features/form/formSlice";
+import { selectForm, setFieldValue } from "@/store/features/form/formSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 export default function MonthlyTable({ header, data, action }: any) {
@@ -19,7 +18,7 @@ export default function MonthlyTable({ header, data, action }: any) {
 
     return (
         <DefaultTable title="Mensais" action={action} onAddAction={() => {
-            dispatch(setType("monthly"));
+            dispatch(setFieldValue({ field: "type", newValue: "monthly" }));
             action.open();
         }}>
             <thead>

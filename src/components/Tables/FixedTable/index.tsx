@@ -2,14 +2,13 @@ import DefaultTable from "..";
 import { useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemFixedTable } from "./ItemFixedTable";
-import { selectForm, setType } from "@/store/features/form/formSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setFieldValue } from "@/store/features/form/formSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 export default function FixedTable({ header, data, action }: any) {
     const [fixedData, setFixedData] = useState<BillsDataItemType[]>(data.filter((item: any) => (item.type === "fixed")));
     const [total, setTotal] = useState<number>(fixedData.reduce((partialSum, a) => partialSum + a.value, 0));
 
-    const formState = useAppSelector(selectForm);
     const dispatch = useAppDispatch();
 
     const rows = fixedData.map((item: BillsDataItemType) => (
@@ -18,7 +17,7 @@ export default function FixedTable({ header, data, action }: any) {
 
     return (
         <DefaultTable title="Fixos" action={action} onAddAction={() => {
-            dispatch(setType("fixed"));
+            dispatch(setFieldValue({ field: "type", newValue: "fixed" }));
             action.open()
         }}>
             <thead>
