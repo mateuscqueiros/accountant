@@ -3,12 +3,8 @@ import { Button, Title } from '@mantine/core';
 import Head from 'next/head';
 import { useContext } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { increment, incrementByAmount, selectCount } from '@/store/features/counter/counterSlice';
 
 export default function Home() {
-
-    const counter = useAppSelector(selectCount);
-    const dispatch = useAppDispatch();
 
     return (
         <>
@@ -20,7 +16,6 @@ export default function Home() {
             </Head>
             <Layout>
                 <Title order={1} mb="1rem">Relatórios</Title>
-                <Button onClick={() => { dispatch(incrementByAmount(5)) }}>{counter}</Button>
             </Layout>
         </>
     )

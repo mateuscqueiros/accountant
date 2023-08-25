@@ -1,28 +1,22 @@
 import Layout from '@/components/Layout';
-import { Flex, Group, Paper, RingProgress, SimpleGrid, Text, Title } from '@mantine/core';
+import { Button, Flex, Group, Paper, RingProgress, SimpleGrid, Text, Title } from '@mantine/core';
 import Head from 'next/head';
-import { useState } from 'react';
 import FixedTable from '@/components/Tables/FixedTable';
 import MonthlyTable from '@/components/Tables/MonthlyTable';
 import InstallmentsTable from '@/components/Tables/InstallmentsTable';
 import AddBill from '@/components/Layout/Components/AddBill';
-import { useDisclosure } from '@mantine/hooks';
 import userData from "data";
-import { v4 as uuidv4 } from 'uuid';
 import { format, getTags } from '@/utils/index';
-import { IForm, selectForm } from '@/store/features/form/formSlice';
-import { useAppSelector } from '../store';
+import { createItem, selectActiveBillsItem, selectData, updateItem } from '@/store/features/data/dataSlice';
+import { useAppDispatch, useAppSelector } from '@/store/index';
 
 export default function Home() {
 
-  const [allData, setAllData] = useState(userData);
-  const [activeData, setActiveData] = useState(userData.billsData[0]);
-  const [expensestotal, setExpensestotal] = useState<number>(activeData.items.reduce((partialSum, a) => partialSum + a.value, 0));
-  const [tags, setTags] = useState(getTags(activeData.items));
-
-  const [openedModal, actionsModal] = useDisclosure(false);
-
-  const formState = useAppSelector(selectForm);
+  const activeData = useAppSelector(selectActiveBillsItem);
+  const data = useAppSelector(selectData);
+  const dispatch = useAppDispatch();
+  let tags = getTags(activeData.items);
+  let expensestotal = activeData.items.reduce((partialSum, a) => partialSum + a.value, 0);
 
   return (
     <>
@@ -34,16 +28,16 @@ export default function Home() {
       </Head>
       <Layout>
         <Flex justify="space-between">
-          <Title order={1} mb="1rem">Bem-vindo, {allData.user.name.split(" ")[0]}!</Title>
-          <AddBill tags={tags} state={openedModal} actions={actionsModal} />
+          <Title order={1} mb="1rem">Bem-vindo, {data.user.name.split(" ")[0]}!</Title>
+          <AddBill tags={tags} />
         </Flex>
         <Paper mb="1rem" p="1rem" px="2rem">
-          <Title order={2}>{format(activeData.initialMonth, "MMMM' de 'yyyy")}</Title>
+          <Title order={2}>{format(new Date(activeData.initialDate), "MMMM' de 'yyyy")}</Title>
           <Flex justify="space-between">
             <Flex direction="column" justify="center" sx={{ gap: 0 }}>
               <Group sx={{ gap: 0 }}>
                 <Text mr={10}>Saldo mensal:</Text>
-                <Text fw={600}>${(allData.user.income - expensestotal).toFixed(2)}</Text>
+                <Text fw={600}>${(data.user.income - expensestotal).toFixed(2)}</Text>
               </Group>
               <Group sx={{ gap: 0 }}>
                 <Text mr={10}>Total de gastos:</Text>
@@ -65,9 +59,9 @@ export default function Home() {
             { minWidth: 1700, cols: 4 },
           ]}
         >
-          <FixedTable data={activeData.items} header={["Nome", "Valor", "Data"]} action={actionsModal} />
-          <InstallmentsTable data={activeData.items} header={["Nome", "Valor", "Parcela", "Prazo"]} action={actionsModal} />
-          <MonthlyTable data={activeData.items} header={["Nome", "Valor", "Data"]} action={actionsModal} />
+          <FixedTable data={activeData.items} header={["Nome", "Valor", "Vencimento"]} />
+          <InstallmentsTable data={activeData.items} header={["Nome", "Valor", "Parcela", "Vencimento"]} />
+          <MonthlyTable data={activeData.items} header={["Nome", "Valor", "Dia"]} />
         </SimpleGrid>
       </Layout>
     </>

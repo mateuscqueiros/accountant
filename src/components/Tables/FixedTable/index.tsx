@@ -2,12 +2,15 @@ import DefaultTable from "..";
 import { useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemFixedTable } from "./ItemFixedTable";
-import { setFieldValue } from "@/store/features/form/formSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { initialValues, setFieldValue } from "@/store/features/form/formSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { openModal, command } from "@/store/features/modal/modalSlice";
+import { selectData } from "@/store/features/data/dataSlice";
 
-export default function FixedTable({ header, data, action }: any) {
-    const [fixedData, setFixedData] = useState<BillsDataItemType[]>(data.filter((item: any) => (item.type === "fixed")));
-    const [total, setTotal] = useState<number>(fixedData.reduce((partialSum, a) => partialSum + a.value, 0));
+export default function FixedTable({ header }: any) {
+    const fixedData = useAppSelector(selectData).billsData[0].items.filter((item: any) => (item.type === "fixed" && item.active === true));
+
+    const total = fixedData.reduce((partialSum, a) => partialSum + a.value, 0);
 
     const dispatch = useAppDispatch();
 
@@ -16,9 +19,12 @@ export default function FixedTable({ header, data, action }: any) {
     ));
 
     return (
-        <DefaultTable title="Fixos" action={action} onAddAction={() => {
-            dispatch(setFieldValue({ field: "type", newValue: "fixed" }));
-            action.open()
+        <DefaultTable title="Fixos" onAddAction={() => {
+            dispatch(command({
+                ...initialValues,
+                type: "fixed"
+            }));
+            dispatch(openModal())
         }}>
             <thead>
                 <tr>

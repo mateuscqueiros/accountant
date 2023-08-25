@@ -26,7 +26,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         withGlobalStyles
         withNormalizeCSS
         theme={{
-          colorScheme
+          colorScheme,
+          cursorType: "pointer"
         }}
       >
         <Provider store={store}>

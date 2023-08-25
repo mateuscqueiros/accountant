@@ -9,19 +9,24 @@ export type UserType = {
 export type BillsDataItemType = {
   id: string,
   label: string,
-  tags: string[],
   value: number,
-  date?: Date,
-  due?: number,
-  totalInstallments?: number,
-  currentInstallment?: number,
+  type: string,
+  date: string,
+  installments: {
+    current: number,
+    total: number,
+    dueDay: number
+  },
+  fixed: {
+    dueDay: number
+  },
+  tags: string[],
   note: string,
-  type: "monthly" | "fixed" | "installment",
   active: boolean
 }
 
 export type BillsDataType = {
-  initialMonth: Date,
+  initialDate: string,
   items: BillsDataItemType[]
 }
 
@@ -38,136 +43,62 @@ const userData: UserDataType = {
   },
   billsData: [
     {
-      initialMonth: new Date("8/1/2023"),
+      initialDate: new Date("8/1/2023").toString(),
       items: [
         {
           id: uuidv4(),
-          label: "Compras necessárias",
-          tags: ["Carro"],
+          label: "Compras mensais",
+          tags: ["Mercado", "Carro", "Outros"],
           value: 255.6,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
+          date: new Date("01/01/2023").toString(),
           type: "monthly",
+          installments: {
+            current: 0,
+            total: 0,
+            dueDay: 0
+          },
+          fixed: {
+            dueDay: 0
+          },
+          note: "Uma nota que ninguém vai ler",
           active: true
         },
         {
           id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Carro"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-        {
-          id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Carro"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-
-        {
-          id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Mercado"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-
-        {
-          id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Mercado"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-
-        {
-          id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Mercado"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-        {
-          id: uuidv4(),
-          label: "Compra necessária que precisei fazer esse mês não sei porque",
-          tags: ["Mercado"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-
-        {
-          id: uuidv4(),
-          label: "Compra necessária",
-          tags: ["Mercado"],
-          value: 255,
-          date: new Date("10/08/2023"),
-          note: "Compras que eu preciso fazer todo mês",
-          type: "monthly",
-          active: true
-        },
-        {
-          id: uuidv4(),
-          label: "Game Pas",
-          tags: ["Assinaturas"],
-          value: 30,
-          due: 20,
-          note: "O game pass hummmm",
+          label: "Compras fixas",
+          tags: ["Mercado", "Carro", "Outros"],
+          value: 20,
+          date: new Date("01/01/2023").toString(),
           type: "fixed",
+          installments: {
+            current: 0,
+            total: 0,
+            dueDay: 0
+          },
+          fixed: {
+            dueDay: 12
+          },
+          note: "Uma nota que ninguém vai ler",
           active: true
         },
         {
           id: uuidv4(),
-          label: "Game Pass",
-          tags: ["Assinaturas"],
-          value: 30,
-          due: 20,
-          note: "O game pass hummmm",
-          type: "fixed",
-          active: true
-        },
-        {
-          id: uuidv4(),
-          label: "4090",
-          tags: ["Outros"],
-          value: 950,
-          totalInstallments: 12,
-          currentInstallment: 11,
-          due: 21,
-          note: "Caro pra caramba",
+          label: "Compras parceladas",
+          tags: ["Mercado", "Carro", "Assinaturas", "Outros"],
+          value: 20,
+          date: new Date("01/01/2023").toString(),
           type: "installment",
+          installments: {
+            current: 10,
+            total: 12,
+            dueDay: 10
+          },
+          fixed: {
+            dueDay: 12
+          },
+          note: "Uma nota que ninguém vai ler",
           active: true
         },
-        {
-          id: uuidv4(),
-          label: "409",
-          tags: ["Outros"],
-          value: 950,
-          totalInstallments: 12,
-          currentInstallment: 11,
-          due: 21,
-          note: "Caro pra caramba",
-          type: "installment",
-          active: true
-        }
       ]
     }
   ]

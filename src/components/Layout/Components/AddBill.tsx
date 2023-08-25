@@ -1,71 +1,66 @@
-import { ActionIcon, Box, Button, Flex, Group, Modal, MultiSelect, NumberInput, Select, TextInput, Tooltip, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Checkbox, Flex, Group, Modal, MultiSelect, NumberInput, Select, TextInput, Textarea, Tooltip, useMantineTheme } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { DateInput } from "@mantine/dates";
-import { useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { IForm, createNewItem, resetErrors, resetValues, selectForm, setFieldValue, setFixedValues, setInstallmentsValues, setValues, transformValues, validateValues } from "@/store/features/form/formSlice";
-import validateForm, { FormErrorType, transformForm } from "@/utils/validateForm";
-
-function getFieldErrorMessages(items: FormErrorType[], field: string): Array<FormErrorType> {
-    return items.filter(item => {
-        return item.field === field
-    });
-}
+import { FormFields, initialValues, setValues } from "@/store/features/form/formSlice";
+import { useForm } from "@mantine/form";
+import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from "@/utils/sanitizeForm";
+import { openModal, resetModal, selectModal, setAction } from "@/store/features/modal/modalSlice";
+import { useEffect } from "react";
+import { createItem, updateItem } from "@/store/features/data/dataSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AddBill({
     tags,
-    state,
-    actions
 }: {
     tags: string[],
-    state: boolean,
-    actions: {
-        open: () => void;
-        close: () => void;
-        toggle: () => void;
-    }
 }) {
 
-    // Reducer - Form
-    const formState = useAppSelector(selectForm);
+    const modal = useAppSelector(selectModal);
     const dispatch = useAppDispatch();
 
     const theme = useMantineTheme();
     const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
-    const handleSubmit = () => {
-        dispatch(resetErrors());
-        dispatch(validateValues());
-        if (!formState.errors.length) {
-            dispatch(transformValues());
-            dispatch(resetValues());
-            dispatch(createNewItem());
-            // actions.close();
+    const form = useForm<FormFields>({
+        initialValues,
+        validate: getValidateObject(),
+        transformValues: (values) => (getTransformObject(values))
+    });
+
+    const handleSubmit = (values: FormFields) => {
+        if (modal.action === "update") {
+            dispatch(updateItem(sanitizeBeforeCommiting(modal.updateItem, values)))
+            dispatch(resetModal());
         } else {
-            console.table(formState.errors);
-        };
+            form.reset();
+            dispatch(resetModal());
+            dispatch(setValues(values));
+            dispatch(createItem(sanitizeBeforeCommiting(uuidv4(), values)));
+        }
     }
+
+    useEffect(() => {
+        form.setValues(modal.command);
+    }, [modal.command]);
 
     return (
         <>
-            <Modal opened={state} onClose={() => {
-                actions.close();
-            }} title="Criar novo item">
+            <Modal opened={modal.opened} onClose={() => {
+                dispatch(resetModal());
+            }} title={modal.action === "create" ? "Criar item" : "Atualizar item"}>
                 <Box p="1rem" pt={0}>
-                    <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+                    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                         <TextInput
                             withAsterisk
-                            error={getFieldErrorMessages(formState.errors, "label")[0]?.message}
                             label="Nome"
                             placeholder="Nome do item"
                             mb="md"
-                            value={formState.fields.label}
-                            onChange={(e) => dispatch(setFieldValue({ field: "label", newValue: e.currentTarget.value }))}
+                            {...form.getInputProps('label')}
                         />
                         <NumberInput
                             withAsterisk
-                            error={getFieldErrorMessages(formState.errors, "value")[0]?.message}
                             label="Valor"
                             placeholder="$ 5,00"
                             mb="md"
@@ -75,12 +70,10 @@ export default function AddBill({
                                     ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
                                     : '$ '
                             }
-                            value={formState.fields.value}
-                            onChange={(e) => dispatch(setFieldValue({ field: "value", newValue: e }))}
+                            {...form.getInputProps('value')}
                         />
                         <Select
                             withAsterisk
-                            error={getFieldErrorMessages(formState.errors, "type")[0]?.message}
                             label="Tipo"
                             placeholder="Escolha um tipo"
                             mb="md"
@@ -89,84 +82,89 @@ export default function AddBill({
                                 { value: 'installment', label: 'Parcelada' },
                                 { value: 'fixed', label: 'Fixa' },
                             ]}
-                            value={formState.fields.type}
-                            onChange={(e) => {
-                                dispatch(setFieldValue({ field: "type", newValue: e }))
-                            }}
+                            {...form.getInputProps('type')}
                         />
-                        {formState.fields.type === "installment" && (
+                        {form.values.type === "installment" && (
                             <Flex justify="space-between" direction={extraSmallScreen ? "column" : "row"} sx={{ gap: "0.5rem" }}>
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formState.errors, "installments.current")[0]?.message}
                                     label="Parcela atual"
                                     placeholder="Menor que o total"
                                     mb="md"
-                                    value={formState.fields.installments.current}
-                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "current", newValue: e }))}
+                                    {...form.getInputProps('installments.current')}
                                 />
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formState.errors, "installments.total")[0]?.message}
                                     label="Total de parcelas"
                                     placeholder="Número"
                                     mb="md"
-                                    value={formState.fields.installments.total}
-                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "total", newValue: e }))}
+                                    {...form.getInputProps('installments.total')}
                                 />
                                 <NumberInput
                                     withAsterisk
-                                    error={getFieldErrorMessages(formState.errors, "installments.dueDay")[0]?.message}
                                     label="Vencimento"
                                     placeholder="Número"
                                     mb="md"
-                                    value={formState.fields.installments.dueDay}
-                                    onChange={(e) => dispatch(setInstallmentsValues({ field: "dueDay", newValue: e }))}
+                                    {...form.getInputProps('installments.dueDay')}
                                 />
                             </Flex>
                         )}
-                        {formState.fields.type === "fixed" && (
+                        {form.values.type === "fixed" && (
                             <NumberInput
                                 withAsterisk
-                                error={getFieldErrorMessages(formState.errors, "fixed.dueDay")[0]?.message}
                                 label="Vencimento"
                                 placeholder="Dia"
                                 mb="md"
-                                value={formState.fields.fixed.dueDay}
-                                onChange={(e) => dispatch(setFixedValues({ field: "dueDay", newValue: e }))}
+                                {...form.getInputProps('fixed.dueDay')}
                             />
                         )}
-                        <DateInput
-                            withAsterisk
-                            error={getFieldErrorMessages(formState.errors, "date")[0]?.message}
-                            label="Data"
-                            placeholder="01/01/2023"
-                            mb="md"
-                            value={new Date(formState.fields.date !== "" ? formState.fields.date : new Date())}
-                            onChange={(e) => dispatch(setFieldValue({ field: "date", newValue: e?.toString() }))}
-                        />
+                        <Group sx={{ alignItems: "center" }}>
+                            <DateInput
+                                sx={{ flex: 1 }}
+                                withAsterisk
+                                label="Data"
+                                placeholder="01/01/2023"
+                                mb="md"
+                                {...form.getInputProps('date')}
+                                value={new Date(form.values.date === "" ? new Date() : form.values.date)}
+                                onChange={(e) => { form.setFieldValue("date", e && e.toString() ? e.toString() : "") }}
+                            />
+                            <Checkbox
+                                mt={10}
+                                label="Ativo"
+                                defaultChecked={true}
+                                {...form.getInputProps('active')}
+                            />
+                        </Group>
+
                         <MultiSelect
-                            error={getFieldErrorMessages(formState.errors, "tags")[0]?.message}
                             label="Tags"
                             placeholder="Selecione etiquetas"
                             mb="md"
                             data={tags}
                             searchable
-                            value={formState.fields.tags}
-                            onChange={(e) => dispatch(setFieldValue({ field: "tags", newValue: e?.toString() }))}
+                            {...form.getInputProps('tags')}
+                        />
+                        <Textarea
+                            label="Notas"
+                            mb="md"
+                            placeholder="Descreva o item"
+                            autosize
+                            {...form.getInputProps('notes')}
                         />
                         <Group position="right" mt="xl">
                             <Button variant="outline" onClick={() => {
-                                dispatch(resetErrors());
-                                dispatch(validateValues());
+                                form.validate()
                             }}>Validar</Button>
                             <Button variant="outline" onClick={() => {
-                                dispatch(resetErrors());
-                                dispatch(resetValues());
+                                form.reset()
                             }}>Resetar</Button>
                             <Button variant="outline" onClick={() => {
-                                actions.close();
-                                dispatch(resetValues());
+                                form.reset()
+                                form.clearErrors();
+                                form.resetDirty();
+                                form.resetTouched();
+                                dispatch(resetModal());
                             }}>Cancelar</Button>
                             <Button type="submit">Salvar</Button>
                         </Group>
@@ -178,7 +176,10 @@ export default function AddBill({
                 <ActionIcon
                     size="2.1rem"
                     variant="default"
-                    onClick={actions.open}
+                    onClick={() => {
+                        form.reset();
+                        dispatch(openModal());
+                    }}
                 >
                     <IconPlus size="1.3rem" />
                 </ActionIcon>

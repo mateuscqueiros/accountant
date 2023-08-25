@@ -15,7 +15,7 @@ export default function DefaultTable({ title, children, onAddAction }: any) {
                     <IconPlus size="0.9rem" />
                 </ActionIcon>
             </Flex>
-            <Table withColumnBorders striped highlightOnHover sx={{ cursor: "pointer" }}>
+            <Table withColumnBorders striped highlightOnHover>
                 {children}
             </Table>
         </Card>

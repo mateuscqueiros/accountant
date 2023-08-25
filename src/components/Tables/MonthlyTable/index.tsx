@@ -1,25 +1,30 @@
 import DefaultTable from "..";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BillsDataItemType } from "data";
 import { ItemMonthlyTable } from "@/components/Tables/MonthlyTable/ItemMonthlyTable";
-import { selectForm, setFieldValue } from "@/store/features/form/formSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { command, openModal } from "@/store/features/modal/modalSlice";
+import { useSelector } from "react-redux";
+import { selectData } from "@/store/features/data/dataSlice";
+import { initialValues } from "@/components/Layout/Components/AddBill";
 
-export default function MonthlyTable({ header, data, action }: any) {
-    const [monthlyData, setMonthlyData] = useState<BillsDataItemType[]>(data.filter((item: any) => (item.type === "monthly")));
-    const [total, setTotal] = useState(monthlyData.reduce((partialSum, a) => partialSum + a.value, 0));
+export default function MonthlyTable({ header }: any) {
+    const monthlyData = useAppSelector(selectData).billsData[0].items.filter((item: any) => (item.type === "monthly" && item.active === true));
+    const total = monthlyData.reduce((partialSum, a) => partialSum + a.value, 0);
 
     const rows = monthlyData.map((item: BillsDataItemType) => (
         <ItemMonthlyTable key={item.id} item={item} />
-    ));
+    ))
 
-    const formState = useAppSelector(selectForm);
     const dispatch = useAppDispatch();
 
     return (
-        <DefaultTable title="Mensais" action={action} onAddAction={() => {
-            dispatch(setFieldValue({ field: "type", newValue: "monthly" }));
-            action.open();
+        <DefaultTable title="Mensais" onAddAction={() => {
+            dispatch(command({
+                ...initialValues,
+                type: "monthly"
+            }));
+            dispatch(openModal());
         }}>
             <thead>
                 <tr>
