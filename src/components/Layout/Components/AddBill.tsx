@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { FormFields, initialValues, setValues } from "@/store/features/form/formSlice";
 import { useForm } from "@mantine/form";
 import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from "@/utils/sanitizeForm";
-import { openModal, resetModal, selectModal, setAction } from "@/store/features/modal/modalSlice";
+import { openModal, resetModal, selectModal } from "@/store/features/modal/modalSlice";
 import { useEffect } from "react";
 import { createItem, updateItem } from "@/store/features/data/dataSlice";
 import { v4 as uuidv4 } from 'uuid';
@@ -31,7 +31,7 @@ export default function AddBill({
 
     const handleSubmit = (values: FormFields) => {
         if (modal.action === "update") {
-            dispatch(updateItem(sanitizeBeforeCommiting(modal.updateItem, values)))
+            dispatch(updateItem(sanitizeBeforeCommiting(modal.updateItem, values)));
             dispatch(resetModal());
         } else {
             form.reset();
@@ -42,7 +42,15 @@ export default function AddBill({
     }
 
     useEffect(() => {
-        form.setValues(modal.command);
+        form.setValues({
+            ...modal.command,
+            installments: {
+                ...modal.command.installments
+            },
+            fixed: {
+                ...modal.command.fixed
+            }
+        });
     }, [modal.command]);
 
     return (
@@ -178,6 +186,7 @@ export default function AddBill({
                     variant="default"
                     onClick={() => {
                         form.reset();
+                        dispatch(resetModal());
                         dispatch(openModal());
                     }}
                 >

@@ -56,7 +56,7 @@ export const formSlice = createSlice({
     reducers: {
         resetValues: () => {
             return {
-                ...initialState
+                ...initialState,
             }
         },
         setFieldValue: (state, action: PayloadAction<{ field: string, newValue: any }>) => {

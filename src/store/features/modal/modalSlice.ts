@@ -1,11 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BillsDataItemType } from "data";
 import { RootState } from "store/store";
-import { FormFields, initialValues } from "../form/formSlice";
+import { initialValues } from "../form/formSlice";
 
 const initialState = {
     opened: false,
-    command: initialValues,
+    command: {
+        ...initialValues
+    },
     updateItem: "",
     action: "update",
 }
@@ -23,8 +25,16 @@ export const modalSlice = createSlice({
         toggleModal: (state) => {
             state.opened = !state.opened
         },
-        command: (state, action: PayloadAction<FormFields>) => {
-            state.command = action.payload
+        command: (state, action: PayloadAction<BillsDataItemType>) => {
+            state.command = {
+                ...action.payload,
+                installments: {
+                    ...action.payload.installments
+                },
+                fixed: {
+                    ...action.payload.fixed
+                }
+            }
         },
         setAction: (state, action: PayloadAction<string>) => {
             state.action = action.payload
@@ -35,7 +45,15 @@ export const modalSlice = createSlice({
         openUpdateModal: (state, action: PayloadAction<BillsDataItemType>) => {
             return {
                 opened: true,
-                command: action.payload,
+                command: {
+                    ...action.payload,
+                    installments: {
+                        ...action.payload.installments
+                    },
+                    fixed: {
+                        ...action.payload.fixed
+                    }
+                },
                 updateItem: action.payload.id,
                 action: "update",
             }
@@ -43,9 +61,17 @@ export const modalSlice = createSlice({
         resetModal: () => {
             return {
                 opened: false,
-                command: initialValues,
+                command: {
+                    ...initialValues,
+                    installments: {
+                        ...initialValues.installments
+                    },
+                    fixed: {
+                        ...initialValues.fixed
+                    }
+                },
                 updateItem: "",
-                action: "update",
+                action: "create",
             }
         }
     }
@@ -53,7 +79,6 @@ export const modalSlice = createSlice({
 
 export const { openModal, closeModal, toggleModal, command, setAction, setUpdateItem, resetModal, openUpdateModal } = modalSlice.actions;
 
-// "Método" para executar uma ação que não envolve alterar o state sem precisar importar o type toda vez
 export const selectModal = (state: RootState) => state.modal;
 
 export default modalSlice.reducer
