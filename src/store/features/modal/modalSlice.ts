@@ -1,12 +1,19 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { BillsDataItemType } from "data";
-import { RootState } from "store/store";
-import { initialValues } from "../form/formSlice";
+import { FormFields, initialValues } from "../form/formSlice";
+import { BillsDataItemType } from "src/data";
+import { RootState } from "../..";
+
 
 const initialState = {
     opened: false,
     command: {
-        ...initialValues
+        ...initialValues,
+        installments: {
+            ...initialValues.installments
+        },
+        fixed: {
+            ...initialValues.fixed
+        }
     },
     updateItem: "",
     action: "update",
@@ -25,7 +32,7 @@ export const modalSlice = createSlice({
         toggleModal: (state) => {
             state.opened = !state.opened
         },
-        command: (state, action: PayloadAction<BillsDataItemType>) => {
+        command: (state, action: PayloadAction<FormFields>) => {
             state.command = {
                 ...action.payload,
                 installments: {
@@ -41,6 +48,18 @@ export const modalSlice = createSlice({
         },
         setUpdateItem: (state, action: PayloadAction<string>) => {
             state.updateItem = action.payload
+        },
+        setType: (state, action: PayloadAction<string>) => {
+            state.command = {
+                ...initialValues,
+                type: action.payload,
+                installments: {
+                    ...initialValues.installments
+                },
+                fixed: {
+                    ...initialValues.fixed
+                }
+            }
         },
         openUpdateModal: (state, action: PayloadAction<BillsDataItemType>) => {
             return {
@@ -77,7 +96,7 @@ export const modalSlice = createSlice({
     }
 });
 
-export const { openModal, closeModal, toggleModal, command, setAction, setUpdateItem, resetModal, openUpdateModal } = modalSlice.actions;
+export const { openModal, closeModal, toggleModal, command, setAction, setUpdateItem, resetModal, openUpdateModal, setType } = modalSlice.actions;
 
 export const selectModal = (state: RootState) => state.modal;
 

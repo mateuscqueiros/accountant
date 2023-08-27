@@ -2,7 +2,7 @@ import Layout from '@/components/Layout'
 import { Title } from '@mantine/core'
 import Head from 'next/head'
 
-export default function Home() {
+export default function History() {
 
     return (
         <>

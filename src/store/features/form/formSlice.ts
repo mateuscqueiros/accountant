@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "store/store";
+import { RootState } from "../..";
 
 export type FormErrorType = {
     message: string,
@@ -11,7 +11,7 @@ export type FormFields = {
     value: number | "",
     date: string,
     type: string,
-    tags: string[],
+    tag: string,
     active: boolean,
     note: string,
     installments: {
@@ -33,7 +33,7 @@ export const initialValues: FormFields = {
     value: 0,
     date: new Date().toString(),
     type: 'monthly',
-    tags: ["Outros"],
+    tag: "Outros",
     active: true,
     note: "",
     installments: {
@@ -56,7 +56,15 @@ export const formSlice = createSlice({
     reducers: {
         resetValues: () => {
             return {
-                ...initialState,
+                values: {
+                    ...initialValues,
+                    installments: {
+                        ...initialValues.installments
+                    },
+                    fixed: {
+                        ...initialValues.fixed
+                    }
+                }
             }
         },
         setFieldValue: (state, action: PayloadAction<{ field: string, newValue: any }>) => {
@@ -68,7 +76,15 @@ export const formSlice = createSlice({
         setValues: (state, action: PayloadAction<FormFields>) => {
             return {
                 ...state,
-                values: action.payload
+                values: {
+                    ...action.payload,
+                    installments: {
+                        ...action.payload.installments
+                    },
+                    fixed: {
+                        ...action.payload.fixed
+                    }
+                }
             }
         }
     }

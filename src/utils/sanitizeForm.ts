@@ -1,16 +1,19 @@
 import { FormFields } from "@/store/features/form/formSlice";
 import { FormValidateInput, _TransformValues } from "@mantine/form/lib/types";
-import { BillsDataItemType } from "data";
 import { useAppSelector } from "../store";
 import { selectModal } from "@/store/features/modal/modalSlice";
+import { BillsDataItemType } from "src/data";
 
 export function getValidateObject(): FormValidateInput<FormFields> {
+    /* Obtém um objeto "validate" para o mantine, que valida os inputs */
+
     const validate: FormValidateInput<FormFields> = {
         label: undefined,
         value: undefined,
         date: undefined,
         type: undefined,
-        tags: undefined,
+        tag: undefined,
+        active: undefined,
         installments: {
             current: undefined,
             total: undefined,
@@ -18,7 +21,7 @@ export function getValidateObject(): FormValidateInput<FormFields> {
         },
         fixed: {
             dueDay: undefined
-        }
+        },
     };
     // Label
     validate.label = (value) => {
@@ -88,6 +91,8 @@ export function getValidateObject(): FormValidateInput<FormFields> {
 }
 
 export function getTransformObject(values: FormFields): FormFields {
+    /* Obtém um objeto "tranform" para o mantine, que vai transformar os itens antes depois do submit */
+
     let transform: FormFields = {
         ...values,
         date: values.date.toString()
@@ -110,10 +115,10 @@ export function getTransformObject(values: FormFields): FormFields {
             }
         }
     }
-    if (values.tags.length === 0) {
+    if (values.tag === "") {
         transform = {
             ...transform,
-            tags: ["Outros"]
+            tag: "Outros"
         }
     }
 
@@ -121,11 +126,12 @@ export function getTransformObject(values: FormFields): FormFields {
 }
 
 export function sanitizeBeforeCommiting(id: string, values: FormFields): BillsDataItemType {
+    /* Adapta os itens do formulário (FormsField) para inserção no banco (BillDataItemType) */
 
     return ({
         id,
         label: values.label,
-        tags: [...values.tags],
+        tag: values.tag,
         value: values.value === "" ? 0 : values.value,
         date: values.date,
         installments: {
@@ -136,7 +142,7 @@ export function sanitizeBeforeCommiting(id: string, values: FormFields): BillsDa
         fixed: {
             dueDay: values.fixed.dueDay === "" ? 0 : values.fixed.dueDay
         },
-        type: values.type,
+        type: values.type === 'fixed' ? 'fixed' : (values.type === 'installment' ? 'installment' : 'monthly'),
         note: values.note,
         active: values.active
     })

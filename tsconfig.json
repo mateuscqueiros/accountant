@@ -17,26 +17,33 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "./src/",
+    "baseUrl": ".",
     "paths": {
       "@/components/*": [
-        "components/*"
+        "src/components/*"
       ],
       "@/contexts/*": [
-        "contexts/*"
+        "src/contexts/*"
       ],
       "@/utils/*": [
-        "utils/*"
+        "src/utils/*"
       ],
       "@/store/*": [
-        "store/*"
+        "src/store/*"
+      ],
+      "@/pages/*": [
+        "src/pages/*"
+      ],
+      "@/tests/*": [
+        "tests/*"
       ]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "jest.config.js"
   ],
   "exclude": [
     "node_modules"
