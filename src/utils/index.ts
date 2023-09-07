@@ -1,7 +1,5 @@
-
+export * from './compareStartOfMonth';
+export * from './getMonthsWithNoDataObject';
+export * from './getPercentageArray';
 export * from './getTags';
 export * from './sanitizeForm';
-export * from './getIndexFromItemBill';
-export * from './getPercentageArray';
-export * from './selectActiveBillsItem';
-export * from './getMonthsWithNoDataObject';

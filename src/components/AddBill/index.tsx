@@ -1,9 +1,5 @@
 import { createItem, deleteItem, selectData, updateItem } from '@/store/features/data/dataSlice';
-import {
-	TypeItemFormFields,
-	initialValues as initial,
-	setValues,
-} from '@/store/features/itemForm/itemFormSlice';
+import { ItemFormType, initialValues, setValues } from '@/store/features/itemForm/itemFormSlice';
 import {
 	openModal,
 	resetModal,
@@ -38,18 +34,8 @@ import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { startOfMonth } from 'date-fns';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-let initialValues: TypeItemFormFields = {
-	...initial,
-	installments: {
-		...initial.installments,
-	},
-	fixed: {
-		...initial.fixed,
-	},
-};
 
 const AddBill = () => {
 	const itemFormModal = useAppSelector(selectItemFormModal);
@@ -73,14 +59,41 @@ const AddBill = () => {
 	const theme = useMantineTheme();
 	const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
-	const itemForm = useForm<TypeItemFormFields>({
-		initialValues,
+	const itemForm = useForm<ItemFormType>({
+		initialValues: {
+			...initialValues,
+			fixed: {
+				...initialValues.fixed,
+			},
+			installments: {
+				...initialValues.installments,
+			},
+		},
 		validate: getValidateObject(),
 		transformValues: (values) => getTransformObject(values),
 	});
 
+	const updateForm = useCallback(
+		(values: ItemFormType) => {
+			itemForm.setValues({
+				...values,
+				installments: {
+					...values.installments,
+				},
+				fixed: {
+					...values.fixed,
+				},
+			});
+		},
+		[itemForm]
+	);
+
+	useEffect(() => {
+		updateForm(itemFormModal.command);
+	}, [itemFormModal]);
+
 	const handleSubmit = useCallback(
-		(values: TypeItemFormFields) => {
+		(values: ItemFormType) => {
 			if (itemFormModal.action === 'update') {
 				dispatch(updateItem(sanitizeBeforeCommiting(itemFormModal.updateItem, values)));
 				dispatch(resetModal());
@@ -93,18 +106,6 @@ const AddBill = () => {
 		},
 		[itemForm, dispatch, itemFormModal]
 	);
-
-	useCallback(() => {
-		itemForm.setValues({
-			...itemFormModal.command,
-			installments: {
-				...itemFormModal.command.installments,
-			},
-			fixed: {
-				...itemFormModal.command.fixed,
-			},
-		});
-	}, [itemFormModal, itemForm]);
 
 	return (
 		<>

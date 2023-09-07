@@ -1,204 +1,194 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { format, getMonth, startOfMonth } from 'date-fns'
-import { RootState } from '@/store/store'
-import userData, { BillsDataItemType } from 'src/data'
-import { notifications } from '@mantine/notifications'
-import {
-	getIndexFromItemBillByDate,
-	getIndexFromItemBillById
-} from '@/utils/getIndexFromItemBill'
-import { v4 as uuidv4 } from 'uuid'
+import { RootState } from '@/store/store';
+import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
+import { notifications } from '@mantine/notifications';
+import { PayloadAction, createSelector, createSlice, current } from '@reduxjs/toolkit';
+import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
+import userData, { BillsDataItemType } from 'src/data';
+import { v4 as uuidv4 } from 'uuid';
 
-const initialState = userData
+const initialState = userData;
+
+export type TransferDataType = {
+	from: string;
+	to: string;
+	installments: boolean;
+	fixed: boolean;
+	monthly: boolean;
+	transform: number;
+	action: 'replace' | 'add';
+};
 
 export const dataSlice = createSlice({
 	name: 'data',
 	initialState,
 	reducers: {
 		createItem: (state, action: PayloadAction<BillsDataItemType>) => {
-			let itemBillIndex = state.billsData.findIndex((bill) => {
-				return (
-					getMonth(new Date(bill.initialDate)) ===
-					getMonth(new Date(action.payload.date))
-				)
-			})
+			state.items = [...state.items, action.payload];
 
-			if (itemBillIndex !== undefined) {
-				state.billsData[itemBillIndex].items = [
-					...state.billsData[itemBillIndex].items,
-					action.payload
-				]
-
-				notifications.show({
-					title: `${action.payload.label}`,
-					message: 'O item foi criado'
-				})
-			} else {
-				state.billsData = [
-					...state.billsData,
-					{
-						id: uuidv4(),
-						initialDate: startOfMonth(new Date(action.payload.date)).toString(),
-						items: [action.payload]
-					}
-				]
-
-				notifications.show({
-					title: `${action.payload.label}`,
-					message: 'O item foi criado'
-				})
-			}
+			notifications.show({
+				title: `${action.payload.label}`,
+				message: 'O item foi criado',
+			});
 		},
 		updateItem: (state, action: PayloadAction<BillsDataItemType>) => {
-			/* Receber data do item */
-			/* Procurar billData que que armazana este item pelo id */
-			let billOfItemToUpdateIndex = getIndexFromItemBillById(
-				state,
-				action.payload.id
-			)
+			let itemToUpdate = state.items.filter((billItem) => billItem.id === action.payload.id)[0];
 
-			/* Verificar se a data do item é a mesma da data do billData (se a data foi alterada para outro mês temos que remover daqui e inserir no correto) */
-			if (billOfItemToUpdateIndex !== undefined) {
-				let billDataInitialDate =
-					state.billsData[billOfItemToUpdateIndex].initialDate
-				let itemDate = action.payload.date
-				let initialDateEqualToNewItemDate =
-					format(new Date(billDataInitialDate), 'MM/yyyy') ===
-					format(new Date(itemDate), 'MM/yyyy')
-				if (initialDateEqualToNewItemDate) {
-					/* a data do item não mudou ou continua nesse mês, pode inserir aqui mesmo */
-					if (billOfItemToUpdateIndex !== undefined) {
-						state.billsData[billOfItemToUpdateIndex].items = [
-							...state.billsData[billOfItemToUpdateIndex].items.filter(
-								(item) => {
-									return item.id !== action.payload.id
-								}
-							),
-							action.payload
-						]
+			itemToUpdate = {
+				...action.payload,
+			};
 
-						notifications.show({
-							title: `${action.payload.label}`,
-							message: 'O item foi atualizado'
-						})
-					}
-				} else {
-					/* o mês do item mudou, apague o item do bill antigo e verifique se existe um bill com a nova data para inserir este item */
-					state.billsData[billOfItemToUpdateIndex].items = [
-						...state.billsData[billOfItemToUpdateIndex].items.filter((item) => {
-							return item.id !== action.payload.id
-						})
-					]
-					let billToInsert = getIndexFromItemBillByDate(
-						state,
-						action.payload.date
-					)
-					if (billToInsert !== undefined) {
-						/* existe, pode inserir aqui */
-						state.billsData[billToInsert].items = [
-							...state.billsData[billToInsert].items.filter((item) => {
-								return item.id !== action.payload.id
-							}),
-							action.payload
-						]
+			state.items = [
+				...state.items.filter((billItem) => billItem.id !== action.payload.id),
+				itemToUpdate,
+			];
 
-						notifications.show({
-							title: `${action.payload.label}`,
-							message: 'O item foi atualizado'
-						})
-					} else {
-						/* não existe, crie ele e insira o item nele */
-						state.billsData = [
-							...state.billsData,
-							{
-								id: uuidv4(),
-								initialDate: startOfMonth(
-									new Date(action.payload.date)
-								).toString(),
-								items: [action.payload]
-							}
-						]
-					}
-				}
-			}
+			notifications.show({
+				title: 'Ação',
+				message: 'O item foi atualizado',
+			});
 		},
 		deleteItem: (state, action: PayloadAction<string>) => {
-			let billOfItemToUpdateIndex = getIndexFromItemBillById(
-				state,
-				action.payload
-			)
+			let otherItems = state.items.filter((billItem) => {
+				return billItem.id !== action.payload;
+			});
 
-			if (billOfItemToUpdateIndex !== undefined) {
-				state.billsData[billOfItemToUpdateIndex].items = [
-					...state.billsData[billOfItemToUpdateIndex].items.filter((item) => {
-						return item.id !== action.payload
-					})
-				]
-				notifications.show({
-					title: 'Ação',
-					message: 'O item foi deletado',
-					color: 'red'
-				})
-			}
+			state = {
+				...state,
+				items: {
+					...otherItems,
+				},
+			};
 		},
 		setActiveMonth: (state, action: PayloadAction<string>) => {
 			return {
 				...state,
 				user: {
 					...state.user,
-					activeMonth: startOfMonth(new Date(action.payload)).toString()
-				}
-			}
+					activeMonth: startOfMonth(new Date(action.payload)).toString(),
+				},
+			};
 		},
-		createBillData: (state, action: PayloadAction<string>) => {
-			let initialDateAlreadyExists = state.billsData.filter((item) => {
+		transferData: (state, action: PayloadAction<TransferDataType>) => {
+			const payload = action.payload;
+			console.log(payload);
+
+			const dataFromMonth = current(state).items.filter((item) => {
+				/* Pegar itens com base no mês e tipos selecionados */
+				const isFromMonth = compareStartOfMonth(item.date, payload.from);
+
 				return (
-					startOfMonth(new Date(item.initialDate)) ===
-					startOfMonth(new Date(action.payload))
-				)
-			})[0]
+					isFromMonth &&
+					((item.type === 'installment' && payload.installments) ||
+						(item.type === 'fixed' && payload.fixed) ||
+						(item.type === 'monthly' && payload.monthly))
+				);
+			});
 
-			if (!initialDateAlreadyExists) {
-				state = {
-					...state,
-					billsData: [
-						...state.billsData,
-						{
-							id: uuidv4(),
-							initialDate: startOfMonth(new Date(action.payload)).toString(),
-							items: []
-						}
-					]
-				}
+			let updatedItems: BillsDataItemType[] = [];
+
+			if (dataFromMonth.length > 0) {
+				updatedItems = dataFromMonth.map((item) => {
+					/* Mudar a data para o novo mês */
+					let newItem = {
+						...item,
+						date: setYear(
+							setMonth(new Date(item.date), getMonth(new Date(payload.to))),
+							getYear(new Date(payload.to))
+						).toString(),
+					};
+					return newItem;
+				});
+			} else {
 				notifications.show({
-					title: 'Ação',
-					message: 'Novo mês foi criado'
-				})
+					title: 'Erro',
+					message: 'Não existem itens no mês selecionado',
+					color: 'red',
+				});
+
+				return state;
 			}
+
+			// Se houver itens de parcelas e houver um objeto transform, mudar as parcelas
+			if (payload.installments && payload.transform !== 0) {
+				updatedItems = updatedItems.map((item) => {
+					let newItem = item;
+					if (item.type === 'installment') {
+						let newCurrent = item.installments.current + payload.transform;
+						// Se for maior que o total, definir total
+						// Se estiver entre 0 e total, continuar
+						// Se for menor que 0, definir 0
+
+						if (newCurrent > item.installments.total) {
+							newItem = {
+								...item,
+								installments: {
+									...item.installments,
+									current: item.installments.total,
+								},
+							};
+						} else if (newCurrent > 0 && newCurrent <= item.installments.total) {
+							newItem = {
+								...item,
+								installments: {
+									...item.installments,
+									current: newCurrent,
+								},
+							};
+						} else if (newCurrent < 0) {
+							newItem = {
+								...item,
+								installments: {
+									...item.installments,
+									current: 0,
+								},
+							};
+						}
+					}
+					return newItem;
+				});
+			}
+
+			console.log(updatedItems);
+
+			// Criar novos IDs
+			updatedItems = updatedItems.map((item) => {
+				return {
+					...item,
+					id: uuidv4(),
+				};
+			});
+
+			// Inserir de acordo com o método escolhido
+			if (payload.action === 'add') {
+				// Se a ação for Adicionar, os itens antigos irão permanecer e os novos serão adicionados
+				return {
+					...state,
+					items: [...state.items, ...updatedItems],
+				};
+			} else if (payload.action === 'replace') {
+				// Se a ação for Substituir, os itens antigos serão removidos e substituídos pelos novos
+				let itemsToKeep = state.items.filter((item) => {
+					return !compareStartOfMonth(item.date, payload.to);
+				});
+				return {
+					...state,
+					items: [...itemsToKeep, ...updatedItems],
+				};
+			}
+
+			console.log(updatedItems);
 		},
-		transferData: (state, action: PayloadAction) => {
-			console.log('Transferindo dados')
-		}
-	}
-})
+	},
+});
 
-export const {
-	createItem,
-	updateItem,
-	deleteItem,
-	setActiveMonth,
-	createBillData
-} = dataSlice.actions
+export const { createItem, updateItem, deleteItem, setActiveMonth, transferData } =
+	dataSlice.actions;
 
-export const selectData = (state: RootState) => state.data
-export const selectDataItems = (state: RootState) =>
-	state.data.billsData[0].items
-export const selectActiveBillsItem = (state: RootState) =>
-	state.data.billsData.filter((bill) => {
-		return (
-			startOfMonth(new Date(bill.initialDate)).toString() ===
-			startOfMonth(new Date(state.data.user.activeMonth)).toString()
-		)
-	})[0]
+export const selectData = (state: RootState) => state.data;
+export const selectDataUser = (state: RootState) => state.data.user;
+export const selectDataItems = (state: RootState) => state.data.items;
+export const selectActiveDataItems = createSelector([selectData], (data) => {
+	return data.items.filter((billItem) => compareStartOfMonth(billItem.date, data.user.activeMonth));
+});
 
-export default dataSlice.reducer
+export default dataSlice.reducer;

@@ -1,13 +1,15 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import formSlice from "./features/form/formSlice";
-import modalSlice from "./features/modal/modalSlice";
-import dataSlice from "./features/data/dataSlice";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import dataSlice from './features/data/dataSlice';
+import itemFormSlice from './features/itemForm/itemFormSlice';
+import itemFormModalSlice from './features/modalItemForm/itemFormModalSlice';
+import transferDataModalSlice from './features/transferDataModal/transferDataModalSlice';
 
 const reducer = combineReducers({
-    form: formSlice,
-    modal: modalSlice,
-    data: dataSlice
-})
+	itemForm: itemFormSlice,
+	itemFormModal: itemFormModalSlice,
+	data: dataSlice,
+	transferDataModal: transferDataModalSlice,
+});
 
 export const store = configureStore({ reducer });
 

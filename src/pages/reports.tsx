@@ -1,6 +1,6 @@
-import Layout from '@/components/Layout'
-import { Title } from '@mantine/core'
-import Head from 'next/head'
+import Layout from '@/components/Layout';
+import { Text, Title } from '@mantine/core';
+import Head from 'next/head';
 
 export default function Reports() {
 	return (
@@ -15,7 +15,8 @@ export default function Reports() {
 				<Title order={1} mb="1rem">
 					Relatórios
 				</Title>
+				<Text>Em breve...</Text>
 			</Layout>
 		</>
-	)
+	);
 }
