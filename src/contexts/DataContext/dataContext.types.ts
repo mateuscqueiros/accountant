@@ -1,11 +1,15 @@
-export type UserType = {
-	/* Dados do usuário */
-	name: string;
-	image: string;
-	income: number;
-	activeMonth: string;
-};
+import { TransferDataType } from '../TransferDataModalContext/transferDataModal.types';
 
+export interface DataContextType extends UserDataType {
+	/* Data functions */
+	createItem: (item: BillsDataItemType) => void;
+	updateItem: (item: BillsDataItemType) => void;
+	deleteItem: (id: string) => void;
+	setActiveMonth: (date: string) => void;
+	transferData: (transferData: TransferDataType) => void;
+}
+
+/* Data */
 export type BillsDataItemType = {
 	id: string;
 	/* Nome do item para ser mostrado*/
@@ -45,4 +49,12 @@ export type UserDataType = {
 	user: UserType;
 	/* Itens */
 	items: BillsDataItemType[];
+};
+
+export type UserType = {
+	/* Dados do usuário */
+	name: string;
+	image: string;
+	income: number;
+	activeMonth: string;
 };

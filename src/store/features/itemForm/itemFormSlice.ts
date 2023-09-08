@@ -1,11 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../..';
 
-export type FormErrorType = {
-	message: string;
-	field: string;
-};
-
 export type ItemFormType = {
 	label: string;
 	value: number | '';

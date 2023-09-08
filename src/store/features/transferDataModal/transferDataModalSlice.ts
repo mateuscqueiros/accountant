@@ -35,7 +35,7 @@ export const transferDataModalSlice = createSlice({
 	name: 'transferDataModal',
 	initialState,
 	reducers: {
-		resetTransformDataModal: (stateData) => {
+		resetTransferDataModal: (stateData) => {
 			stateData = {
 				...initialState,
 			};
@@ -63,7 +63,7 @@ export const transferDataModalSlice = createSlice({
 });
 
 export const {
-	resetTransformDataModal,
+	resetTransferDataModal,
 	openTransferDataModal,
 	closeTransferDataModal,
 	setTransferDataModalValues,

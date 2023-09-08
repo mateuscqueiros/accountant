@@ -1,12 +1,16 @@
 import { RootState } from '@/store/store';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
+import { loadFromLocalStorage } from '@/utils/localStorage';
 import { notifications } from '@mantine/notifications';
 import { PayloadAction, createSelector, createSlice, current } from '@reduxjs/toolkit';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import userData, { BillsDataItemType } from 'src/data';
+import { BillsDataItemType, UserDataType } from 'src/data';
+import defaultData from 'src/defaultData';
 import { v4 as uuidv4 } from 'uuid';
 
-const initialState = userData;
+// const initialState = useLocalStorage({ key: 'accountant-data', defaultValue: defaultData });
+console.log(loadFromLocalStorage());
+const initialState: UserDataType = defaultData;
 
 export type TransferDataType = {
 	from: string;
@@ -54,9 +58,7 @@ export const dataSlice = createSlice({
 
 			state = {
 				...state,
-				items: {
-					...otherItems,
-				},
+				items: [...otherItems],
 			};
 		},
 		setActiveMonth: (state, action: PayloadAction<string>) => {
@@ -86,9 +88,9 @@ export const dataSlice = createSlice({
 
 			let updatedItems: BillsDataItemType[] = [];
 
+			/* Mudar a data para o novo mês */
 			if (dataFromMonth.length > 0) {
 				updatedItems = dataFromMonth.map((item) => {
-					/* Mudar a data para o novo mês */
 					let newItem = {
 						...item,
 						date: setYear(
