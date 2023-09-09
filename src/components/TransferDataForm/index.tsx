@@ -1,5 +1,5 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/shared/consts';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import {
 	ActionIcon,
@@ -22,7 +22,7 @@ import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
 import { useCallback, useContext, useMemo } from 'react';
 import { BillsDataItemType } from 'src/data';
-import { TransferDataForm } from 'src/types/forms.types';
+import { TransferDataForm } from 'src/shared/forms.types';
 
 export const initialValues: TransferDataForm = {
 	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),

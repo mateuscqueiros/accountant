@@ -20,7 +20,8 @@
 			"@/utils/*": ["src/utils/*"],
 			"@/store/*": ["src/store/*"],
 			"@/pages/*": ["src/pages/*"],
-			"@/tests/*": ["tests/*"]
+			"@/tests/*": ["tests/*"],
+			"@/shared/*": ["src/shared/*"]
 		}
 	},
 	"include": [

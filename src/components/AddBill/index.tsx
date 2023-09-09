@@ -1,5 +1,5 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/shared/consts';
 import { getTags } from '@/utils/getTags';
 import {
 	getTransformObject,
@@ -29,7 +29,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { startOfMonth } from 'date-fns';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ItemForm } from 'src/types/forms.types';
+import { ItemForm } from 'src/shared/forms.types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const initialValues: ItemForm = {

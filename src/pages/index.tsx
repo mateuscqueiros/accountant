@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import DefaultTable from '@/components/Tables';
 import TransferDataFormModal from '@/components/TransferDataForm';
 import { DataContext } from '@/contexts/DataContext';
-import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext';
+import ModalsContextProvider, { ModalsContext } from '@/shared/consts';
 import { compareStartOfMonth, getPercentageArray, getTagsAndValues } from '@/utils/index';
 import {
 	Box,

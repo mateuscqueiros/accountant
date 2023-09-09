@@ -5,8 +5,7 @@ import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { ReactNode, createContext } from 'react';
 import { UserDataType } from 'src/data';
 import { v4 as uuidv4 } from 'uuid';
-import { BillsDataItemType, DataContextType } from '../../types/data.types';
-import { TransferDataType } from '../TransferDataModalContext/transferDataModal.types';
+import { BillsDataItemType, DataContextType, TransferDataType } from '../../shared/data.types';
 import { dataInitialValues } from './data.consts';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);

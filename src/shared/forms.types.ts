@@ -1,15 +1,3 @@
-export type FormsContextType = {
-	transform: {
-		values: TransferDataForm;
-	};
-	item: {
-		values: ItemForm;
-		resetValues: () => void;
-		setValue: (data: { field: string; newValue: any }) => void;
-		setValues: (fields: ItemForm) => void;
-	};
-};
-
 export type ItemForm = {
 	label: string;
 	value: number | '';

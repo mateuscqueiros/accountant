@@ -1,4 +1,4 @@
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/shared/consts';
 import { useContext } from 'react';
 import { BillsDataItemType } from 'src/data';
 

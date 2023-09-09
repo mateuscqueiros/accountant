@@ -1,5 +1,5 @@
-import { ItemModal, TransferDataModal } from '../../types/modals.types';
-import { itemFormInitialValues } from '../FormsContext/forms.consts';
+import { itemFormInitialValues } from '@/shared/consts/forms.consts';
+import { ItemModal, TransferDataModal } from '../../shared/modals.types';
 
 export const itemModalInitialValues: ItemModal = {
 	opened: false,

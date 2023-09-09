@@ -1,5 +1,5 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/shared/consts';
 import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';

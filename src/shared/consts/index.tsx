@@ -1,8 +1,11 @@
 import { ReactNode, createContext, useState } from 'react';
-import { BillsDataItemType } from '../../types/data.types';
-import { ItemForm } from '../../types/forms.types';
-import { ModalsContextType } from '../../types/modals.types';
-import { itemModalInitialValues, transferDataModalInitialValues } from './modals.consts';
+import {
+	itemModalInitialValues,
+	transferDataModalInitialValues,
+} from '../../contexts/ModalsContext/modals.consts';
+import { BillsDataItemType } from '../data.types';
+import { ItemForm } from '../forms.types';
+import { ModalsContextType } from '../modals.types';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);
 
