@@ -1,18 +1,17 @@
-import { selectActiveDataItems } from '@/store/features/data/dataSlice';
-import { openModal, resetModal, setType } from '@/store/features/modalItemForm/itemFormModalSlice';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { DataContext } from '@/contexts/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext';
 import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import { useContext } from 'react';
 import { ItemFixedTable } from './ItemFixedTable';
 import { ItemInstallmentTable } from './ItemInstallmentTable';
 import { ItemMonthlyTable } from './ItemMonthlyTable';
 
 export default function DefaultTable({ header, title, type }: any) {
-	const activeData = useAppSelector(selectActiveDataItems).filter(
-		(billItem) => billItem.type === type
-	);
+	const data = useContext(DataContext);
+	const activeData = data.selectActiveData().filter((billItem) => billItem.type === type);
 
-	const dispatch = useAppDispatch();
+	const modal = useContext(ModalsContext);
 
 	return (
 		<Card h="fit-content">
@@ -23,9 +22,9 @@ export default function DefaultTable({ header, title, type }: any) {
 				<ActionIcon
 					variant="default"
 					onClick={() => {
-						dispatch(resetModal());
-						dispatch(setType(type));
-						dispatch(openModal());
+						modal.item.reset();
+						modal.item.setType(type);
+						modal.item.open();
 					}}
 				>
 					<IconPlus size="0.9rem" />

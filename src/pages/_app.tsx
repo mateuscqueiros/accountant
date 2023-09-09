@@ -1,5 +1,4 @@
 import DataProvider from '@/contexts/DataContext';
-import { store } from '@/store/store';
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
 import { Notifications } from '@mantine/notifications';
@@ -8,7 +7,6 @@ import 'dayjs/locale/pt-br';
 import { GetServerSidePropsContext } from 'next';
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
-import { Provider } from 'react-redux';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 	const { Component, pageProps } = props;
@@ -33,10 +31,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 			>
 				<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
 					<DataProvider>
-						<Provider store={store}>
-							<Notifications limit={5} />
-							<Component {...pageProps} />
-						</Provider>
+						<Notifications limit={5} />
+						<Component {...pageProps} />
 					</DataProvider>
 				</DatesProvider>
 			</MantineProvider>

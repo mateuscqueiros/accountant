@@ -2,13 +2,14 @@ import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { ReactNode, createContext, useContext } from 'react';
+import { ReactNode, createContext } from 'react';
+import { UserDataType } from 'src/data';
 import { v4 as uuidv4 } from 'uuid';
+import { BillsDataItemType, DataContextType } from '../../types/data.types';
 import { TransferDataType } from '../TransferDataModalContext/transferDataModal.types';
-import { dataInitialValues } from './dataContext.consts';
-import { BillsDataItemType, DataContextType } from './dataContext.types';
+import { dataInitialValues } from './data.consts';
 
-export const DataContext = createContext<DataContextType | null>(null);
+export const DataContext = createContext<DataContextType>({} as DataContextType);
 
 export default function DataContextProvider({ children }: { children: ReactNode }) {
 	/* Data */
@@ -36,10 +37,7 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 
 			return {
 				...prev,
-				data: {
-					...prev,
-					items: [...prev.items.filter((billItem) => billItem.id !== item.id), itemToUpdate],
-				},
+				items: [...prev.items.filter((billItem) => billItem.id !== item.id), itemToUpdate],
 			};
 		});
 	};
@@ -72,8 +70,8 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 	const transferData = (transferData: TransferDataType) => {
 		setData((prev) => {
 			const payload = transferData;
-			const state = useContext(DataContext);
-			console.log(payload);
+			const state = data;
+			console.log(state);
 
 			const dataFromMonth =
 				state &&
@@ -166,11 +164,8 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 			if (payload.action === 'add') {
 				// Se a ação for Adicionar, os itens antigos irão permanecer e os novos serão adicionados
 				return {
-					...prev,
-					data: {
-						...state,
-						items: [...state.items, ...updatedItems],
-					},
+					...state,
+					items: [...state.items, ...updatedItems],
 				};
 			} else if (payload.action === 'replace') {
 				// Se a ação for Substituir, os itens antigos serão removidos e substituídos pelos novos
@@ -178,11 +173,8 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 					return !compareStartOfMonth(item.date, payload.to);
 				});
 				return {
-					...prev,
-					data: {
-						...state,
-						items: [...itemsToKeep, ...updatedItems],
-					},
+					...state,
+					items: [...itemsToKeep, ...updatedItems],
 				};
 			}
 
@@ -190,18 +182,42 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		});
 	};
 
-	const [data, setData] = useLocalStorage<DataContextType>({
+	const selectActiveData = () => {
+		return data.items.filter((billItem) =>
+			compareStartOfMonth(billItem.date, data.user.activeMonth)
+		);
+	};
+
+	const log = (pre?: string) => {
+		if (pre) {
+			console.log(pre, data);
+		} else {
+			console.log(data);
+		}
+	};
+
+	const [data, setData] = useLocalStorage<UserDataType>({
 		key: 'accountant-data',
 		defaultValue: {
 			...dataInitialValues,
-
-			createItem,
-			updateItem,
-			deleteItem,
-			setActiveMonth,
-			transferData,
 		},
 	});
 
-	return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
+	return (
+		<DataContext.Provider
+			value={{
+				...data,
+
+				createItem,
+				updateItem,
+				deleteItem,
+				setActiveMonth,
+				transferData,
+				selectActiveData,
+				log,
+			}}
+		>
+			{children}
+		</DataContext.Provider>
+	);
 }

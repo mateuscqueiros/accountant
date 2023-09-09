@@ -2,10 +2,8 @@ import AddBill from '@/components/AddBill';
 import Layout from '@/components/Layout';
 import DefaultTable from '@/components/Tables';
 import TransferDataFormModal from '@/components/TransferDataForm';
-import ItemFormModalContextProvider from '@/contexts/ItemFormModalContext';
-import { selectActiveDataItems, selectData, setActiveMonth } from '@/store/features/data/dataSlice';
-import { openTransferDataModal } from '@/store/features/transferDataModal/transferDataModalSlice';
-import { useAppDispatch, useAppSelector } from '@/store/index';
+import { DataContext } from '@/contexts/DataContext';
+import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext';
 import { compareStartOfMonth, getPercentageArray, getTagsAndValues } from '@/utils/index';
 import {
 	Box,
@@ -28,14 +26,18 @@ import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Home() {
-	const dispatch = useAppDispatch();
-	const data = useAppSelector(selectData);
-	const activeData = useAppSelector(selectActiveDataItems);
+	const data = useContext(DataContext);
+	const modals = useContext(ModalsContext);
+	const activeData = data.selectActiveData();
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === 'dark';
+
+	useEffect(() => {
+		console.log('change', activeData);
+	}, [activeData]);
 
 	let expensesTotal;
 	let tagsAndValues: any[] = [];
@@ -74,7 +76,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Layout>
-				<ItemFormModalContextProvider>
+				<ModalsContextProvider>
 					<Flex justify="space-between" align="center" mb="md">
 						<Group
 							w="fit-content"
@@ -142,9 +144,7 @@ export default function Home() {
 										return {};
 									}}
 									onChange={(e) => {
-										dispatch(
-											setActiveMonth(new Date(e ? e.toString() : new Date()).toDateString())
-										);
+										data.setActiveMonth(new Date(e ? e.toString() : new Date()).toDateString());
 										setMonthPickerStateSelect(false);
 									}}
 								/>
@@ -215,7 +215,7 @@ export default function Home() {
 								{data.items.length > 0 && (
 									<Button
 										onClick={() => {
-											dispatch(openTransferDataModal());
+											modals.transferData.open();
 										}}
 									>
 										Importar
@@ -258,7 +258,7 @@ export default function Home() {
 							</Modal>
 						</Stack>
 					)}
-				</ItemFormModalContextProvider>
+				</ModalsContextProvider>
 			</Layout>
 		</>
 	);

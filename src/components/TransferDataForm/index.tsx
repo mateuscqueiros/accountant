@@ -1,12 +1,5 @@
-import { selectData, transferData } from '@/store/features/data/dataSlice';
-import {
-	TransferDataFormValues,
-	closeTransferDataModal,
-	initialValues,
-	openTransferDataModal,
-	selectTransferDataModal,
-} from '@/store/features/transferDataModal/transferDataModalSlice';
-import { useAppDispatch, useAppSelector } from '@/store/index';
+import { DataContext } from '@/contexts/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import {
 	ActionIcon,
@@ -24,27 +17,38 @@ import {
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { IconArrowRight, IconDownload } from '@tabler/icons-react';
-import { format } from 'date-fns';
+import { format, startOfMonth, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { BillsDataItemType } from 'src/data';
+import { TransferDataForm } from 'src/types/forms.types';
+
+export const initialValues: TransferDataForm = {
+	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
+	fixed: true,
+	installments: true,
+	transform: 0,
+	monthly: false,
+	action: 'add',
+};
 
 const TransferDataFormModal = () => {
-	const data = useAppSelector(selectData);
-	const transferDataModal = useAppSelector(selectTransferDataModal);
-	const dispatch = useAppDispatch();
+	const data = useContext(DataContext);
+	const modal = useContext(ModalsContext).transferData;
+	console.log('transfer', modal);
+	data.log();
 
-	const transferDataForm = useForm<TransferDataFormValues>({
+	const transferDataForm = useForm<TransferDataForm>({
 		initialValues,
-		transformValues: (values): TransferDataFormValues => ({
+		transformValues: (values): TransferDataForm => ({
 			...values,
 			transform: typeof values.transform !== 'number' ? 0 : values.transform,
 		}),
 	});
 
 	let calculateSumOfSelectedItems = useCallback(
-		(data: BillsDataItemType[] | undefined, form: TransferDataFormValues) => {
+		(data: BillsDataItemType[] | undefined, form: TransferDataForm) => {
 			let sum = 0;
 			if (data) {
 				data.filter((item) => {
@@ -84,21 +88,19 @@ const TransferDataFormModal = () => {
 	}, [dataToImport, transferDataForm, calculateSumOfSelectedItems]);
 
 	const handleSubmit = useCallback(
-		(values: TransferDataFormValues) => {
-			dispatch(
-				transferData({
-					from: values.date,
-					to: data.user.activeMonth,
-					fixed: values.fixed,
-					installments: values.installments,
-					monthly: values.monthly,
-					transform: values.transform,
-					action: values.action === 'replace' ? 'replace' : 'add',
-				})
-			);
-			dispatch(closeTransferDataModal());
+		(values: TransferDataForm) => {
+			data.transferData({
+				from: values.date,
+				to: data.user.activeMonth,
+				fixed: values.fixed,
+				installments: values.installments,
+				monthly: values.monthly,
+				transform: values.transform,
+				action: values.action === 'replace' ? 'replace' : 'add',
+			});
+			modal.close();
 		},
-		[data, dispatch]
+		[data]
 	);
 
 	return (
@@ -125,10 +127,9 @@ const TransferDataFormModal = () => {
 						</Text>
 					</Flex>
 				}
-				opened={transferDataModal.opened}
+				opened={modal.values.opened}
 				onClose={() => {
-					dispatch(closeTransferDataModal());
-					dispatch(closeTransferDataModal());
+					modal.close();
 				}}
 			>
 				<Box mih={300}>
@@ -284,7 +285,7 @@ const TransferDataFormModal = () => {
 								<Group position="right">
 									<Button
 										onClick={() => {
-											dispatch(openTransferDataModal());
+											modal.open();
 										}}
 										variant="outline"
 									>
@@ -305,7 +306,7 @@ const TransferDataFormModal = () => {
 				</Box>
 			</Modal>
 
-			<ActionIcon onClick={() => dispatch(openTransferDataModal())} size="2.1rem" variant="default">
+			<ActionIcon onClick={() => modal.open()} size="2.1rem" variant="default">
 				<IconDownload size="1.3rem" />
 			</ActionIcon>
 		</>
