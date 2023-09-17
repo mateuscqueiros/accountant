@@ -1,60 +1,50 @@
-import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom'
-import { Provider } from 'react-redux';
-import { store } from '@/store/store';
+import AddBill from '@/components/AddBill';
+import '@testing-library/jest-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AddBill from '@/components/Layout/Components/AddBill';
 
 const setup = () => {
-    const utils = render(
-        <Provider store={store}>
-            <AddBill />
-        </Provider>
-    )
-    return {
-        ...utils,
-    }
-}
+	const utils = render(<AddBill />);
+	return {
+		...utils,
+	};
+};
 
 describe('Testes do formulário', () => {
+	beforeEach(() => {});
 
-    beforeEach(() => { });
+	afterEach(() => {
+		const user = userEvent.setup();
+		if (screen.getByTestId('open-modal-form')) {
+			user.click(screen.getByTestId('open-modal-form'));
+		}
+	});
 
-    afterEach(() => {
-        const user = userEvent.setup();
-        if (screen.getByTestId("open-modal-form")) {
-            user.click(screen.getByTestId("open-modal-form"));
-        }
+	it('Abre o modal', async () => {
+		setup();
 
-    });
+		const user = userEvent.setup();
+		await user.click(screen.getByTestId('open-modal-form'));
 
-    it('Abre o modal', async () => {
-        setup()
+		await expect(screen.queryByText('Criar item')).toBeVisible();
+	});
 
-        const user = userEvent.setup();
-        await user.click(screen.getByTestId("open-modal-form"));
+	it('Preenche nome e valor e salva', async () => {
+		setup();
 
-        await expect(screen.queryByText("Criar item")).toBeVisible();
+		const user = userEvent.setup();
+		await user.click(screen.getByTestId('open-modal-form'));
 
-    });
+		expect(screen.queryByText('Criar item')).toBeVisible();
 
-    it('Preenche nome e valor e salva', async () => {
-        setup()
+		await fireEvent.change(screen.getByTestId('input-name'), {
+			target: { value: 'Mateus Queirós' },
+		});
 
-        const user = userEvent.setup();
-        await user.click(screen.getByTestId("open-modal-form"));
+		await fireEvent.change(screen.getByTestId('input-value'), { target: { value: 123 } });
 
-        expect(screen.queryByText("Criar item")).toBeVisible();
+		await user.click(screen.getByTestId('button-submit'));
 
-        await fireEvent.change(screen.getByTestId("input-name"), { target: { value: "Mateus Queirós" } });
-
-        await fireEvent.change(screen.getByTestId("input-value"), { target: { value: 123 } });
-
-        await user.click(screen.getByTestId("button-submit"));
-
-        expect(screen.queryByText("Criar item")).not.toBeVisible();
-
-    });
-
+		expect(screen.queryByText('Criar item')).not.toBeVisible();
+	});
 });

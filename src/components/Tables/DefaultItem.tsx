@@ -1,9 +1,9 @@
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
-import { format } from 'date-fns';
+import { getDay } from 'date-fns';
 import { useContext } from 'react';
 
-export function ItemMonthlyTable({ item }: { item: BillsDataItemType }) {
+export function DefaultItem({ item }: { item: BillsDataItemType }) {
 	const modals = useContext(ModalsContext);
 
 	return (
@@ -16,7 +16,13 @@ export function ItemMonthlyTable({ item }: { item: BillsDataItemType }) {
 			>
 				<td>{item.label}</td>
 				<td>{item.value}</td>
-				<td>{format(new Date(item.date !== '' ? item.date : new Date()), 'dd')}</td>
+				<td>{getDay(new Date(item.date))}</td>
+				<td>
+					{item.type === 'installment'
+						? `${item.installments.current} / ${item.installments.total}`
+						: 'Sem'}
+				</td>
+				<td>{item.type === 'monthly' ? 'Sem' : item.dueDay}</td>
 			</tr>
 		</>
 	);

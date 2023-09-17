@@ -3,8 +3,8 @@ import Layout from '@/components/Layout';
 import DefaultTable from '@/components/Tables';
 import TransferDataFormModal from '@/components/TransferDataForm';
 import { DataContext } from '@/contexts/DataContext';
-import ModalsContextProvider, { ModalsContext } from '@/shared/consts';
-import { compareStartOfMonth, getPercentageArray, getTagsAndValues } from '@/utils/index';
+import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext';
+import { compareStartOfMonth, getCategoriesValues, getPercentageArray } from '@/utils/index';
 import {
 	Box,
 	Button,
@@ -26,7 +26,7 @@ import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
 import Head from 'next/head';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 export default function Home() {
 	const data = useContext(DataContext);
@@ -35,12 +35,8 @@ export default function Home() {
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === 'dark';
 
-	useEffect(() => {
-		console.log('change', activeData);
-	}, [activeData]);
-
-	let expensesTotal;
-	let tagsAndValues: any[] = [];
+	let expensesTotal = 0;
+	let incomeTotal = 0;
 
 	const [monthPickerStateSelect, setMonthPickerStateSelect] = useState(false);
 	const [monthPickerStateImport, setMonthPickerStateImport] = useState(false);
@@ -50,20 +46,25 @@ export default function Home() {
 
 	if (activeData) {
 		expensesTotal = activeData
-			.filter((item) => item.active)
+			.filter((item) => item.active && !(item.class === 'recipe'))
 			.reduce((partialSum, a) => partialSum + a.value, 0);
-		tagsAndValues = getTagsAndValues(activeData);
+
+		incomeTotal = activeData
+			.filter((item) => item.active && item.class === 'recipe')
+			.reduce((partialSum, a) => partialSum + a.value, 0);
 
 		if (activeData.length > 0) {
-			ringProgressStatistics = getPercentageArray(tagsAndValues.map((item) => item.value)).map(
-				(item, index) => ({
-					value: item,
-					color: statisticsColors[index],
-					tooltip: `${tagsAndValues[index].label} (${item.toFixed(0)}%) $${
-						tagsAndValues[index].value
-					}`,
-				})
+			let categoriesValues = getCategoriesValues(activeData, data.user.categories);
+			let categoriesValuesToPercentage = getPercentageArray(
+				categoriesValues.map((item) => item.value)
 			);
+			ringProgressStatistics = categoriesValuesToPercentage.map((item, index) => {
+				return {
+					value: item,
+					tooltip: categoriesValues[index].label,
+					color: statisticsColors[index],
+				};
+			});
 		}
 	}
 
@@ -165,13 +166,13 @@ export default function Home() {
 										<Group sx={{ gap: 0 }}>
 											<Text mr={10}>Saldo mensal:</Text>
 											<Text fz="lg" fw={600} color="green.7">
-												${(expensesTotal ? data.user.income - expensesTotal : 0).toFixed(2)}
+												${(incomeTotal - expensesTotal).toFixed(2)}
 											</Text>
 										</Group>
 										<Group sx={{ gap: 0 }}>
 											<Text mr={10}>Total de gastos:</Text>
 											<Text fz="lg" color="red.5" fw={600}>
-												${(expensesTotal ? expensesTotal : 0).toFixed(2)}
+												${expensesTotal.toFixed(2)}
 											</Text>
 										</Group>
 									</Flex>
@@ -198,13 +199,29 @@ export default function Home() {
 									{ minWidth: 1700, cols: 4 },
 								]}
 							>
-								<DefaultTable title="Fixas" header={['Nome', 'Valor', 'Vencimento']} type="fixed" />
+								<DefaultTable
+									title="Fixas"
+									header={['Nome', 'Valor', 'Vencimento']}
+									type="fixed"
+									itemClass="expense"
+								/>
 								<DefaultTable
 									title="Parceladas"
 									header={['Nome', 'Valor', 'Parcelas', 'Vencimento']}
 									type="installment"
+									itemClass="expense"
 								/>
-								<DefaultTable title="Mensal" header={['Nome', 'Valor', 'Dia']} type="monthly" />
+								<DefaultTable
+									title="Mensal"
+									header={['Nome', 'Valor', 'Dia']}
+									type="monthly"
+									itemClass="expense"
+								/>
+								<DefaultTable
+									title="Receitas"
+									header={['Nome', 'Valor', 'Dia criado', 'Parcelas', 'Vencimento']}
+									itemClass="recipe"
+								/>
 							</SimpleGrid>
 						</>
 					) : (

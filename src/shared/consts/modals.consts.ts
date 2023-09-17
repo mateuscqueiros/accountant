@@ -1,16 +1,10 @@
-import { itemFormInitialValues } from '@/shared/consts/forms.consts';
-import { ItemModal, TransferDataModal } from '../../shared/modals.types';
+import { itemFormInitialValues, transferDataForminitialValues } from '@/shared/consts/forms.consts';
+import { ItemModal, TransferDataModal } from '@/shared/types/modals.types';
 
 export const itemModalInitialValues: ItemModal = {
 	opened: false,
 	command: {
 		...itemFormInitialValues,
-		installments: {
-			...itemFormInitialValues.installments,
-		},
-		fixed: {
-			...itemFormInitialValues.fixed,
-		},
 	},
 	updateItem: '',
 	action: 'create',
@@ -18,6 +12,8 @@ export const itemModalInitialValues: ItemModal = {
 
 export const transferDataModalInitialValues: TransferDataModal = {
 	opened: false,
+	action: 'add',
 	from: new Date().toString(),
 	to: undefined,
+	command: transferDataForminitialValues,
 };

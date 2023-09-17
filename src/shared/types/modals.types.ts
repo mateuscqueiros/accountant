@@ -1,5 +1,5 @@
-import { BillsDataItemType } from 'src/data';
-import { ItemForm } from './forms.types';
+import { BillsDataItemType } from './data.types';
+import { ItemForm, TransferDataForm } from './forms.types';
 
 export interface ModalsContextType {
 	item: {
@@ -10,8 +10,8 @@ export interface ModalsContextType {
 		commandForm: (fields: ItemForm) => void;
 		setAction: (action: string) => void;
 		setUpdateItem: (action: string) => void;
-		setType: (type: string) => void;
 		openUpdate: (billData: BillsDataItemType) => void;
+		setField: <T extends keyof ItemForm, R extends ItemForm[T]>(field: T, value: R) => void;
 		reset: () => void;
 	};
 	transferData: {
@@ -32,6 +32,8 @@ export type ItemModal = {
 
 export type TransferDataModal = {
 	opened: boolean;
+	action: 'replace' | 'add';
 	from: string | undefined;
 	to: string | undefined;
+	command: TransferDataForm;
 };

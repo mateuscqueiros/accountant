@@ -1,11 +1,11 @@
+import { ItemForm } from '@/shared/types/forms.types';
+import { ModalsContextType } from '@/shared/types/modals.types';
 import { ReactNode, createContext, useState } from 'react';
 import {
 	itemModalInitialValues,
 	transferDataModalInitialValues,
-} from '../../contexts/ModalsContext/modals.consts';
-import { BillsDataItemType } from '../data.types';
-import { ItemForm } from '../forms.types';
-import { ModalsContextType } from '../modals.types';
+} from '../../shared/consts/modals.consts';
+import { BillsDataItemType } from '../../shared/types/data.types';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);
 
@@ -66,12 +66,6 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 						...prev.item.values,
 						command: {
 							...fields,
-							installments: {
-								...fields.installments,
-							},
-							fixed: {
-								...fields.fixed,
-							},
 						},
 					},
 				},
@@ -109,27 +103,10 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 		});
 	};
 
-	const setTypeItem = (type: string) => {
+	const setFieldItem = <T extends keyof ItemForm, R extends ItemForm[T]>(field: T, value: R) => {
 		setData((prev) => {
-			return {
-				...prev,
-				item: {
-					...prev.item,
-					values: {
-						...prev.item.values,
-						command: {
-							...itemModalInitialValues.command,
-							installments: {
-								...itemModalInitialValues.command.installments,
-							},
-							fixed: {
-								...itemModalInitialValues.command.fixed,
-							},
-							type,
-						},
-					},
-				},
-			};
+			prev.item.values.command[field] = value;
+			return prev;
 		});
 	};
 
@@ -144,12 +121,7 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 						opened: true,
 						command: {
 							...billDataItem,
-							installments: {
-								...billDataItem.installments,
-							},
-							fixed: {
-								...billDataItem.fixed,
-							},
+							categoryId: String(billDataItem.categoryId),
 						},
 						updateItem: billDataItem.id,
 						action: 'update',
@@ -170,12 +142,6 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 						opened: false,
 						command: {
 							...itemModalInitialValues.command,
-							installments: {
-								...itemModalInitialValues.command.installments,
-							},
-							fixed: {
-								...itemModalInitialValues.command.fixed,
-							},
 						},
 						updateItem: '',
 						action: 'create',
@@ -185,6 +151,8 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 		});
 	};
 
+	/* Transfer */
+
 	const resetTransfer = () => {
 		setData((prev) => {
 			return {
@@ -192,7 +160,6 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 				transferData: {
 					...prev.transferData,
 					values: {
-						...prev.transferData.values,
 						...transferDataModalInitialValues,
 					},
 				},
@@ -255,8 +222,8 @@ export default function ModalsContextProvider({ children }: { children: ReactNod
 			toggle: toggleItem,
 			commandForm: commandFormItem,
 			setAction: setActionItem,
-			setUpdateItem: setUpdateItem,
-			setType: setTypeItem,
+			setUpdateItem,
+			setField: setFieldItem,
 			openUpdate: openUpdateItem,
 			reset: resetItem,
 		},

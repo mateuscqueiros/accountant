@@ -6,6 +6,7 @@ export interface DataContextType extends UserDataType {
 	setActiveMonth: (date: string) => void;
 	transferData: (transferData: TransferDataType) => void;
 	selectActiveData: () => BillsDataItemType[];
+	addCategory: (newCategory: CategoryType) => void;
 	log: () => void;
 }
 
@@ -20,22 +21,23 @@ export type BillsDataItemType = {
 	/* Tipo do item */
 	type: 'monthly' | 'fixed' | 'installment';
 
+	/* Se o item é uma despesa ou receita */
+	class: 'expense' | 'recipe';
+
 	/* Date é usado para inserir o item no billData certo dele */
 	date: string;
 
 	/* Categoria personalizada do item */
-	tag: string;
+	categoryId: number;
 
 	/* Propriedades da parcela se type == 'installment */
 	installments: {
 		current: number;
 		total: number;
-		dueDay: number;
 	};
-	/* Propriedades da parcela se type == 'fixed */
-	fixed: {
-		dueDay: number;
-	};
+
+	/* Dia do vencimento para parcelas e fixas */
+	dueDay: number;
 
 	/* Nota personalizada */
 	note: string;
@@ -52,8 +54,8 @@ export type UserDataType = {
 export type UserType = {
 	name: string;
 	image: string;
-	income: number;
 	activeMonth: string;
+	categories: CategoryType[];
 };
 
 export type TransferDataType = {
@@ -64,4 +66,9 @@ export type TransferDataType = {
 	monthly: boolean;
 	transform: number;
 	action: 'replace' | 'add';
+};
+
+export type CategoryType = {
+	id: number;
+	label: string;
 };

@@ -3,15 +3,19 @@ import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { ReactNode, createContext } from 'react';
-import { UserDataType } from 'src/data';
 import { v4 as uuidv4 } from 'uuid';
-import { BillsDataItemType, DataContextType, TransferDataType } from '../../shared/data.types';
-import { dataInitialValues } from './data.consts';
+import { dataInitialValues } from '../../shared/consts/data.consts';
+import {
+	BillsDataItemType,
+	CategoryType,
+	DataContextType,
+	TransferDataType,
+	UserDataType,
+} from '../../shared/types/data.types';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
 
 export default function DataContextProvider({ children }: { children: ReactNode }) {
-	/* Data */
 	const createItem = (item: BillsDataItemType) => {
 		setData((prev) => {
 			return {
@@ -70,8 +74,6 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		setData((prev) => {
 			const payload = transferData;
 			const state = data;
-			console.log(state);
-
 			const dataFromMonth =
 				state &&
 				state.items.filter((item) => {
@@ -150,8 +152,6 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 				});
 			}
 
-			console.log(updatedItems);
-
 			// Criar novos IDs
 			updatedItems = updatedItems.map((item) => {
 				return {
@@ -187,6 +187,18 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		);
 	};
 
+	const addCategory = (newCategory: CategoryType) => {
+		setData((prev) => {
+			return {
+				...prev,
+				user: {
+					...prev.user,
+					categories: [...prev.user.categories, newCategory],
+				},
+			};
+		});
+	};
+
 	const log = (pre?: string) => {
 		if (pre) {
 			console.log(pre, data);
@@ -213,6 +225,7 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 				setActiveMonth,
 				transferData,
 				selectActiveData,
+				addCategory,
 				log,
 			}}
 		>

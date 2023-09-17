@@ -1,25 +1,23 @@
-import { TypeItemFormFields } from '@/store/features/itemForm/itemFormSlice';
+import { BillsDataItemType, CategoryType } from '@/shared/types/data.types';
+import { ItemForm } from '@/shared/types/forms.types';
 import { FormValidateInput } from '@mantine/form/lib/types';
-import { BillsDataItemType } from 'src/data';
+import { getCategory } from '.';
 
-export function getValidateObject(): FormValidateInput<TypeItemFormFields> {
+export function getValidateObject(): FormValidateInput<ItemForm> {
 	/* Obtém um objeto "validate" para o mantine, que valida os inputs */
 
-	const validate: FormValidateInput<TypeItemFormFields> = {
+	const validate: FormValidateInput<ItemForm> = {
 		label: undefined,
 		value: undefined,
 		date: undefined,
 		type: undefined,
-		tag: undefined,
+		categoryId: undefined,
 		active: undefined,
 		installments: {
 			current: undefined,
 			total: undefined,
-			dueDay: undefined,
 		},
-		fixed: {
-			dueDay: undefined,
-		},
+		dueDay: undefined,
 	};
 	// Label
 	validate.label = (value) => {
@@ -57,84 +55,87 @@ export function getValidateObject(): FormValidateInput<TypeItemFormFields> {
 					: null
 				: null;
 		},
-		dueDay: (value, values) => {
-			return values.type === 'installment'
-				? typeof value === 'number' && (value < 1 || value > 31)
-					? 'O valor deve estar entre 1 e 31'
-					: null
-				: null;
-		},
 	};
 
-	validate.fixed = {
-		dueDay: (value, values) => {
-			return values.type == 'fixed'
-				? !value
-					? 'Por favor insira um valor'
-					: value && (value < 1 || value > 31)
-					? 'O valor deve estar entre 1 e 31'
-					: null
-				: null;
-		},
+	validate.dueDay = (value, values) => {
+		return values.type === 'installment' || values.type === 'fixed'
+			? !value
+				? 'Por favor insira um valor'
+				: value && (value < 1 || value > 31)
+				? 'O valor deve estar entre 1 e 31'
+				: null
+			: null;
 	};
-	// Verifica se o tipo é fixo
 	return validate;
 }
 
-export function getTransformObject(values: TypeItemFormFields): TypeItemFormFields {
-	/* Obtém um objeto "tranform" para o mantine, que vai transformar os itens antes depois do submit */
+export function getTransformObject(values: ItemForm, categories: CategoryType[]): ItemForm {
+	/* Obtêm um objeto "transform" para o mantine, que vai transformar os itens depois do submit */
 
-	let transform: TypeItemFormFields = {
+	let transform: ItemForm = {
 		...values,
 		date: values.date.toString(),
 	};
-	if (values.type === 'installment' || values.type === 'monthly') {
+	if (values.type === 'monthly') {
 		transform = {
 			...transform,
-			fixed: {
-				dueDay: 0,
+			dueDay: 0,
+			installments: {
+				current: 0,
+				total: 0,
 			},
 		};
 	}
-	if (values.type === 'fixed' || values.type === 'monthly') {
+	if (values.type === 'fixed') {
 		transform = {
 			...transform,
 			installments: {
 				current: 0,
 				total: 0,
-				dueDay: 0,
 			},
 		};
 	}
-	if (values.tag === '') {
-		transform = {
-			...transform,
-			tag: 'Outros',
-		};
+	if (values.categoryId !== null) {
+		const category = getCategory(categories, Number(values.categoryId));
+		if (category) {
+			transform = {
+				...transform,
+				categoryId: String(category.id),
+			};
+		}
 	}
 
 	return transform;
 }
 
-export function sanitizeBeforeCommiting(id: string, values: TypeItemFormFields): BillsDataItemType {
-	/* Adapta os itens do formulário (FormsField) para inserção no banco (BillDataItemType) */
+export function sanitizeBeforeCommiting(
+	id: string,
+	values: ItemForm,
+	categories: CategoryType[]
+): BillsDataItemType {
+	/* Adapta os itens do formulário (ItemForm) para inserção no banco (BillDataItemType) */
+	const category = getCategory(categories, 0);
 
 	return {
 		id,
 		label: values.label,
-		tag: values.tag,
+		categoryId:
+			values.categoryId !== null
+				? Number(values.categoryId)
+				: Number(category !== undefined ? category.id : 0),
 		value: values.value === '' ? 0 : values.value,
 		date: values.date,
+		dueDay: values.dueDay === '' ? 0 : values.dueDay,
 		installments: {
 			current: values.installments.current === '' ? 0 : values.installments.current,
 			total: values.installments.total === '' ? 0 : values.installments.total,
-			dueDay: values.installments.dueDay === '' ? 0 : values.installments.dueDay,
+			// dueDay: values.installments.dueDay === '' ? 0 : values.installments.dueDay,
 		},
-		fixed: {
-			dueDay: values.fixed.dueDay === '' ? 0 : values.fixed.dueDay,
-		},
-		type:
-			values.type === 'fixed' ? 'fixed' : values.type === 'installment' ? 'installment' : 'monthly',
+		// fixed: {
+		// 	dueDay: values.fixed.dueDay === '' ? 0 : values.fixed.dueDay,
+		// },
+		type: values.type as BillsDataItemType['type'],
+		class: values.class as BillsDataItemType['class'],
 		note: values.note,
 		active: values.active,
 	};

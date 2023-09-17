@@ -1,6 +1,6 @@
-import { ModalsContext } from '@/shared/consts';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { BillsDataItemType } from '@/shared/types/data.types';
 import { useContext } from 'react';
-import { BillsDataItemType } from 'src/data';
 
 export function ItemInstallmentTable({ item }: { item: BillsDataItemType }) {
 	const modals = useContext(ModalsContext);
@@ -17,7 +17,7 @@ export function ItemInstallmentTable({ item }: { item: BillsDataItemType }) {
 			<td>
 				{item.installments.current} / {item.installments.total}
 			</td>
-			<td>{item.installments.dueDay}</td>
+			<td>{item.dueDay}</td>
 		</tr>
 	);
 }

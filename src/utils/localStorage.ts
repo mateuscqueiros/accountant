@@ -1,7 +1,7 @@
+import { DataContextType } from '@/shared/types/data.types';
 import defaultData from 'src/defaultData';
-import { RootState } from '../store';
 
-export function saveToLocalStorage(state: RootState) {
+export function saveToLocalStorage(state: DataContextType) {
 	try {
 		const serialisedState = JSON.stringify(state);
 		localStorage.setItem('accountant-data', serialisedState);

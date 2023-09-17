@@ -1,20 +1,40 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/shared/consts';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { BillsDataItemType } from '@/shared/types/data.types';
+import { ItemForm } from '@/shared/types/forms.types';
 import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
+import { DefaultItem } from './DefaultItem';
 import { ItemFixedTable } from './ItemFixedTable';
 import { ItemInstallmentTable } from './ItemInstallmentTable';
 import { ItemMonthlyTable } from './ItemMonthlyTable';
 
-export default function DefaultTable({ header, title, type }: any) {
+export default function DefaultTable({
+	header,
+	title,
+	type,
+	itemClass,
+}: {
+	header: string[];
+	title: string;
+	type?: ItemForm['type'];
+	itemClass: ItemForm['class'];
+}) {
 	const data = useContext(DataContext);
-	const activeData = data.selectActiveData().filter((billItem) => billItem.type === type);
-
 	const modal = useContext(ModalsContext);
 
+	let activeData: BillsDataItemType[] = [];
+
+	activeData = data.selectActiveData().filter((billItem) => {
+		return (
+			(type !== undefined ? billItem.type === type : true) &&
+			(itemClass !== undefined ? itemClass && billItem.class === itemClass : true)
+		);
+	});
+
 	return (
-		<Card h="fit-content">
+		<Card h="fit-content" withBorder>
 			<Flex justify="space-between" mb="xs">
 				<Text fw={600} fz="xl">
 					{title}
@@ -23,7 +43,12 @@ export default function DefaultTable({ header, title, type }: any) {
 					variant="default"
 					onClick={() => {
 						modal.item.reset();
-						modal.item.setType(type);
+						if (type) {
+							modal.item.setField('type', type);
+						}
+						if (itemClass) {
+							modal.item.setField('class', itemClass);
+						}
 						modal.item.open();
 					}}
 				>
@@ -42,12 +67,19 @@ export default function DefaultTable({ header, title, type }: any) {
 						</thead>
 						<tbody>
 							{activeData.map((item) => {
-								if (type === 'fixed') {
-									return <ItemFixedTable key={item.id} item={item} />;
-								} else if (type === 'installment') {
-									return <ItemInstallmentTable key={item.id} item={item} />;
-								} else if (type === 'monthly') {
-									return <ItemMonthlyTable key={item.id} item={item} />;
+								if (item.class === 'expense') {
+									if (type === 'monthly') {
+										console.log(item.class, item.label);
+										return <ItemMonthlyTable key={item.id} item={item} />;
+									}
+									if (type === 'fixed') {
+										return <ItemFixedTable key={item.id} item={item} />;
+									}
+									if (type === 'installment') {
+										return <ItemInstallmentTable key={item.id} item={item} />;
+									}
+								} else {
+									return <DefaultItem key={item.id} item={item} />;
 								}
 							})}
 						</tbody>

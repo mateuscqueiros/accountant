@@ -11,7 +11,7 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartBar, IconHistory, IconHome2, IconPigMoney } from '@tabler/icons-react';
+import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { NavIcon } from './Components/NavIcons';
@@ -64,14 +64,14 @@ const NavbarComponent = ({ user, opened }: { user: any; opened: boolean }) => {
 			link: '/',
 		},
 		{
+			icon: <IconUser />,
+			label: 'Usuário',
+			link: '/user',
+		},
+		{
 			icon: <IconChartBar />,
 			label: 'Relatórios',
 			link: '/reports',
-		},
-		{
-			icon: <IconHistory />,
-			label: 'Histórico',
-			link: '/history',
 		},
 	];
 

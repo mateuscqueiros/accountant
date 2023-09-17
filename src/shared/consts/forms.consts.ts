@@ -1,5 +1,5 @@
 import { startOfMonth, subMonths } from 'date-fns';
-import { ItemForm, TransferDataForm } from '../forms.types';
+import { ItemForm, TransferDataForm } from '../types/forms.types';
 
 export const transferDataForminitialValues: TransferDataForm = {
 	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
@@ -15,15 +15,16 @@ export const itemFormInitialValues: ItemForm = {
 	value: 0,
 	date: new Date().toString(),
 	type: 'monthly',
-	tag: 'Outros',
+	class: 'expense',
+	categoryId: '0',
 	active: true,
 	note: '',
+	dueDay: 1,
 	installments: {
 		current: 1,
 		total: 2,
-		dueDay: 1,
 	},
-	fixed: {
-		dueDay: 1,
-	},
+	// fixed: {
+	// 	dueDay: 1,
+	// },
 };

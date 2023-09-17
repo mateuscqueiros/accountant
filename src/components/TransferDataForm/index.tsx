@@ -1,5 +1,7 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/shared/consts';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { BillsDataItemType } from '@/shared/types/data.types';
+import { TransferDataForm } from '@/shared/types/forms.types';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import {
 	ActionIcon,
@@ -16,13 +18,11 @@ import {
 } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { IconArrowRight, IconDownload } from '@tabler/icons-react';
+import { IconArrowRight, IconTransfer } from '@tabler/icons-react';
 import { format, startOfMonth, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
-import { useCallback, useContext, useMemo } from 'react';
-import { BillsDataItemType } from 'src/data';
-import { TransferDataForm } from 'src/shared/forms.types';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 export const initialValues: TransferDataForm = {
 	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
@@ -36,8 +36,6 @@ export const initialValues: TransferDataForm = {
 const TransferDataFormModal = () => {
 	const data = useContext(DataContext);
 	const modal = useContext(ModalsContext).transferData;
-	console.log('transfer', modal);
-	data.log();
 
 	const transferDataForm = useForm<TransferDataForm>({
 		initialValues,
@@ -99,9 +97,23 @@ const TransferDataFormModal = () => {
 				action: values.action === 'replace' ? 'replace' : 'add',
 			});
 			modal.close();
+			modal.reset();
 		},
 		[data]
 	);
+
+	const updateForm = useCallback(
+		(values: TransferDataForm) => {
+			transferDataForm.setValues({
+				...values,
+			});
+		},
+		[transferDataForm]
+	);
+
+	useEffect(() => {
+		updateForm(modal.values.command);
+	}, [modal]);
 
 	return (
 		<>
@@ -129,7 +141,9 @@ const TransferDataFormModal = () => {
 				}
 				opened={modal.values.opened}
 				onClose={() => {
+					console.log('ola');
 					modal.close();
+					modal.reset();
 				}}
 			>
 				<Box mih={300}>
@@ -166,7 +180,7 @@ const TransferDataFormModal = () => {
 									obj.disabled = true;
 								}
 
-								if (date.getMonth() === new Date().getMonth()) {
+								if (date.getMonth() === new Date(data.user.activeMonth).getMonth()) {
 									return {
 										sx: (theme) => ({
 											color: theme.fn.primaryColor(),
@@ -307,7 +321,7 @@ const TransferDataFormModal = () => {
 			</Modal>
 
 			<ActionIcon onClick={() => modal.open()} size="2.1rem" variant="default">
-				<IconDownload size="1.3rem" />
+				<IconTransfer size="1.3rem" />
 			</ActionIcon>
 		</>
 	);

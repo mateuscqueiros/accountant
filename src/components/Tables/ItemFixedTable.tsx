@@ -1,6 +1,6 @@
-import { ModalsContext } from '@/shared/consts';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { BillsDataItemType } from '@/shared/types/data.types';
 import { useContext } from 'react';
-import { BillsDataItemType } from 'src/data';
 
 export function ItemFixedTable({ item }: { item: BillsDataItemType }) {
 	const modals = useContext(ModalsContext);
@@ -14,7 +14,7 @@ export function ItemFixedTable({ item }: { item: BillsDataItemType }) {
 		>
 			<td>{item.label}</td>
 			<td>{item.value}</td>
-			<td>{item.fixed.dueDay}</td>
+			<td>{item.dueDay}</td>
 		</tr>
 	);
 }

@@ -1,6 +1,8 @@
 import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/shared/consts';
-import { getTags } from '@/utils/getTags';
+import { ModalsContext } from '@/contexts/ModalsContext';
+import { itemFormInitialValues as initialValues } from '@/shared/consts/forms.consts';
+import { ItemForm } from '@/shared/types/forms.types';
+import { getCategoriesForm } from '@/utils/categories';
 import {
 	getTransformObject,
 	getValidateObject,
@@ -27,41 +29,12 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { startOfMonth } from 'date-fns';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ItemForm } from 'src/shared/forms.types';
 import { v4 as uuidv4 } from 'uuid';
-
-export const initialValues: ItemForm = {
-	label: '',
-	value: 0,
-	date: new Date().toString(),
-	type: 'monthly',
-	tag: 'Outros',
-	active: true,
-	note: '',
-	installments: {
-		current: 1,
-		total: 2,
-		dueDay: 1,
-	},
-	fixed: {
-		dueDay: 1,
-	},
-};
 
 const AddBill = () => {
 	const modal = useContext(ModalsContext).item;
 	const data = useContext(DataContext);
-
-	const activeData = data.items.filter((item) => {
-		return (
-			startOfMonth(new Date(item.date)).toString() ===
-			startOfMonth(new Date(data.user.activeMonth)).toString()
-		);
-	});
-
-	let [tags, setTags] = useState(getTags(activeData));
 
 	let [confirmModal, setConfirmModal] = useState({
 		confirmed: false,
@@ -74,19 +47,13 @@ const AddBill = () => {
 	const itemForm = useForm<ItemForm>({
 		initialValues,
 		validate: getValidateObject(),
-		transformValues: (values) => getTransformObject(values),
+		transformValues: (values) => getTransformObject(values, data.user.categories),
 	});
 
 	const updateForm = useCallback(
 		(values: ItemForm) => {
 			itemForm.setValues({
 				...values,
-				installments: {
-					...values.installments,
-				},
-				fixed: {
-					...values.fixed,
-				},
 			});
 		},
 		[itemForm]
@@ -99,12 +66,14 @@ const AddBill = () => {
 	const handleSubmit = useCallback(
 		(values: ItemForm) => {
 			if (modal.values.action === 'update') {
-				data.updateItem(sanitizeBeforeCommiting(modal.values.updateItem, values));
+				data.updateItem(
+					sanitizeBeforeCommiting(modal.values.updateItem, values, data.user.categories)
+				);
 				modal.reset();
 			} else {
 				itemForm.reset();
 				modal.reset();
-				data.createItem(sanitizeBeforeCommiting(uuidv4(), values));
+				data.createItem(sanitizeBeforeCommiting(uuidv4(), values, data.user.categories));
 			}
 		},
 		[itemForm, modal]
@@ -145,61 +114,66 @@ const AddBill = () => {
 							}
 							{...itemForm.getInputProps('value')}
 						/>
-						<Select
-							withAsterisk
-							label="Tipo"
-							placeholder="Escolha um tipo"
-							mb="md"
-							role="input-type"
-							data={[
-								{ value: 'monthly', label: 'Mensal' },
-								{ value: 'installment', label: 'Parcelada' },
-								{ value: 'fixed', label: 'Fixa' },
-							]}
-							{...itemForm.getInputProps('type')}
-						/>
-						{itemForm.values.type === 'installment' && (
-							<Flex
-								justify="space-between"
-								direction={extraSmallScreen ? 'column' : 'row'}
-								sx={{ gap: '0.5rem' }}
-							>
-								<NumberInput
-									withAsterisk
-									label="Parcela atual"
-									placeholder="Menor que o total"
-									mb="md"
-									role="input-installments-current"
-									{...itemForm.getInputProps('installments.current')}
-								/>
-								<NumberInput
-									withAsterisk
-									label="Total de parcelas"
-									placeholder="Número"
-									mb="md"
-									role="input-installments-total"
-									{...itemForm.getInputProps('installments.total')}
-								/>
-								<NumberInput
-									withAsterisk
-									label="Vencimento"
-									placeholder="Número"
-									mb="md"
-									role="input-installments-dueDay"
-									{...itemForm.getInputProps('installments.dueDay')}
-								/>
-							</Flex>
-						)}
-						{itemForm.values.type === 'fixed' && (
-							<NumberInput
+						<Flex gap="sm" mb="md">
+							<Select
 								withAsterisk
-								label="Vencimento"
-								placeholder="Dia"
-								mb="md"
-								role="input-fixed-dueDay"
-								{...itemForm.getInputProps('fixed.dueDay')}
+								label="Tipo"
+								placeholder="Escolha um tipo"
+								data={[
+									{ value: 'monthly', label: 'Mensal' },
+									{ value: 'installment', label: 'Parcelada' },
+									{ value: 'fixed', label: 'Fixa' },
+								]}
+								{...itemForm.getInputProps('type')}
 							/>
-						)}
+							<Select
+								withAsterisk
+								label="Classe"
+								placeholder="Escolha uma classe"
+								data={[
+									{ value: 'expense', label: 'Despesa' },
+									{ value: 'recipe', label: 'Receita' },
+								]}
+								{...itemForm.getInputProps('class')}
+							/>
+						</Flex>
+						<Flex
+							justify="space-between"
+							direction={extraSmallScreen ? 'column' : 'row'}
+							sx={{ gap: '0.5rem' }}
+						>
+							{itemForm.values.type === 'installment' && (
+								<>
+									<NumberInput
+										withAsterisk
+										label="Parcela atual"
+										placeholder="Menor que o total"
+										mb="md"
+										role="input-installments-current"
+										{...itemForm.getInputProps('installments.current')}
+									/>
+									<NumberInput
+										withAsterisk
+										label="Total de parcelas"
+										placeholder="Número"
+										mb="md"
+										role="input-installments-total"
+										{...itemForm.getInputProps('installments.total')}
+									/>
+								</>
+							)}
+							{(itemForm.values.type === 'fixed' || itemForm.values.type === 'installment') && (
+								<NumberInput
+									withAsterisk
+									w={itemForm.values.type === 'fixed' ? '100%' : undefined}
+									label="Vencimento"
+									placeholder="Dia"
+									mb="md"
+									{...itemForm.getInputProps('dueDay')}
+								/>
+							)}
+						</Flex>
+
 						<Group sx={{ alignItems: 'center' }}>
 							<DateInput
 								sx={{ flex: 1 }}
@@ -229,34 +203,28 @@ const AddBill = () => {
 							label="Categoria"
 							placeholder="Selecione etiquetas"
 							mb="md"
-							role="input-installments-tags"
-							data={tags}
+							data={getCategoriesForm(data.user.categories)}
 							searchable
-							creatable
-							getCreateLabel={(query) => `+ Criar ${query}`}
-							onCreate={(query) => {
-								setTags((prev) => [...prev, query]);
-								return query;
-							}}
-							{...itemForm.getInputProps('tag')}
+							// creatable
+							// getCreateLabel={(query) => `+ Criar ${query}`}
+							// onCreate={(query) => {
+							// 	data.addCategory({
+							// 		value:
+							// 	});
+							// 	return query;
+							// }}
+							{...itemForm.getInputProps('categoryId')}
 						/>
 						<Textarea
 							label="Notas"
 							mb="md"
 							placeholder="Descreva o item"
 							autosize
-							role="input-installments-notes"
 							{...itemForm.getInputProps('notes')}
 							value={itemForm.values.note}
 							onChange={(e) => itemForm.setFieldValue('note', e.currentTarget.value)}
 						/>
 						<Flex justify="space-between" mt="xl">
-							{/* <Button variant="outline" onClick={() => {
-                                form.validate()
-                            }}>Validar</Button> */}
-							{/* <Button variant="outline" onClick={() => {
-                                form.reset()
-                            }}>Resetar</Button> */}
 							{modal.values.action === 'update' && (
 								<ActionIcon
 									size="2.2rem"
@@ -270,7 +238,7 @@ const AddBill = () => {
 									<IconTrash size="1rem" />
 								</ActionIcon>
 							)}
-							<Group>
+							<Group w="100%" position="right">
 								<Button
 									variant="outline"
 									role="button-cancel"
