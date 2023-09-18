@@ -1,3 +1,5 @@
+'use client';
+
 import AddBill from '@/components/AddBill';
 import Layout from '@/components/Layout';
 import DefaultTable from '@/components/Tables';
@@ -81,7 +83,7 @@ export default function Home() {
 					<Flex justify="space-between" align="center" mb="md">
 						<Group
 							w="fit-content"
-							sx={{ cursor: 'pointer' }}
+							style={{ cursor: 'pointer' }}
 							onClick={() => {
 								setMonthPickerStateSelect(!monthPickerStateSelect);
 							}}
@@ -108,8 +110,8 @@ export default function Home() {
 									getYearControlProps={(date) => {
 										if (date.getFullYear() === new Date().getFullYear()) {
 											return {
-												sx: (theme) => ({
-													color: theme.fn.primaryColor(),
+												style: (theme) => ({
+													color: theme.primaryColor,
 													fontWeight: 700,
 												}),
 											};
@@ -123,8 +125,8 @@ export default function Home() {
 											date.getFullYear() === new Date().getFullYear()
 										) {
 											return {
-												sx: (theme) => ({
-													color: theme.fn.primaryColor(),
+												style: (theme) => ({
+													color: theme.primaryColor,
 													fontWeight: 700,
 												}),
 											};
@@ -136,7 +138,7 @@ export default function Home() {
 											)
 										) {
 											return {
-												sx: (theme) => ({
+												style: (theme) => ({
 													opacity: 0.5,
 												}),
 											};
@@ -162,14 +164,14 @@ export default function Home() {
 						<>
 							<Paper mb="1rem" p="1rem" px="2rem">
 								<Flex justify="space-between">
-									<Flex direction="column" justify="center" sx={{ gap: 0 }}>
-										<Group sx={{ gap: 0 }}>
+									<Flex direction="column" justify="center" style={{ gap: 0 }}>
+										<Group style={{ gap: 0 }}>
 											<Text mr={10}>Saldo mensal:</Text>
 											<Text fz="lg" fw={600} color="green.7">
 												${(incomeTotal - expensesTotal).toFixed(2)}
 											</Text>
 										</Group>
-										<Group sx={{ gap: 0 }}>
+										<Group style={{ gap: 0 }}>
 											<Text mr={10}>Total de gastos:</Text>
 											<Text fz="lg" color="red.5" fw={600}>
 												${expensesTotal.toFixed(2)}
@@ -192,12 +194,13 @@ export default function Home() {
 								</Flex>
 							</Paper>
 							<SimpleGrid
-								breakpoints={[
-									{ minWidth: 0, cols: 1 },
-									{ minWidth: 1000, cols: 2 },
-									{ minWidth: 1300, cols: 3 },
-									{ minWidth: 1700, cols: 4 },
-								]}
+								cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+								// breakpoints={[
+								// 	{ minWidth: 0, cols: 1 },
+								// 	{ minWidth: 1000, cols: 2 },
+								// 	{ minWidth: 1300, cols: 3 },
+								// 	{ minWidth: 1700, cols: 4 },
+								// ]}
 							>
 								<DefaultTable
 									title="Fixas"

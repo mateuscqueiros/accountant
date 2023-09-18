@@ -1,5 +1,5 @@
+import defaultData from '@/shared/defaultData';
 import { DataContextType } from '@/shared/types/data.types';
-import defaultData from 'src/defaultData';
 
 export function saveToLocalStorage(state: DataContextType) {
 	try {

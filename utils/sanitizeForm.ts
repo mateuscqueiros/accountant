@@ -1,6 +1,6 @@
 import { BillsDataItemType, CategoryType } from '@/shared/types/data.types';
 import { ItemForm } from '@/shared/types/forms.types';
-import { FormValidateInput } from '@mantine/form/lib/types';
+import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
 import { getCategory } from '.';
 
 export function getValidateObject(): FormValidateInput<ItemForm> {

@@ -10,7 +10,7 @@ import {
 	Stack,
 	useMantineTheme,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { useColorScheme, useMediaQuery } from '@mantine/hooks';
 import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
@@ -26,13 +26,14 @@ const HeaderComponent = ({
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const theme = useMantineTheme();
+	const colorScheme = useColorScheme();
 	const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
 
 	return (
 		<Header height={largeScreen ? 70 : 50} px="1rem">
 			<Flex align="center" justify="space-between" h="100%">
 				<Burger
-					sx={{
+					style={{
 						'@media(min-width: 48rem)': {
 							display: 'none',
 						},
@@ -43,7 +44,7 @@ const HeaderComponent = ({
 					color={theme.colors.gray[6]}
 					mr="xl"
 				/>
-				<Group sx={{ height: '100%' }}>
+				<Group style={{ height: '100%' }}>
 					<Link href="/">
 						<IconPigMoney size="2rem" />
 					</Link>
@@ -57,6 +58,8 @@ const HeaderComponent = ({
 };
 
 const NavbarComponent = ({ user, opened }: { user: any; opened: boolean }) => {
+	const colorScheme = useColorScheme();
+
 	const options = [
 		{
 			icon: <IconHome2 />,
@@ -87,10 +90,10 @@ const NavbarComponent = ({ user, opened }: { user: any; opened: boolean }) => {
 			</Navbar.Section>
 			<Navbar.Section id="nav-user">
 				<Box
-					sx={{
+					style={{
 						paddingTop: theme.spacing.sm,
 						borderTop: `0.1rem solid ${
-							theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
+							colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
 						}`,
 					}}
 				>
@@ -112,7 +115,7 @@ const Layout = ({ children, active }: { children: any; active?: number }) => {
 		<AppShell
 			styles={{
 				main: {
-					background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+					background: colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
 				},
 			}}
 			navbarOffsetBreakpoint="sm"

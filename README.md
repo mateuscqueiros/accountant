@@ -14,7 +14,6 @@ Um app para controlar gastos financeiros em base mensal com suporte a assinatura
 - Typescript
 - Redux
 - @mantine/core e derivados
-- @emotion/styled
 - @tabler/icons-react
 - lodash
 - date-fns

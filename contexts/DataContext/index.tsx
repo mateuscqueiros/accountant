@@ -214,12 +214,11 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		}
 	};
 
-	const [data, setData] = useLocalStorage<UserDataType>({
-		key: 'accountant-data',
-		defaultValue: {
-			...dataInitialValues,
-		},
-	});
+	const [data, setData] =
+		useLocalStorage<UserDataType>({
+			key: 'accountant-data',
+			defaultValue: dataInitialValues,
+		}) || dataInitialValues;
 
 	return (
 		<DataContext.Provider

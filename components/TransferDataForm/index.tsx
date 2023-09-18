@@ -24,18 +24,18 @@ import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
-export const initialValues: TransferDataForm = {
-	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
-	fixed: true,
-	installments: true,
-	transform: 0,
-	monthly: false,
-	action: 'add',
-};
-
 const TransferDataFormModal = () => {
 	const data = useContext(DataContext);
 	const modal = useContext(ModalsContext).transferData;
+
+	const initialValues: TransferDataForm = {
+		date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
+		fixed: true,
+		installments: true,
+		monthly: false,
+		transform: 0,
+		action: 'add',
+	};
 
 	const transferDataForm = useForm<TransferDataForm>({
 		initialValues,
@@ -156,8 +156,8 @@ const TransferDataFormModal = () => {
 							getYearControlProps={(date) => {
 								if (date.getFullYear() === new Date().getFullYear()) {
 									return {
-										sx: (theme) => ({
-											color: theme.fn.primaryColor(),
+										style: (theme) => ({
+											color: theme.primaryColor,
 											fontWeight: 700,
 										}),
 									};
@@ -181,8 +181,8 @@ const TransferDataFormModal = () => {
 
 								if (date.getMonth() === new Date(data.user.activeMonth).getMonth()) {
 									return {
-										sx: (theme) => ({
-											color: theme.fn.primaryColor(),
+										style: (theme) => ({
+											color: theme.primaryColor,
 											fontWeight: 700,
 										}),
 										disabled: true,
@@ -240,7 +240,7 @@ const TransferDataFormModal = () => {
 									</Text>
 								</Flex>
 
-								<Group position="apart">
+								<Group justify="space-between">
 									<Flex align="center">
 										<Checkbox
 											checked={transferDataForm.values.installments}
@@ -295,7 +295,7 @@ const TransferDataFormModal = () => {
 									</Text>
 								</Flex>
 
-								<Group position="right">
+								<Group justify="flex-end">
 									<Button
 										onClick={() => {
 											modal.open();

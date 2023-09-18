@@ -1,3 +1,5 @@
+import '@mantine/core/styles.css';
+
 import DataProvider from '@/contexts/DataContext';
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';

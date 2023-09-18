@@ -5,44 +5,44 @@ import {
 	Tooltip,
 	UnstyledButton,
 	useMantineColorScheme,
-	useMantineTheme
-} from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+	useMantineTheme,
+} from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 export const NavIcon = ({
 	icon,
 	label,
-	link
+	link,
 }: {
-	icon: JSX.Element
-	label: string
-	link: string
+	icon: JSX.Element;
+	label: string;
+	link: string;
 }) => {
-	const theme = useMantineTheme()
-	const { colorScheme } = useMantineColorScheme()
-	const dark = colorScheme === 'dark'
-	const smallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`)
-	const { asPath } = useRouter()
+	const theme = useMantineTheme();
+	const { colorScheme } = useMantineColorScheme();
+	const dark = colorScheme === 'dark';
+	const smallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+	const { asPath } = useRouter();
 
 	const getActiveNavTab = useCallback(
 		(link: string) => {
-			const path = asPath.split('/')
+			const path = asPath.split('/');
 
-			return link.split('/')[1] === path[1]
+			return link.split('/')[1] === path[1];
 		},
 		[asPath]
-	)
+	);
 
-	let active = getActiveNavTab(link)
+	let active = getActiveNavTab(link);
 
 	return (
 		<Link href={link} style={{ textDecoration: 'inherit' }}>
 			<Tooltip label={label} position="right">
 				<UnstyledButton
-					sx={(theme) => ({
+					style={(theme) => ({
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: smallScreen ? 'flex-start' : 'center',
@@ -56,11 +56,7 @@ export const NavIcon = ({
 							: active
 							? theme.black
 							: theme.black,
-						backgroundColor: active
-							? dark
-								? theme.colors.blue[5]
-								: theme.colors.blue[1]
-							: '',
+						backgroundColor: active ? (dark ? theme.colors.blue[5] : theme.colors.blue[1]) : '',
 						'&:hover': {
 							backgroundColor: dark
 								? active
@@ -68,19 +64,19 @@ export const NavIcon = ({
 									: theme.colors.dark[6]
 								: active
 								? theme.colors.blue[2]
-								: theme.colors.gray[0]
-						}
+								: theme.colors.gray[0],
+						},
 					})}
 				>
 					<Group>
 						{icon}
 
 						<Box
-							sx={() => ({
+							style={() => ({
 								display: 'block',
 								'@media(min-width: 48rem)': {
-									display: 'none'
-								}
+									display: 'none',
+								},
 							})}
 						>
 							<Text size="sm">{label}</Text>
@@ -89,5 +85,5 @@ export const NavIcon = ({
 				</UnstyledButton>
 			</Tooltip>
 		</Link>
-	)
-}
+	);
+};

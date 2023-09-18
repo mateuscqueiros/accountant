@@ -1,23 +1,22 @@
-import { Avatar, Box, Center, Flex, Text, UnstyledButton } from '@mantine/core'
-import { IconChevronRight } from '@tabler/icons-react'
+import { Avatar, Box, Center, Flex, Text, UnstyledButton } from '@mantine/core';
+import { useColorScheme } from '@mantine/hooks';
+import { IconChevronRight } from '@tabler/icons-react';
 
 export const NavUser = ({ user }: { user: any }) => {
+	const colorScheme = useColorScheme();
+
 	return (
 		<UnstyledButton
-			sx={(theme) => ({
+			style={(theme) => ({
 				display: 'block',
 				width: '100%',
 				padding: theme.spacing.xs,
 				borderRadius: theme.radius.sm,
-				color:
-					theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+				color: colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 
 				'&:hover': {
-					backgroundColor:
-						theme.colorScheme === 'dark'
-							? theme.colors.dark[6]
-							: theme.colors.gray[0]
-				}
+					backgroundColor: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+				},
 			})}
 		>
 			<Center>
@@ -27,15 +26,15 @@ export const NavUser = ({ user }: { user: any }) => {
 					w="100%"
 					direction="row"
 					align="center"
-					sx={(theme) => ({
+					style={(theme) => ({
 						display: 'flex',
 						'@media(min-width: 48rem)': {
-							display: 'none'
-						}
+							display: 'none',
+						},
 					})}
 				>
-					<Box sx={{ flex: 1 }}>
-						<Text size="sm" weight={500}>
+					<Box style={{ flex: 1 }}>
+						<Text size="sm" fw={500}>
 							{user.name}
 						</Text>
 						<Text color="dimmed" size="xs">
@@ -47,5 +46,5 @@ export const NavUser = ({ user }: { user: any }) => {
 				</Flex>
 			</Center>
 		</UnstyledButton>
-	)
-}
+	);
+};

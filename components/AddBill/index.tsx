@@ -2,7 +2,7 @@ import { DataContext } from '@/contexts/DataContext';
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { itemFormInitialValues as initialValues } from '@/shared/consts/forms.consts';
 import { ItemForm } from '@/shared/types/forms.types';
-import { getCategoriesForm, getCategory, getNextCategoryId } from '@/utils/categories';
+import { getCategoriesForm } from '@/utils/categories';
 import {
 	getTransformObject,
 	getValidateObject,
@@ -31,7 +31,6 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import SelectItem from './SelectItem';
 
 const AddBill = () => {
 	const modal = useContext(ModalsContext).item;
@@ -105,14 +104,8 @@ const AddBill = () => {
 							label="Valor"
 							placeholder="$ 5,00"
 							mb="md"
-							precision={2}
-							parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+							decimalScale={2}
 							data-testid="input-value"
-							formatter={(value) =>
-								!Number.isNaN(parseFloat(value))
-									? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-									: '$ '
-							}
 							{...itemForm.getInputProps('value')}
 						/>
 						<Flex gap="sm" mb="md">
@@ -141,7 +134,7 @@ const AddBill = () => {
 						<Flex
 							justify="space-between"
 							direction={extraSmallScreen ? 'column' : 'row'}
-							sx={{ gap: '0.5rem' }}
+							style={{ gap: '0.5rem' }}
 						>
 							{itemForm.values.type === 'installment' && (
 								<>
@@ -175,9 +168,9 @@ const AddBill = () => {
 							)}
 						</Flex>
 
-						<Group sx={{ alignItems: 'center' }}>
+						<Group style={{ alignItems: 'center' }}>
 							<DateInput
-								sx={{ flex: 1 }}
+								style={{ flex: 1 }}
 								withAsterisk
 								label="Data"
 								placeholder="01/01/2023"
@@ -203,26 +196,26 @@ const AddBill = () => {
 							placeholder="Selecione etiquetas"
 							mb="md"
 							data={getCategoriesForm(data.user.categories)}
-							itemComponent={SelectItem}
+							// itemComponent={SelectItem}
 							searchable
-							creatable
-							getCreateLabel={(query) => `+ Criar ${query}`}
-							onCreate={(query) => {
-								const nextId = getNextCategoryId(data.user.categories);
-								data.addCategory({
-									label: query,
-									color: 'gray.6',
-								});
-								const newCategory = getCategory(data.user.categories, nextId);
-								itemForm.setFieldValue('categoryId', String(newCategory && newCategory.id));
-								return {
-									label: query,
-									value: String(nextId),
-								};
-							}}
-							filter={(value, item) => {
-								return getCategory(data.user.categories, item.id) !== undefined;
-							}}
+							allowDeselect={false}
+							// getCreateLabel={(query) => `+ Criar ${query}`}
+							// onCreate={(query) => {
+							// 	const nextId = getNextCategoryId(data.user.categories);
+							// 	data.addCategory({
+							// 		label: query,
+							// 		color: 'gray.6',
+							// 	});
+							// 	const newCategory = getCategory(data.user.categories, nextId);
+							// 	itemForm.setFieldValue('categoryId', String(newCategory && newCategory.id));
+							// 	return {
+							// 		label: query,
+							// 		value: String(nextId),
+							// 	};
+							// }}
+							// filter={(value, item) => {
+							// 	return getCategory(data.user.categories, item.id) !== undefined;
+							// }}
 							{...itemForm.getInputProps('categoryId')}
 						/>
 						<Textarea
@@ -248,7 +241,7 @@ const AddBill = () => {
 									<IconTrash size="1rem" />
 								</ActionIcon>
 							)}
-							<Group w="100%" position="right">
+							<Group w="100%" justify="flex-end">
 								<Button
 									variant="outline"
 									role="button-cancel"
@@ -296,11 +289,11 @@ const AddBill = () => {
 				}}
 				withCloseButton={false}
 			>
-				<Stack sx={{ gap: 0 }}>
+				<Stack style={{ gap: 0 }}>
 					<Text mb="1.5rem" mt="0.5rem">
 						Deseja realmente deletar?
 					</Text>
-					<Group position="right">
+					<Group justify="flex-end">
 						<Button
 							variant="outline"
 							onClick={() => {

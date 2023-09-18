@@ -1,4 +1,5 @@
 import { ColorSwatch, Flex, Text, useMantineTheme } from '@mantine/core';
+import { useColorScheme } from '@mantine/hooks';
 import { forwardRef } from 'react';
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -9,7 +10,8 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	({ label, color = 'gray', ...others }: ItemProps, ref) => {
 		const theme = useMantineTheme();
-		const dark = theme.colorScheme === 'dark';
+		const colorScheme = useColorScheme();
+		const dark = colorScheme === 'dark';
 
 		const colorSplit = color.split('.');
 		const swatchColor: string[] = [
