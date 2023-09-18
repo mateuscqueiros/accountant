@@ -141,7 +141,6 @@ const TransferDataFormModal = () => {
 				}
 				opened={modal.values.opened}
 				onClose={() => {
-					console.log('ola');
 					modal.close();
 					modal.reset();
 				}}

@@ -1,7 +1,8 @@
 import Layout from '@/components/Layout';
-import { Title } from '@mantine/core';
+import { Box, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Head from 'next/head';
+import { useCallback } from 'react';
 
 const initialValues = {
 	name: '',
@@ -11,6 +12,10 @@ export default function Reports() {
 	const form = useForm({
 		initialValues,
 	});
+
+	const handleSubmit = useCallback((values: any) => {
+		console.log(values);
+	}, []);
 
 	return (
 		<>
@@ -24,6 +29,19 @@ export default function Reports() {
 				<Title order={1} mb="1rem">
 					Usuário
 				</Title>
+				<Box maw="32rem">
+					<form
+						onSubmit={(values) => {
+							handleSubmit(values);
+						}}
+					>
+						<Stack sx={{ gap: 0 }}>
+							<Text fw="600">Nome</Text>
+							<Text>Mateus Queirós</Text>
+						</Stack>
+						<TextInput label="Nome" placeholder="Nome" {...form.getInputProps('name')} />
+					</form>
+				</Box>
 			</Layout>
 		</>
 	);

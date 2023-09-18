@@ -29,4 +29,5 @@ export type TransferDataForm = {
 export type CategoryFormType = {
 	value: string;
 	label: string;
+	color: string;
 };

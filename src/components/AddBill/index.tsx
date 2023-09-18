@@ -2,7 +2,7 @@ import { DataContext } from '@/contexts/DataContext';
 import { ModalsContext } from '@/contexts/ModalsContext';
 import { itemFormInitialValues as initialValues } from '@/shared/consts/forms.consts';
 import { ItemForm } from '@/shared/types/forms.types';
-import { getCategoriesForm } from '@/utils/categories';
+import { getCategoriesForm, getCategory, getNextCategoryId } from '@/utils/categories';
 import {
 	getTransformObject,
 	getValidateObject,
@@ -31,6 +31,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import SelectItem from './SelectItem';
 
 const AddBill = () => {
 	const modal = useContext(ModalsContext).item;
@@ -181,7 +182,6 @@ const AddBill = () => {
 								label="Data"
 								placeholder="01/01/2023"
 								mb="md"
-								role="input-date"
 								{...itemForm.getInputProps('date')}
 								value={new Date(itemForm.values.date === '' ? new Date() : itemForm.values.date)}
 								onChange={(e) => {
@@ -191,8 +191,7 @@ const AddBill = () => {
 							<Tooltip multiline label="Define se o item deve ser computado nos cálculos" withArrow>
 								<Checkbox
 									mt={10}
-									label="Ativo"
-									role="input-active"
+									label="Pago"
 									checked={itemForm.values.active}
 									{...itemForm.getInputProps('active')}
 								/>
@@ -204,15 +203,26 @@ const AddBill = () => {
 							placeholder="Selecione etiquetas"
 							mb="md"
 							data={getCategoriesForm(data.user.categories)}
+							itemComponent={SelectItem}
 							searchable
-							// creatable
-							// getCreateLabel={(query) => `+ Criar ${query}`}
-							// onCreate={(query) => {
-							// 	data.addCategory({
-							// 		value:
-							// 	});
-							// 	return query;
-							// }}
+							creatable
+							getCreateLabel={(query) => `+ Criar ${query}`}
+							onCreate={(query) => {
+								const nextId = getNextCategoryId(data.user.categories);
+								data.addCategory({
+									label: query,
+									color: 'gray.6',
+								});
+								const newCategory = getCategory(data.user.categories, nextId);
+								itemForm.setFieldValue('categoryId', String(newCategory && newCategory.id));
+								return {
+									label: query,
+									value: String(nextId),
+								};
+							}}
+							filter={(value, item) => {
+								return getCategory(data.user.categories, item.id) !== undefined;
+							}}
 							{...itemForm.getInputProps('categoryId')}
 						/>
 						<Textarea

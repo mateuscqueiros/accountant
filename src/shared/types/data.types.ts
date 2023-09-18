@@ -6,7 +6,7 @@ export interface DataContextType extends UserDataType {
 	setActiveMonth: (date: string) => void;
 	transferData: (transferData: TransferDataType) => void;
 	selectActiveData: () => BillsDataItemType[];
-	addCategory: (newCategory: CategoryType) => void;
+	addCategory: ({ label, color }: { label: string; color: string }) => void;
 	log: () => void;
 }
 
@@ -71,4 +71,5 @@ export type TransferDataType = {
 export type CategoryType = {
 	id: number;
 	label: string;
+	color: string;
 };

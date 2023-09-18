@@ -6,30 +6,37 @@ const defaultCategories: CategoryType[] = [
 	{
 		label: 'Carro',
 		id: 1,
+		color: 'cyan',
 	},
 	{
 		label: 'Casa',
 		id: 2,
+		color: 'orange',
 	},
 	{
 		label: 'Investimento',
 		id: 3,
+		color: 'red',
 	},
 	{
 		label: 'Roupas',
 		id: 4,
+		color: 'blue',
 	},
 	{
 		label: 'Entretenimento',
 		id: 5,
+		color: 'teal',
 	},
 	{
 		label: 'Assinaturas',
 		id: 6,
+		color: 'yellow',
 	},
 	{
 		label: 'Outros',
 		id: 0,
+		color: 'orange',
 	},
 ];
 

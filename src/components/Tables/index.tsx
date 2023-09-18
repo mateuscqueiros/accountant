@@ -69,7 +69,6 @@ export default function DefaultTable({
 							{activeData.map((item) => {
 								if (item.class === 'expense') {
 									if (type === 'monthly') {
-										console.log(item.class, item.label);
 										return <ItemMonthlyTable key={item.id} item={item} />;
 									}
 									if (type === 'fixed') {

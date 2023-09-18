@@ -1,3 +1,4 @@
+import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -7,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { dataInitialValues } from '../../shared/consts/data.consts';
 import {
 	BillsDataItemType,
-	CategoryType,
 	DataContextType,
 	TransferDataType,
 	UserDataType,
@@ -187,13 +187,20 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		);
 	};
 
-	const addCategory = (newCategory: CategoryType) => {
+	const addCategory = ({ label, color }: { label: string; color: string }) => {
 		setData((prev) => {
 			return {
 				...prev,
 				user: {
 					...prev.user,
-					categories: [...prev.user.categories, newCategory],
+					categories: [
+						...prev.user.categories,
+						{
+							id: getNextCategoryId(data.user.categories),
+							label,
+							color,
+						},
+					],
 				},
 			};
 		});
