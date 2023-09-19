@@ -36,7 +36,7 @@ const defaultCategories: CategoryType[] = [
 	{
 		label: 'Outros',
 		id: 0,
-		color: 'orange',
+		color: 'blue',
 	},
 ];
 

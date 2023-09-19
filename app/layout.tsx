@@ -1,4 +1,6 @@
 'use client';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 import Layout from '@/components/Layout';
 import DataContextProvider from '@/contexts/DataContext';

@@ -1,5 +1,3 @@
-'use client';
-
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { useLocalStorage } from '@mantine/hooks';

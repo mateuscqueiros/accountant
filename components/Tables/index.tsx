@@ -5,10 +5,10 @@ import { ItemForm } from '@/shared/types/forms.types';
 import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { DefaultItem } from './DefaultItem';
-import { ItemFixedTable } from './ItemFixedTable';
-import { ItemInstallmentTable } from './ItemInstallmentTable';
-import { ItemMonthlyTable } from './ItemMonthlyTable';
+import { DefaultItem } from './Default';
+import { ItemFixedTable } from './Fixed';
+import { ItemInstallmentTable } from './Installment';
+import { ItemMonthlyTable } from './Monthly';
 
 export default function DefaultTable({
 	header,

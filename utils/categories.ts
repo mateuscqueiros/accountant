@@ -19,7 +19,7 @@ export function getCategoriesLabels(categories: CategoryType[]): CategoryFormTyp
 	});
 }
 
-export function getCategory(categories: CategoryType[], id: number): CategoryType | undefined {
+export function getCategory(categories: CategoryType[], id: number): CategoryType {
 	const foundCategory = categories.filter((category) => {
 		return category.id === id;
 	})[0];
@@ -28,9 +28,15 @@ export function getCategory(categories: CategoryType[], id: number): CategoryTyp
 		return {
 			id: foundCategory.id,
 			label: foundCategory.label,
-			color: getNextCategoryColor(categories),
+			color: foundCategory.color,
 		};
-	} else return;
+	} else {
+		return {
+			id: 0,
+			label: 'Outros',
+			color: 'blue',
+		};
+	}
 }
 
 export function getNextCategoryId(categories: CategoryType[]): number {

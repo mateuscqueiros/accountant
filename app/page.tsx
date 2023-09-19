@@ -19,7 +19,6 @@ import {
 	Stack,
 	Text,
 	Title,
-	useMantineColorScheme,
 } from '@mantine/core';
 import { MonthPicker } from '@mantine/dates';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
@@ -32,8 +31,6 @@ export default function Home() {
 	const data = useContext(DataContext);
 	const modals = useContext(ModalsContext);
 	const activeData = data.selectActiveData();
-	const { colorScheme } = useMantineColorScheme();
-	const dark = colorScheme === 'dark';
 
 	let expensesTotal = 0;
 	let incomeTotal = 0;
@@ -102,7 +99,6 @@ export default function Home() {
 									if (date.getFullYear() === new Date().getFullYear()) {
 										return {
 											style: (theme) => ({
-												color: theme.primaryColor,
 												fontWeight: 700,
 											}),
 										};
@@ -117,7 +113,6 @@ export default function Home() {
 									) {
 										return {
 											style: (theme) => ({
-												color: theme.primaryColor,
 												fontWeight: 700,
 											}),
 										};
