@@ -1,22 +1,14 @@
+'use client';
+
 import { DataContext } from '@/contexts/DataContext';
-import {
-	AppShell,
-	Box,
-	Burger,
-	Flex,
-	Group,
-	Header,
-	Navbar,
-	Stack,
-	useMantineTheme,
-} from '@mantine/core';
+import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useColorScheme, useMediaQuery } from '@mantine/hooks';
 import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { NavIcon } from './Components/NavIcons';
-import { NavUser } from './Components/NavUser';
 import ToggleTheme from './Components/ToggleTheme';
+import classes from './Layout.module.css';
 
 const HeaderComponent = ({
 	opened,
@@ -26,20 +18,18 @@ const HeaderComponent = ({
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const theme = useMantineTheme();
-	const colorScheme = useColorScheme();
 	const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
 
 	return (
-		<Header height={largeScreen ? 70 : 50} px="1rem">
+		<Box w="100%" px="1rem" h="100%">
 			<Flex align="center" justify="space-between" h="100%">
 				<Burger
+					hiddenFrom="sm"
 					style={{
-						'@media(min-width: 48rem)': {
-							display: 'none',
-						},
+						display: largeScreen ? 'none' : 'block',
 					}}
-					opened={opened}
-					onClick={() => setOpened((o) => !o)}
+					opened={!opened}
+					onClick={() => setOpened(!opened)}
 					size="sm"
 					color={theme.colors.gray[6]}
 					mr="xl"
@@ -53,11 +43,17 @@ const HeaderComponent = ({
 					<ToggleTheme />
 				</Group>
 			</Flex>
-		</Header>
+		</Box>
 	);
 };
 
-const NavbarComponent = ({ user, opened }: { user: any; opened: boolean }) => {
+const NavbarComponent = ({
+	user,
+	setOpened,
+}: {
+	user: any;
+	setOpened: Dispatch<SetStateAction<boolean>>;
+}) => {
 	const colorScheme = useColorScheme();
 
 	const options = [
@@ -78,53 +74,76 @@ const NavbarComponent = ({ user, opened }: { user: any; opened: boolean }) => {
 		},
 	];
 
-	const theme = useMantineTheme();
 	return (
-		<Navbar p="0.5rem" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 60 }}>
-			<Navbar.Section grow mt="md" id="nav-icons">
-				<Stack>
-					{options.map((item, index) => {
-						return <NavIcon key={index} icon={item.icon} label={item.label} link={item.link} />;
-					})}
-				</Stack>
-			</Navbar.Section>
-			<Navbar.Section id="nav-user">
-				<Box
-					style={{
-						paddingTop: theme.spacing.sm,
-						borderTop: `0.1rem solid ${
-							colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-						}`,
-					}}
-				>
-					<NavUser user={user} />
+		<>
+			<Box p={rem('8px')}>
+				<Box mt="md">
+					<Stack>
+						{options.map((item, index) => {
+							const { icon, label, link } = item;
+							return (
+								<NavIcon
+									key={index}
+									data={{
+										icon,
+										label,
+										link,
+										setOpened,
+									}}
+								/>
+							);
+						})}
+					</Stack>
 				</Box>
-			</Navbar.Section>
-		</Navbar>
+				{/* <Box id="nav-user">
+					<Box
+						style={{
+							paddingTop: theme.spacing.sm,
+							borderTop: `0.1rem solid ${
+								colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
+							}`,
+						}}
+					>
+						<NavUser user={user} />
+					</Box>
+				</Box> */}
+			</Box>
+		</>
 	);
 };
 
 const Layout = ({ children, active }: { children: any; active?: number }) => {
 	const data = useContext(DataContext);
 
-	const theme = useMantineTheme();
+	const colorScheme = useColorScheme();
+	const dark = colorScheme === 'dark';
 	const [opened, setOpened] = useState(false);
-	const [user, setUser] = useState(data.user);
+
+	useEffect(() => {
+		console.log(opened);
+	}, [opened]);
 
 	return (
 		<AppShell
-			styles={{
-				main: {
-					background: colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-				},
+			className={classes.app_shell}
+			navbar={{
+				width: { sm: 60 },
+				breakpoint: 'sm',
+				collapsed: { mobile: opened, desktop: false },
 			}}
-			navbarOffsetBreakpoint="sm"
-			navbar={<NavbarComponent user={user} opened={opened} />}
-			header={<HeaderComponent opened={opened} setOpened={setOpened} />}
+			header={{ height: 60 }}
 		>
-			<Box h="100%" p="1rem" w="100%">
-				{children}
-			</Box>
+			<AppShell.Header>
+				<HeaderComponent opened={opened} setOpened={setOpened} />
+			</AppShell.Header>
+			<AppShell.Navbar>
+				<NavbarComponent user={data.user} setOpened={setOpened} />
+			</AppShell.Navbar>
+			<AppShell.Main>
+				<Box p="2rem" mx="auto" maw={rem('1900px')}>
+					{children}
+				</Box>
+			</AppShell.Main>
 		</AppShell>
 	);
 };

@@ -32,7 +32,7 @@ import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddBill = () => {
+export default function ItemForm() {
 	const modal = useContext(ModalsContext).item;
 	const data = useContext(DataContext);
 
@@ -317,6 +317,4 @@ const AddBill = () => {
 			</Modal>
 		</>
 	);
-};
-
-export default AddBill;
+}

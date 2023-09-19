@@ -57,15 +57,15 @@ export default function DefaultTable({
 			</Flex>
 			{activeData && activeData.length > 0 ? (
 				<>
-					<Table withColumnBorders striped highlightOnHover>
-						<thead>
-							<tr>
+					<Table striped highlightOnHover withRowBorders withColumnBorders>
+						<Table.Thead>
+							<Table.Tr>
 								{header.map((headerItem: string) => {
-									return <th key={headerItem}>{headerItem}</th>;
+									return <Table.Td key={headerItem}>{headerItem}</Table.Td>;
 								})}
-							</tr>
-						</thead>
-						<tbody>
+							</Table.Tr>
+						</Table.Thead>
+						<Table.Tbody>
 							{activeData.map((item) => {
 								if (item.class === 'expense') {
 									if (type === 'monthly') {
@@ -81,30 +81,28 @@ export default function DefaultTable({
 									return <DefaultItem key={item.id} item={item} />;
 								}
 							})}
-						</tbody>
-						<tfoot>
-							<tr>
+							<Table.Tr>
 								{header.map((_: string, index: number) => {
 									if (index === 0) {
 										return (
-											<th style={{ fontSize: '1.1rem' }} key={index}>
+											<Table.Td style={{ fontSize: '1.1rem' }} key={index}>
 												Total
-											</th>
+											</Table.Td>
 										);
 									} else if (index === 1) {
 										return (
-											<th style={{ fontSize: '1.1rem' }} key={index}>
+											<Table.Td style={{ fontSize: '1.1rem' }} key={index}>
 												{activeData
 													.filter((item) => item.active === true)
 													.reduce((partialSum, a) => partialSum + a.value, 0)}
-											</th>
+											</Table.Td>
 										);
 									} else {
-										return <th key={index}></th>;
+										return <Table.Td key={index}></Table.Td>;
 									}
 								})}
-							</tr>
-						</tfoot>
+							</Table.Tr>
+						</Table.Tbody>
 					</Table>
 				</>
 			) : (

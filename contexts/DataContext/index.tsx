@@ -1,3 +1,5 @@
+'use client';
+
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { useLocalStorage } from '@mantine/hooks';
@@ -182,9 +184,11 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 	};
 
 	const selectActiveData = () => {
-		return data.items.filter((billItem) =>
-			compareStartOfMonth(billItem.date, data.user.activeMonth)
-		);
+		return data !== undefined
+			? data.items.filter((billItem) => compareStartOfMonth(billItem.date, data.user.activeMonth))
+			: dataInitialValues.items.filter((billItem) =>
+					compareStartOfMonth(billItem.date, dataInitialValues.user.activeMonth)
+			  );
 	};
 
 	const addCategory = ({ label, color }: { label: string; color: string }) => {
@@ -196,7 +200,9 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 					categories: [
 						...prev.user.categories,
 						{
-							id: getNextCategoryId(data.user.categories),
+							id: getNextCategoryId(
+								data !== undefined ? data.user.categories : dataInitialValues.user.categories
+							),
 							label,
 							color,
 						},
@@ -214,11 +220,10 @@ export default function DataContextProvider({ children }: { children: ReactNode 
 		}
 	};
 
-	const [data, setData] =
-		useLocalStorage<UserDataType>({
-			key: 'accountant-data',
-			defaultValue: dataInitialValues,
-		}) || dataInitialValues;
+	const [data, setData] = useLocalStorage<UserDataType>({
+		key: 'accountant-data',
+		defaultValue: dataInitialValues,
+	});
 
 	return (
 		<DataContext.Provider

@@ -1,0 +1,50 @@
+.link {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.unstyled_button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: var(--mantine-spacing-xs);
+	border-radius: var(--mantine-radius-sm);
+	background-color: none;
+	height: 40px;
+
+	@mixin dark {
+		color: var(--mantine-color-gray-0);
+		@mixin hover {
+			background-color: var(--mantine-color-gray-9);
+		}
+		&.active {
+			background-color: var(--mantine-color-blue-7);
+			@mixin hover {
+				background-color: var(--mantine-color-blue-5);
+			}
+		}
+	}
+	@mixin light {
+		color: var(--mantine-color-black);
+		@mixin hover {
+			background-color: var(--mantine-color-gray-1);
+		}
+		&.active {
+			background-color: var(--mantine-color-blue-2);
+			@mixin hover {
+				background-color: var(--mantine-color-blue-2);
+			}
+		}
+	}
+
+	@media (min-width: $mantine-breakpoint-sm) {
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		.text {
+			display: none;
+		}
+	}
+}
