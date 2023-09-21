@@ -9,7 +9,7 @@ import { BillsDataItemType } from '../../shared/types/data.types';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);
 
-export default function ModalsContextProvider({ children }: { children: ReactNode }) {
+export function ModalsContextProvider({ children }: { children: ReactNode }) {
 	/* Item Form Modal */
 	const openItem = () => {
 		setData((prev) => {

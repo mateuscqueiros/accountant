@@ -3,6 +3,7 @@ export type {
 	CategoryType,
 	DataContextType,
 	TransferDataType,
+	UserDataType,
 	UserType,
 } from './data.types';
 export type { CategoryFormType, ItemForm, TransferDataForm } from './forms.types';

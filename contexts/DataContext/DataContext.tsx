@@ -1,3 +1,5 @@
+import { dataInitialValues } from '@/shared/consts/data.consts';
+import { BillsDataItemType, DataContextType, TransferDataType, UserDataType } from '@/shared/types';
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { useLocalStorage } from '@mantine/hooks';
@@ -5,17 +7,10 @@ import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { ReactNode, createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { dataInitialValues } from '../../shared/consts/data.consts';
-import {
-	BillsDataItemType,
-	DataContextType,
-	TransferDataType,
-	UserDataType,
-} from '../../shared/types/data.types';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
 
-export default function DataContextProvider({ children }: { children: ReactNode }) {
+export function DataContextProvider({ children }: { children: ReactNode }) {
 	const createItem = (item: BillsDataItemType) => {
 		setData((prev) => {
 			return {

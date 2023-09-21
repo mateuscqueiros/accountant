@@ -1,2 +1,2 @@
-export { DataContext } from './DataContext/DataContext';
-export { ModalsContext } from './ModalsContext/ModalsContext';
+export { DataContext, DataContextProvider } from './DataContext/DataContext';
+export { ModalsContext, ModalsContextProvider } from './ModalsContext/ModalsContext';

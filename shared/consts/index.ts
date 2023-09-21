@@ -1,3 +1,3 @@
 export { dataInitialValues } from './data.consts';
 export { itemFormInitialValues, transferDataForminitialValues } from './forms.consts';
-export { transferDataModalInitialValues } from './modals.consts';
+export { itemModalInitialValues, transferDataModalInitialValues } from './modals.consts';
