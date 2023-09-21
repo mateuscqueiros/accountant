@@ -1,10 +1,10 @@
 'use client';
 
-import ItemForm from '@/components/ItemForm';
-import DefaultTable from '@/components/Tables';
-import TransferDataFormModal from '@/components/TransferDataForm';
-import { DataContext } from '@/contexts/DataContext';
-import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext';
+import { ItemsForm } from '@/components/ItemForm';
+import { DefaultTable } from '@/components/Table';
+import { TransferDataModal } from '@/components/TransferDataModal';
+import { DataContext } from '@/contexts/DataContext/DataContext';
+import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import {
 	compareStartOfMonth,
 	getCategoriesValues,
@@ -145,8 +145,8 @@ export default function Home() {
 					</Modal>
 					{activeData && (
 						<Group>
-							<TransferDataFormModal />
-							<ItemForm />
+							<TransferDataModal />
+							<ItemsForm />
 						</Group>
 					)}
 				</Flex>

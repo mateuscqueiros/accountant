@@ -1,5 +1,7 @@
 'use client';
 
-export default function HomePage() {
-	return <div>Home page</div>;
+import { DoubleNavbar } from '@/components/DoubleNavbar';
+
+export default function UserPage() {
+	return <DoubleNavbar />;
 }

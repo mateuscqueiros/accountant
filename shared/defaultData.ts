@@ -2,7 +2,7 @@ import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import { CategoryType, UserDataType } from './types/data.types';
 
-const defaultCategories: CategoryType[] = [
+export const defaultCategories: CategoryType[] = [
 	{
 		label: 'Carro',
 		id: 1,
@@ -40,7 +40,7 @@ const defaultCategories: CategoryType[] = [
 	},
 ];
 
-const defaultData: UserDataType = {
+export const defaultData: UserDataType = {
 	user: {
 		name: 'Mateus Queirós',
 		image: '/avatar.jpg',
@@ -166,5 +166,3 @@ const defaultData: UserDataType = {
 		},
 	],
 };
-
-export default defaultData;

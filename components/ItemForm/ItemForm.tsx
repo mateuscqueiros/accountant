@@ -1,5 +1,5 @@
-import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { DataContext } from '@/contexts/DataContext/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { itemFormInitialValues as initialValues } from '@/shared/consts/forms.consts';
 import { ItemForm } from '@/shared/types/forms.types';
 import { getCategoriesForm } from '@/utils/categories';
@@ -32,7 +32,7 @@ import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function ItemForm() {
+export function ItemsForm() {
 	const modal = useContext(ModalsContext).item;
 	const data = useContext(DataContext);
 

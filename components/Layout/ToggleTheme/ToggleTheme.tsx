@@ -2,7 +2,7 @@ import { ActionIcon, Tooltip, useMantineColorScheme } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { IconMoon, IconSun } from '@tabler/icons-react';
 
-const ToggleTheme = () => {
+export function ToggleTheme() {
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 	const dark = colorScheme === 'dark';
 
@@ -15,6 +15,4 @@ const ToggleTheme = () => {
 			</ActionIcon>
 		</Tooltip>
 	);
-};
-
-export default ToggleTheme;
+}

@@ -1,9 +1,9 @@
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
 import { Table } from '@mantine/core';
 import { useContext } from 'react';
 
-export function ItemFixedTable({ item }: { item: BillsDataItemType }) {
+export function InstallmentItem({ item }: { item: BillsDataItemType }) {
 	const modals = useContext(ModalsContext);
 
 	return (
@@ -15,6 +15,9 @@ export function ItemFixedTable({ item }: { item: BillsDataItemType }) {
 		>
 			<Table.Td>{item.label}</Table.Td>
 			<Table.Td>{item.value}</Table.Td>
+			<Table.Td>
+				{item.installments.current} / {item.installments.total}
+			</Table.Td>
 			<Table.Td>{item.dueDay}</Table.Td>
 		</Table.Tr>
 	);

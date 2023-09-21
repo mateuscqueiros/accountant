@@ -6,7 +6,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	color: string;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	({ label, color = 'gray', ...others }: ItemProps, ref) => {
 		const theme = useMantineTheme();
 
@@ -26,5 +26,3 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 		);
 	}
 );
-
-export default SelectItem;

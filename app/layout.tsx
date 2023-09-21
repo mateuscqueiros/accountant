@@ -2,8 +2,8 @@
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
-import Layout from '@/components/Layout';
-import DataContextProvider from '@/contexts/DataContext';
+import { Layout } from '@/components/Layout';
+import DataContextProvider from '@/contexts/DataContext/DataContext';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { DatesProvider } from '@mantine/dates';

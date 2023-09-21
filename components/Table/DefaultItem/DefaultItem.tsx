@@ -1,5 +1,5 @@
-import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { DataContext } from '@/contexts/DataContext/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
 import { getCategory } from '@/utils/categories';
 import { Badge, Table } from '@mantine/core';

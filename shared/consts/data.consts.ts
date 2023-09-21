@@ -1,3 +1,3 @@
-import defaultData from "shared/defaultData";
+import { defaultData } from '..';
 
 export const dataInitialValues = defaultData;

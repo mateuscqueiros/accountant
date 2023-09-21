@@ -1,10 +1,10 @@
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
 import { Table } from '@mantine/core';
 import { format } from 'date-fns';
 import { useContext } from 'react';
 
-export function ItemMonthlyTable({ item }: { item: BillsDataItemType }) {
+export function MonthlyItem({ item }: { item: BillsDataItemType }) {
 	const modals = useContext(ModalsContext);
 
 	return (

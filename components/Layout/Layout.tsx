@@ -1,12 +1,10 @@
 'use client';
-
 import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { NavIcon } from './Components/NavIcons';
-import ToggleTheme from './Components/ToggleTheme';
+import { NavIcon, ToggleTheme } from '.';
 import classes from './Layout.module.css';
 
 const HeaderComponent = ({
@@ -91,7 +89,15 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 	);
 };
 
-const Layout = ({ children, active }: { children: any; active?: number }) => {
+export function Layout({
+	children,
+	active,
+	withPadding = true,
+}: {
+	withPadding?: boolean;
+	children: any;
+	active?: number;
+}) {
 	const [opened, setOpened] = useState(false);
 
 	useEffect(() => {
@@ -115,12 +121,14 @@ const Layout = ({ children, active }: { children: any; active?: number }) => {
 				<NavbarComponent setOpened={setOpened} />
 			</AppShell.Navbar>
 			<AppShell.Main>
-				<Box p="2rem" mx="auto" maw={rem('1900px')}>
-					{children}
-				</Box>
+				{withPadding ? (
+					<Box p="2rem" mx="auto" maw={rem('1900px')}>
+						{children}
+					</Box>
+				) : (
+					children
+				)}
 			</AppShell.Main>
 		</AppShell>
 	);
-};
-
-export default Layout;
+}

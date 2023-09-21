@@ -1,16 +1,16 @@
-import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { DataContext } from '@/contexts/DataContext/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
 import { ItemForm } from '@/shared/types/forms.types';
 import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { DefaultItem } from './Default';
-import { ItemFixedTable } from './Fixed';
-import { ItemInstallmentTable } from './Installment';
-import { ItemMonthlyTable } from './Monthly';
+import { DefaultItem } from './DefaultItem/DefaultItem';
+import { FixedItem } from './FixedItem/FixedItem';
+import { InstallmentItem } from './InstallmentItem/InstallmentItem';
+import { MonthlyItem } from './MonthlyItem/MonthlyItem';
 
-export default function DefaultTable({
+export function DefaultTable({
 	header,
 	title,
 	type,
@@ -69,13 +69,13 @@ export default function DefaultTable({
 							{activeData.map((item) => {
 								if (item.class === 'expense') {
 									if (type === 'monthly') {
-										return <ItemMonthlyTable key={item.id} item={item} />;
+										return <MonthlyItem key={item.id} item={item} />;
 									}
 									if (type === 'fixed') {
-										return <ItemFixedTable key={item.id} item={item} />;
+										return <FixedItem key={item.id} item={item} />;
 									}
 									if (type === 'installment') {
-										return <ItemInstallmentTable key={item.id} item={item} />;
+										return <InstallmentItem key={item.id} item={item} />;
 									}
 								} else {
 									return <DefaultItem key={item.id} item={item} />;

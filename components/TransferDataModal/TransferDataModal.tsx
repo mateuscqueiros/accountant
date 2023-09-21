@@ -1,5 +1,5 @@
-import { DataContext } from '@/contexts/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext';
+import { DataContext } from '@/contexts/DataContext/DataContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import { BillsDataItemType } from '@/shared/types/data.types';
 import { TransferDataForm } from '@/shared/types/forms.types';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
@@ -24,7 +24,7 @@ import { ptBR } from 'date-fns/locale';
 import _ from 'lodash';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
-const TransferDataFormModal = () => {
+export function TransferDataModal() {
 	const data = useContext(DataContext);
 	const modal = useContext(ModalsContext).transferData;
 
@@ -324,6 +324,4 @@ const TransferDataFormModal = () => {
 			</ActionIcon>
 		</>
 	);
-};
-
-export default TransferDataFormModal;
+}
