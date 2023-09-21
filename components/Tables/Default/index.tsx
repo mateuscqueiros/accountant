@@ -30,7 +30,9 @@ export function DefaultItem({ item }: { item: BillsDataItemType }) {
 				</Table.Td>
 				<Table.Td>{item.type === 'monthly' ? 'Sem' : item.dueDay}</Table.Td>
 				<Table.Td>
-					<Badge color={category.color}>{category.label}</Badge>
+					<Badge variant="light" color={category.color}>
+						{category.label}
+					</Badge>
 				</Table.Td>
 			</Table.Tr>
 		</>

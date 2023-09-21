@@ -6,7 +6,7 @@ const defaultCategories: CategoryType[] = [
 	{
 		label: 'Carro',
 		id: 1,
-		color: 'cyan',
+		color: 'violet',
 	},
 	{
 		label: 'Casa',
@@ -21,7 +21,7 @@ const defaultCategories: CategoryType[] = [
 	{
 		label: 'Roupas',
 		id: 4,
-		color: 'blue',
+		color: 'green',
 	},
 	{
 		label: 'Entretenimento',

@@ -15,11 +15,13 @@ export default function RootLayout({ children }: { children: any }) {
 		<html lang="pt-BR">
 			<head>
 				<ColorSchemeScript />
+				<title>Accountant</title>
 				<link rel="shortcut icon" href="/favicon.svg" />
 				<meta
 					name="viewport"
 					content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
 				/>
+				<meta name="description" content="Para organizar suas contas!" />
 			</head>
 			<body>
 				<MantineProvider theme={theme} defaultColorScheme="dark">

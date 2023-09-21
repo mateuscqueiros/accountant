@@ -81,17 +81,13 @@ export default function DefaultTable({
 									return <DefaultItem key={item.id} item={item} />;
 								}
 							})}
-							<Table.Tr>
+							<Table.Tr style={{ fontSize: '1rem', fontWeight: 'bold' }}>
 								{header.map((_: string, index: number) => {
 									if (index === 0) {
-										return (
-											<Table.Td style={{ fontSize: '1.1rem' }} key={index}>
-												Total
-											</Table.Td>
-										);
+										return <Table.Td key={index}>Total</Table.Td>;
 									} else if (index === 1) {
 										return (
-											<Table.Td style={{ fontSize: '1.1rem' }} key={index}>
+											<Table.Td key={index}>
 												{activeData
 													.filter((item) => item.active === true)
 													.reduce((partialSum, a) => partialSum + a.value, 0)}

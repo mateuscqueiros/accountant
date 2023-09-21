@@ -5,7 +5,12 @@ import DefaultTable from '@/components/Tables';
 import TransferDataFormModal from '@/components/TransferDataForm';
 import { DataContext } from '@/contexts/DataContext';
 import ModalsContextProvider, { ModalsContext } from '@/contexts/ModalsContext';
-import { compareStartOfMonth, getCategoriesValues, getPercentageArray } from '@/utils/index';
+import {
+	compareStartOfMonth,
+	getCategoriesValues,
+	getCategory,
+	getPercentageArray,
+} from '@/utils/index';
 import {
 	Box,
 	Button,
@@ -38,8 +43,7 @@ export default function Home() {
 	const [monthPickerStateSelect, setMonthPickerStateSelect] = useState(false);
 	const [monthPickerStateImport, setMonthPickerStateImport] = useState(false);
 
-	const statisticsColors = ['cyan', 'orange', 'grape', 'teal', 'blue', 'yellow', 'orange', 'red'];
-	let ringProgressStatistics: any[] | undefined;
+	let ringProgressStatistics: any[] | undefined = undefined;
 
 	if (activeData) {
 		expensesTotal = activeData
@@ -59,7 +63,7 @@ export default function Home() {
 				return {
 					value: item,
 					tooltip: categoriesValues[index].label,
-					color: statisticsColors[index],
+					color: getCategory(data.user.categories, categoriesValues[index].id).color,
 				};
 			});
 		}
@@ -165,21 +169,20 @@ export default function Home() {
 									</Group>
 								</Flex>
 								<RingProgress
+									roundCaps
 									sections={
-										ringProgressStatistics
-											? ringProgressStatistics
-											: [
-													{
-														value: 100,
-														color: 'gray',
-														tooltip: 'Sem contas',
-													},
-											  ]
+										ringProgressStatistics || [
+											{
+												value: 100,
+												color: 'gray',
+												tooltip: 'Sem contas',
+											},
+										]
 									}
 								/>
 							</Flex>
 						</Paper>
-						<SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+						<SimpleGrid cols={{ base: 1, md: 2 }}>
 							<DefaultTable
 								title="Fixas"
 								header={['Nome', 'Valor', 'Vencimento']}
@@ -200,7 +203,7 @@ export default function Home() {
 							/>
 							<DefaultTable
 								title="Receitas"
-								header={['Nome', 'Valor', 'Dia criado', 'Parcelas', 'Vencimento']}
+								header={['Nome', 'Valor', 'Dia criado', 'Parcelas', 'Vencimento', 'Categorias']}
 								itemClass="recipe"
 							/>
 						</SimpleGrid>
@@ -210,6 +213,7 @@ export default function Home() {
 						<Divider />
 						<Text>Sem dados para esse mês.</Text>
 						<Group>
+							<Button>Olá</Button>
 							{data.items.length > 0 && (
 								<Button
 									onClick={() => {
