@@ -1,6 +1,6 @@
 .navbar {
 	background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
-	height: rem(750px);
+	height: calc(100dvh - 60px);
 	width: rem(300px);
 	display: flex;
 	flex-direction: column;
@@ -82,6 +82,7 @@
 	font-weight: 500;
 	height: rem(44px);
 	line-height: rem(44px);
+	cursor: pointer;
 
 	&:hover {
 		background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));

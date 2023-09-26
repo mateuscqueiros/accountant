@@ -89,15 +89,7 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 	);
 };
 
-export function Layout({
-	children,
-	active,
-	withPadding = true,
-}: {
-	withPadding?: boolean;
-	children: any;
-	active?: number;
-}) {
+export function Layout({ children, withPadding = true }: { withPadding?: boolean; children: any }) {
 	const [opened, setOpened] = useState(false);
 
 	useEffect(() => {

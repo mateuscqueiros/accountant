@@ -3,14 +3,19 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
 import { Layout } from '@/components/Layout';
-import DataContextProvider from '@/contexts/DataContext/DataContext';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { DatesProvider } from '@mantine/dates';
 import { Notifications } from '@mantine/notifications';
+import { usePathname } from 'next/navigation';
+import { DataContextProvider } from '../contexts';
 import { theme } from '../theme';
 
 export default function RootLayout({ children }: { children: any }) {
+	const path = usePathname();
+
+	const shouldHavePadding = !path.includes('user');
+
 	return (
 		<html lang="pt-BR">
 			<head>
@@ -28,7 +33,7 @@ export default function RootLayout({ children }: { children: any }) {
 					<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
 						<DataContextProvider>
 							<Notifications limit={5} />
-							<Layout>{children}</Layout>
+							<Layout withPadding={shouldHavePadding}>{children}</Layout>
 						</DataContextProvider>
 					</DatesProvider>
 				</MantineProvider>

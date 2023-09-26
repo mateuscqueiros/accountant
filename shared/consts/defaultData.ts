@@ -1,6 +1,6 @@
 import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
-import { CategoryType, UserDataType } from './types/data.types';
+import { CategoryType, UserDataType } from '../types/data.types';
 
 export const defaultCategories: CategoryType[] = [
 	{

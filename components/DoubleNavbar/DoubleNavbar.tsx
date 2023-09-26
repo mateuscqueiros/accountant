@@ -1,45 +1,23 @@
+import { tabsData } from '@/shared/consts/userTab.consts';
 import { Title } from '@mantine/core';
-import {
-	IconCalendarStats,
-	IconDeviceDesktopAnalytics,
-	IconFingerprint,
-	IconGauge,
-	IconHome2,
-	IconSettings,
-	IconUser,
-} from '@tabler/icons-react';
-import { useState } from 'react';
+import { UserTabContext } from 'app/user/page';
+import { useContext } from 'react';
 import classes from './DoubleNavbar.module.css';
 
-const mainLinksMockdata = [
-	{ icon: IconHome2, label: 'Home' },
-	{ icon: IconGauge, label: 'Dashboard' },
-	{ icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
-	{ icon: IconCalendarStats, label: 'Releases' },
-	{ icon: IconUser, label: 'Account' },
-	{ icon: IconFingerprint, label: 'Security' },
-	{ icon: IconSettings, label: 'Settings' },
-];
-
-const linksMockdata = ['Usuário', 'Carteiras', 'Categorias'];
-
 export function DoubleNavbar() {
-	const [active, setActive] = useState('Releases');
-	const [activeLink, setActiveLink] = useState('Settings');
+	const userTab = useContext(UserTabContext);
 
-	const links = linksMockdata.map((link) => (
-		<a
+	const links = tabsData.map((link) => (
+		<div
 			className={classes.link}
-			data-active={activeLink === link || undefined}
-			href="#"
-			onClick={(event) => {
-				event.preventDefault();
-				setActiveLink(link);
+			data-active={userTab.active.id === link.id || undefined}
+			onClick={() => {
+				userTab.setActive(link.id);
 			}}
-			key={link}
+			key={link.label}
 		>
-			{link}
-		</a>
+			{link.label}
+		</div>
 	));
 
 	return (
@@ -49,7 +27,6 @@ export function DoubleNavbar() {
 					<Title order={4} className={classes.title}>
 						Editar dados
 					</Title>
-
 					{links}
 				</div>
 			</div>

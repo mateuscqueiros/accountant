@@ -1,4 +1,4 @@
-import { dataInitialValues } from '@/shared/consts/data.consts';
+import { dataInitialValues } from '@/shared/consts';
 import { BillsDataItemType, DataContextType, TransferDataType, UserDataType } from '@/shared/types';
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
