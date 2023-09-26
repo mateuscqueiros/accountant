@@ -1,1 +1,0 @@
-export { DoubleNavbar } from './DoubleNavbar';

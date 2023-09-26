@@ -9,8 +9,4 @@ export const tabsData: TabType[] = [
 		id: 1,
 		label: 'Categorias',
 	},
-	{
-		id: 2,
-		label: 'Carteira',
-	},
 ];

@@ -1,13 +1,15 @@
 'use client';
-import { DoubleNavbar } from '@/components/DoubleNavbar';
+import { ConfigNav } from '@/components/ConfigNav';
+import { ConfigTabs } from '@/components/ConfigTabs/ConfigTabs';
 import { tabsData } from '@/shared/index';
 import { ActiveTabContextType, TabType } from '@/shared/types';
-import { Flex } from '@mantine/core';
+import { Container, Flex, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { ReactNode, createContext, useState } from 'react';
 
-export const UserTabContext = createContext<ActiveTabContextType>({} as ActiveTabContextType);
+export const ConfigTabContext = createContext<ActiveTabContextType>({} as ActiveTabContextType);
 
-export function UserTabProvider({ children }: { children: ReactNode }) {
+export function ConfigTabProvider({ children }: { children: ReactNode }) {
 	const setActive = (id: number) => {
 		setActiveTab(
 			tabsData.filter((tab) => {
@@ -19,7 +21,7 @@ export function UserTabProvider({ children }: { children: ReactNode }) {
 	const [active, setActiveTab] = useState<TabType>(tabsData[0]);
 
 	return (
-		<UserTabContext.Provider
+		<ConfigTabContext.Provider
 			value={{
 				active,
 				values: tabsData,
@@ -27,17 +29,22 @@ export function UserTabProvider({ children }: { children: ReactNode }) {
 			}}
 		>
 			{children}
-		</UserTabContext.Provider>
+		</ConfigTabContext.Provider>
 	);
 }
 
-export default function UserPage() {
+export default function ConfigPage() {
+	const theme = useMantineTheme();
+	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
+
 	return (
-		<UserTabProvider>
-			<Flex>
-				<DoubleNavbar />
-				<div>Other content</div>
+		<ConfigTabProvider>
+			<Flex direction={isMobile ? 'column' : 'row'}>
+				<ConfigNav />
+				<Container p={0}>
+					<ConfigTabs />
+				</Container>
 			</Flex>
-		</UserTabProvider>
+		</ConfigTabProvider>
 	);
 }
