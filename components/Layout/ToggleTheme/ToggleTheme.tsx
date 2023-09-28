@@ -1,18 +1,36 @@
-import { ActionIcon, Tooltip, useMantineColorScheme } from '@mantine/core';
-import { useHotkeys } from '@mantine/hooks';
-import { IconMoon, IconSun } from '@tabler/icons-react';
+"use client";
 
-export function ToggleTheme() {
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-	const dark = colorScheme === 'dark';
+import {
+  ActionIcon,
+  Tooltip,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
+import { IconMoon, IconSun } from "@tabler/icons-react";
+import cx from "clsx";
+import classes from "./ToggleTheme.module.css";
 
-	useHotkeys([['ctrl+shift+j', () => toggleColorScheme()]]);
+export const ToggleTheme = () => {
+  const { toggleColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light", {
+    getInitialValueInEffect: true,
+  });
 
-	return (
-		<Tooltip label={dark ? 'Tema claro' : 'Tema escuro'}>
-			<ActionIcon size="2.1rem" variant="default" onClick={() => toggleColorScheme()}>
-				{dark ? <IconSun size="1.3rem" /> : <IconMoon size="1.3rem" />}
-			</ActionIcon>
-		</Tooltip>
-	);
-}
+  useHotkeys([["ctrl+j", () => toggleColorScheme()]]);
+
+  return (
+    <Tooltip
+      label={computedColorScheme === "dark" ? "Tema claro" : "Tema escuro"}
+    >
+      <ActionIcon
+        size="2.1rem"
+        variant="default"
+        onClick={() => toggleColorScheme()}
+      >
+        <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
+        <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
+      </ActionIcon>
+    </Tooltip>
+  );
+};
