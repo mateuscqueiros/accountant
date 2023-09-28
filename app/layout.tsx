@@ -1,14 +1,16 @@
 'use client';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 
 import { Layout } from '@/components/Layout';
+import { DataContextProvider } from '@/contexts/DataContext';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { DatesProvider } from '@mantine/dates';
+import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { usePathname } from 'next/navigation';
-import { DataContextProvider } from '../contexts';
 import { theme } from '../theme';
 
 export default function RootLayout({ children }: { children: any }) {
@@ -31,10 +33,12 @@ export default function RootLayout({ children }: { children: any }) {
 			<body>
 				<MantineProvider theme={theme} defaultColorScheme="dark">
 					<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
-						<DataContextProvider>
-							<Notifications limit={5} />
-							<Layout withPadding={shouldHavePadding}>{children}</Layout>
-						</DataContextProvider>
+						<ModalsProvider>
+							<DataContextProvider>
+								<Notifications limit={5} />
+								<Layout withPadding={shouldHavePadding}>{children}</Layout>
+							</DataContextProvider>
+						</ModalsProvider>
 					</DatesProvider>
 				</MantineProvider>
 			</body>

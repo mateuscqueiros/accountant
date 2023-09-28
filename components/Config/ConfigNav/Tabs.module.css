@@ -1,0 +1,40 @@
+.container {
+	width: 100%;
+	background-color: transparent;
+}
+
+.tabsList {
+	&::before {
+		display: none;
+	}
+}
+
+.tab {
+	font-weight: 500;
+	height: rem(38);
+	background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+	position: relative;
+	bottom: -1px;
+	border-radius: 0;
+
+	&:hover {
+		background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+	}
+
+	&[data-active] {
+		background-color: transparent;
+		border-color: transparent;
+		border-bottom-color: transparent;
+		border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+}
+
+.scrollbar {
+	&[data-orientation='horizontal'] .thumb {
+		height: 1px;
+	}
+}

@@ -29,7 +29,6 @@ import { MonthPicker } from '@mantine/dates';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
 import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import _ from 'lodash';
 import { useContext, useState } from 'react';
 
 export default function Home() {
@@ -55,7 +54,7 @@ export default function Home() {
 			.reduce((partialSum, a) => partialSum + a.value, 0);
 
 		if (activeData.length > 0) {
-			let categoriesValues = getCategoriesValues(activeData, data.user.categories);
+			let categoriesValues = getCategoriesValues(activeData, data.values.user.categories);
 			let categoriesValuesToPercentage = getPercentageArray(
 				categoriesValues.map((item) => item.value)
 			);
@@ -63,7 +62,7 @@ export default function Home() {
 				return {
 					value: item,
 					tooltip: categoriesValues[index].label,
-					color: getCategory(data.user.categories, categoriesValues[index].id).color,
+					color: getCategory(data.values.user.categories, categoriesValues[index].id).color,
 				};
 			});
 		}
@@ -81,11 +80,9 @@ export default function Home() {
 						}}
 					>
 						<Title order={1}>
-							{_.capitalize(
-								format(new Date(data.user.activeMonth), "MMMM' de 'yyyy", {
-									locale: ptBR,
-								})
-							)}
+							{format(new Date(data.values.activeMonth), "MMMM' de 'yyyy", {
+								locale: ptBR,
+							}).replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
 						</Title>
 						{monthPickerStateSelect ? <IconCaretUpFilled /> : <IconCaretDownFilled />}
 					</Group>
@@ -98,7 +95,7 @@ export default function Home() {
 						<Box w="fit-content" m="0 auto">
 							<MonthPicker
 								placeholder="01/01/2023"
-								value={startOfMonth(new Date(data.user.activeMonth))}
+								value={startOfMonth(new Date(data.values.activeMonth))}
 								getYearControlProps={(date) => {
 									if (date.getFullYear() === new Date().getFullYear()) {
 										return {
@@ -123,7 +120,7 @@ export default function Home() {
 									}
 
 									if (
-										data.items.every(
+										data.values.items.every(
 											(billItem) => !compareStartOfMonth(billItem.date, date.toString())
 										)
 									) {
@@ -214,7 +211,7 @@ export default function Home() {
 						<Text>Sem dados para esse mês.</Text>
 						<Group>
 							<Button>Olá</Button>
-							{data.items.length > 0 && (
+							{data.values.items.length > 0 && (
 								<Button
 									onClick={() => {
 										modals.transferData.open();
@@ -239,12 +236,12 @@ export default function Home() {
 										const obj = { disabled: false };
 
 										// Se não houver dados para certo mês
-										const someBillData = data.items.some(
+										const someBillData = data.values.items.some(
 											(billItem) =>
 												date.getMonth() === new Date(billItem.date).getMonth() &&
 												date.getFullYear() === new Date(billItem.date).getFullYear() &&
-												data.items &&
-												data.items.length > 0
+												data.values.items &&
+												data.values.items.length > 0
 										);
 										if (!someBillData) {
 											obj.disabled = true;

@@ -3,7 +3,7 @@ import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from 
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
 import classes from './Layout.module.css';
 
@@ -65,25 +65,23 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 
 	return (
 		<>
-			<Box p={rem('8px')}>
-				<Box mt="md">
-					<Stack>
-						{options.map((item, index) => {
-							const { icon, label, link } = item;
-							return (
-								<NavIcon
-									key={index}
-									data={{
-										icon,
-										label,
-										link,
-										setOpened,
-									}}
-								/>
-							);
-						})}
-					</Stack>
-				</Box>
+			<Box p={rem('8px')} mt="md">
+				<Stack>
+					{options.map((item, index) => {
+						const { icon, label, link } = item;
+						return (
+							<NavIcon
+								key={index}
+								data={{
+									icon,
+									label,
+									link,
+									setOpened,
+								}}
+							/>
+						);
+					})}
+				</Stack>
 			</Box>
 		</>
 	);
@@ -91,10 +89,6 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 
 export function Layout({ children, withPadding = true }: { withPadding?: boolean; children: any }) {
 	const [opened, setOpened] = useState(false);
-
-	useEffect(() => {
-		console.log(opened);
-	}, [opened]);
 
 	return (
 		<AppShell

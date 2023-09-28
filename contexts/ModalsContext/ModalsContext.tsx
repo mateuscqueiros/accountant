@@ -1,11 +1,11 @@
-import { ItemForm } from '@/shared/types/forms.types';
-import { ModalsContextType } from '@/shared/types/modals.types';
 import { ReactNode, createContext, useState } from 'react';
+import { ItemForm } from 'src/types/Forms/forms.types';
+import { ModalsContextType } from 'src/types/Modals/modals.types';
 import {
 	itemModalInitialValues,
 	transferDataModalInitialValues,
-} from '../../shared/consts/modals.consts';
-import { BillsDataItemType } from '../../shared/types/data.types';
+} from '../../src/consts/Modals/modals.consts';
+import { BillsDataItem } from '../../src/types/Data/data.types';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);
 
@@ -110,7 +110,7 @@ export function ModalsContextProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	const openUpdateItem = (billDataItem: BillsDataItemType) => {
+	const openUpdateItem = (billDataItem: BillsDataItem) => {
 		setData((prev) => {
 			return {
 				...prev,

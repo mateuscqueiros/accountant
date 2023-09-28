@@ -1,7 +1,6 @@
+import { itemFormInitialValues as initialValues } from '@/consts/Forms/forms.consts';
 import { DataContext } from '@/contexts/DataContext/DataContext';
 import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
-import { itemFormInitialValues as initialValues } from '@/shared/consts/forms.consts';
-import { ItemForm } from '@/shared/types/forms.types';
 import { getCategoriesForm } from '@/utils/categories';
 import {
 	getTransformObject,
@@ -30,6 +29,7 @@ import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { ItemForm } from 'src/types/Forms/forms.types';
 import { v4 as uuidv4 } from 'uuid';
 
 export function ItemsForm() {
@@ -47,7 +47,7 @@ export function ItemsForm() {
 	const itemForm = useForm<ItemForm>({
 		initialValues,
 		validate: getValidateObject(),
-		transformValues: (values) => getTransformObject(values, data.user.categories),
+		transformValues: (values) => getTransformObject(values, data.values.user.categories),
 	});
 
 	const updateForm = useCallback(
@@ -66,14 +66,14 @@ export function ItemsForm() {
 	const handleSubmit = useCallback(
 		(values: ItemForm) => {
 			if (modal.values.action === 'update') {
-				data.updateItem(
-					sanitizeBeforeCommiting(modal.values.updateItem, values, data.user.categories)
+				data.item.update(
+					sanitizeBeforeCommiting(modal.values.updateItem, values, data.values.user.categories)
 				);
 				modal.reset();
 			} else {
 				itemForm.reset();
 				modal.reset();
-				data.createItem(sanitizeBeforeCommiting(uuidv4(), values, data.user.categories));
+				data.item.create(sanitizeBeforeCommiting(uuidv4(), values, data.values.user.categories));
 			}
 		},
 		[itemForm, modal]
@@ -195,7 +195,7 @@ export function ItemsForm() {
 							label="Categoria"
 							placeholder="Selecione etiquetas"
 							mb="md"
-							data={getCategoriesForm(data.user.categories)}
+							data={getCategoriesForm(data.values.user.categories)}
 							// itemComponent={SelectItem}
 							searchable
 							allowDeselect={false}
@@ -306,7 +306,7 @@ export function ItemsForm() {
 							onClick={() => {
 								setConfirmModal({ opened: false, confirmed: true });
 								itemForm.reset();
-								data.deleteItem(modal.values.updateItem);
+								data.item.delete(modal.values.updateItem);
 								modal.reset();
 							}}
 						>

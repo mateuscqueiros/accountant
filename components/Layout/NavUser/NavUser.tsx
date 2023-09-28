@@ -37,7 +37,7 @@ export const NavUser = ({ user }: { user: any }) => {
 						<Text size="sm" fw={500}>
 							{user.name}
 						</Text>
-						<Text color="dimmed" size="xs">
+						<Text c="dimmed" size="xs">
 							{user.email}
 						</Text>
 					</Box>

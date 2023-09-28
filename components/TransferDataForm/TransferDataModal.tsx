@@ -1,7 +1,5 @@
 import { DataContext } from '@/contexts/DataContext/DataContext';
 import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
-import { BillsDataItemType } from '@/shared/types/data.types';
-import { TransferDataForm } from '@/shared/types/forms.types';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import {
 	ActionIcon,
@@ -21,8 +19,9 @@ import { useForm } from '@mantine/form';
 import { IconArrowRight, IconTransfer } from '@tabler/icons-react';
 import { format, startOfMonth, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import _ from 'lodash';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { BillsDataItem } from 'src/types/Data/data.types';
+import { TransferDataForm } from 'src/types/Forms/forms.types';
 
 export function TransferDataModal() {
 	const data = useContext(DataContext);
@@ -46,7 +45,7 @@ export function TransferDataModal() {
 	});
 
 	let calculateSumOfSelectedItems = useCallback(
-		(data: BillsDataItemType[] | undefined, form: TransferDataForm) => {
+		(data: BillsDataItem[] | undefined, form: TransferDataForm) => {
 			let sum = 0;
 			if (data) {
 				data.filter((item) => {
@@ -68,7 +67,9 @@ export function TransferDataModal() {
 
 	let findData = useCallback(
 		(date: string) => {
-			let dataToImport = data.items.filter((billItem) => compareStartOfMonth(billItem.date, date));
+			let dataToImport = data.values.items.filter((billItem) =>
+				compareStartOfMonth(billItem.date, date)
+			);
 
 			if (dataToImport.length > 0) {
 				return dataToImport;
@@ -89,7 +90,7 @@ export function TransferDataModal() {
 		(values: TransferDataForm) => {
 			data.transferData({
 				from: values.date,
-				to: data.user.activeMonth,
+				to: data.values.activeMonth,
 				fixed: values.fixed,
 				installments: values.installments,
 				monthly: values.monthly,
@@ -123,19 +124,15 @@ export function TransferDataModal() {
 				title={
 					<Flex fw={600} direction="row" align="center">
 						<Text mr={10}>
-							{_.capitalize(
-								format(new Date(transferDataForm.values.date), "MMMM' de 'yyyy", {
-									locale: ptBR,
-								})
-							)}
+							{format(new Date(transferDataForm.values.date), "MMMM' de 'yyyy", {
+								locale: ptBR,
+							}).replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
 						</Text>
 						<IconArrowRight size="1rem" />
 						<Text ml={10}>
-							{_.capitalize(
-								format(new Date(data.user.activeMonth), "MMMM' de 'yyyy", {
-									locale: ptBR,
-								})
-							)}
+							{format(new Date(data.values.activeMonth), "MMMM' de 'yyyy", {
+								locale: ptBR,
+							}).replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
 						</Text>
 					</Flex>
 				}
@@ -169,7 +166,7 @@ export function TransferDataModal() {
 								const obj = { disabled: false };
 
 								// Se não houver dados para certo mês
-								const someBillData = data.items.some(
+								const someBillData = data.values.items.some(
 									(billItem) =>
 										date.getMonth() === new Date(billItem.date).getMonth() &&
 										date.getFullYear() === new Date(billItem.date).getFullYear()
@@ -179,7 +176,7 @@ export function TransferDataModal() {
 									obj.disabled = true;
 								}
 
-								if (date.getMonth() === new Date(data.user.activeMonth).getMonth()) {
+								if (date.getMonth() === new Date(data.values.activeMonth).getMonth()) {
 									return {
 										style: (theme) => ({
 											color: theme.primaryColor,

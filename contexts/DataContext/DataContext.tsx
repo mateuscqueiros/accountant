@@ -1,58 +1,16 @@
-import { dataInitialValues } from '@/shared/consts';
-import { BillsDataItemType, DataContextType, TransferDataType, UserDataType } from '@/shared/types';
+import { defaultData as dataInitialValues } from '@/consts/Data';
+import { NotificationError, NotificationSuccess } from '@/utils/Notifications';
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
-import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { ReactNode, createContext } from 'react';
+import { ReactNode, createContext, useState } from 'react';
+import { BillsDataItem, Category, DataContextType, TransferData, UserData } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
 
 export function DataContextProvider({ children }: { children: ReactNode }) {
-	const createItem = (item: BillsDataItemType) => {
-		setData((prev) => {
-			return {
-				...prev,
-				items: [...prev.items, item],
-			};
-		});
-
-		notifications.show({
-			title: `${item.label}`,
-			message: 'O item foi criado',
-		});
-	};
-
-	const updateItem = (item: BillsDataItemType) => {
-		setData((prev) => {
-			let itemToUpdate = prev.items.filter((billItem) => billItem.id === item.id)[0];
-
-			itemToUpdate = {
-				...item,
-			};
-
-			return {
-				...prev,
-				items: [...prev.items.filter((billItem) => billItem.id !== item.id), itemToUpdate],
-			};
-		});
-	};
-
-	const deleteItem = (id: string) => {
-		setData((prev) => {
-			let otherItems = prev.items.filter((billItem) => {
-				return billItem.id !== id;
-			});
-
-			return {
-				...prev,
-				items: [...otherItems],
-			};
-		});
-	};
-
 	const setActiveMonth = (date: string) => {
 		setData((prev) => {
 			return {
@@ -65,7 +23,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	const transferData = (transferData: TransferDataType) => {
+	const transferData = (transferData: TransferData) => {
 		setData((prev) => {
 			const payload = transferData;
 			const state = data;
@@ -83,7 +41,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
 					);
 				});
 
-			let updatedItems: BillsDataItemType[] = [];
+			let updatedItems: BillsDataItem[] = [];
 
 			/* Mudar a data para o novo mês */
 			if (dataFromMonth && dataFromMonth.length > 0) {
@@ -178,31 +136,10 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
 
 	const selectActiveData = () => {
 		return data !== undefined
-			? data.items.filter((billItem) => compareStartOfMonth(billItem.date, data.user.activeMonth))
+			? data.items.filter((billItem) => compareStartOfMonth(billItem.date, data.activeMonth))
 			: dataInitialValues.items.filter((billItem) =>
-					compareStartOfMonth(billItem.date, dataInitialValues.user.activeMonth)
+					compareStartOfMonth(billItem.date, dataInitialValues.activeMonth)
 			  );
-	};
-
-	const addCategory = ({ label, color }: { label: string; color: string }) => {
-		setData((prev) => {
-			return {
-				...prev,
-				user: {
-					...prev.user,
-					categories: [
-						...prev.user.categories,
-						{
-							id: getNextCategoryId(
-								data !== undefined ? data.user.categories : dataInitialValues.user.categories
-							),
-							label,
-							color,
-						},
-					],
-				},
-			};
-		});
 	};
 
 	const log = (pre?: string) => {
@@ -213,23 +150,169 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
 		}
 	};
 
-	const [data, setData] = useLocalStorage<UserDataType>({
-		key: 'accountant-data',
-		defaultValue: dataInitialValues,
-	});
+	/* Items */
+	const createItem = (item: BillsDataItem) => {
+		setData((prev) => {
+			return {
+				...prev,
+				items: [...prev.items, item],
+			};
+		});
+
+		notifications.show({
+			title: `${item.label}`,
+			message: 'O item foi criado',
+		});
+	};
+
+	const updateItem = (item: BillsDataItem) => {
+		setData((prev) => {
+			let itemToUpdate = prev.items.filter((billItem) => billItem.id === item.id)[0];
+
+			itemToUpdate = {
+				...item,
+			};
+
+			return {
+				...prev,
+				items: [...prev.items.filter((billItem) => billItem.id !== item.id), itemToUpdate],
+			};
+		});
+	};
+
+	const deleteItem = (id: string) => {
+		setData((prev) => {
+			let otherItems = prev.items.filter((billItem) => {
+				return billItem.id !== id;
+			});
+
+			return {
+				...prev,
+				items: [...otherItems],
+			};
+		});
+	};
+
+	/* Categories */
+	const addCategory = ({ label, color }: { label: string; color: string }) => {
+		setData((prev) => {
+			return {
+				...prev,
+				user: {
+					...prev.user,
+					categories: [
+						...prev.user.categories,
+						{
+							id: getNextCategoryId(data.user.categories),
+							label,
+							color,
+						},
+					],
+				},
+			};
+		});
+	};
+
+	const editCategory = (category: Category) => {
+		let otherCategories = data.user.categories.filter((categoryItem) => {
+			return categoryItem.id !== category.id;
+		});
+
+		setData((prev) => {
+			return {
+				...prev,
+				user: {
+					...prev.user,
+					categories: [...otherCategories, category],
+				},
+			};
+		});
+
+		return NotificationSuccess({
+			message: `A categoria ${category.label} foi editada.`,
+		});
+	};
+
+	const deleteCategory = (id: number) => {
+		data.items.map((item) => {
+			console.log(item.categoryId, ', ');
+		});
+
+		let categoryToDelete = data.user.categories.filter((category) => {
+			return category.id === id;
+		})[0];
+
+		let defaultCategory = data.user.categories.filter((category) => {
+			return category.default;
+		})[0];
+
+		if (!categoryToDelete.default) {
+			let otherCategories = data.user.categories.filter((categoryItem) => {
+				return categoryItem.id !== id;
+			});
+
+			// Remove category from items and set to default category
+			let items = data.items.map((item) => {
+				if (item.categoryId === id) {
+					item.categoryId = defaultCategory.id;
+				}
+				return item;
+			});
+
+			setData((prev) => {
+				return {
+					...prev,
+					items,
+					user: {
+						...prev.user,
+						categories: [...otherCategories],
+					},
+				};
+			});
+
+			data.items.map((item) => {
+				console.log(item.categoryId, ', ');
+			});
+
+			return NotificationSuccess({
+				message: `A categoria ${categoryToDelete.label} foi deletada. Seus itens agora pertencem à categoria ${defaultCategory.label}.`,
+			});
+		}
+
+		return NotificationError({
+			message: `A categoria ${categoryToDelete.label} é uma categoria padrão. Não é possível deletar categorias padrão`,
+		});
+	};
+
+	// const [data, setData] = useLocalStorage<UserData>({
+	// 	key: 'accountant-data',
+	// 	defaultValue: dataInitialValues,
+	// });
+
+	const [data, setData] = useState<UserData>(dataInitialValues);
 
 	return (
 		<DataContext.Provider
 			value={{
-				...data,
+				values: {
+					...data,
+				},
+				item: {
+					create: createItem,
+					update: updateItem,
+					delete: deleteItem,
+				},
 
-				createItem,
-				updateItem,
-				deleteItem,
+				category: {
+					add: addCategory,
+					edit: editCategory,
+					delete: deleteCategory,
+				},
+
 				setActiveMonth,
 				transferData,
 				selectActiveData,
-				addCategory,
+
 				log,
 			}}
 		>

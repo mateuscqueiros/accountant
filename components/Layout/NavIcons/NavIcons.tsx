@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import classes from './NavIcons.module.css';
 
-export type NavIconType = {
+export type NavIcon = {
 	icon: JSX.Element;
 	label: string;
 	link: string;
 	setOpened: Dispatch<SetStateAction<boolean>>;
 };
 
-export const NavIcon = ({ data }: { data: NavIconType }) => {
+export const NavIcon = ({ data }: { data: NavIcon }) => {
 	const { icon, label, link, setOpened } = data;
 	const getActiveNavTab = useCallback((link: string) => {
 		const path = usePathname().split('/');

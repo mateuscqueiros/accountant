@@ -1,16 +1,16 @@
 import { DataContext } from '@/contexts/DataContext/DataContext';
 import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
-import { BillsDataItemType } from '@/shared/types/data.types';
 import { getCategory } from '@/utils/categories';
 import { Badge, Table } from '@mantine/core';
 import { getDay } from 'date-fns';
 import { useContext } from 'react';
+import { BillsDataItem } from 'src/types/Data/data.types';
 
-export function DefaultItem({ item }: { item: BillsDataItemType }) {
+export function DefaultItem({ item }: { item: BillsDataItem }) {
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
 
-	const category = getCategory(data.user.categories, item.categoryId);
+	const category = getCategory(data.values.user.categories, item.categoryId);
 
 	return (
 		<>
@@ -30,7 +30,7 @@ export function DefaultItem({ item }: { item: BillsDataItemType }) {
 				</Table.Td>
 				<Table.Td>{item.type === 'monthly' ? 'Sem' : item.dueDay}</Table.Td>
 				<Table.Td>
-					<Badge variant="light" color={category.color}>
+					<Badge variant="light" color={`var(--mantine-color-${category.color})`}>
 						{category.label}
 					</Badge>
 				</Table.Td>
