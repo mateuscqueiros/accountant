@@ -1,27 +1,30 @@
-## Accountant (Beta)
+# Accountant (Beta)
 
 Um app para controlar gastos financeiros em base mensal com suporte a assinaturas e parcelas.
 
 ## Features
 
-- Adicionar, atualizar e deletar itens que representam um gasto.
+- Adicionar, atualizar e deletar itens que representam um gasto ou receita.
 - Classificar cada item em gasto do tipo "Mensal", "Fixo", "Parcelado".
-- Etiquetar os gastos em categorias pré-prontas ou criadas pelo usuário.
+- Categorizar itens com categorias personalizáveis.
+- Ativar/desativar itens na contagem mensal.
+- Transferir itens entre os meses.
+- Balanço e estatísticas mensais.
+- Tema dark e light.
 
 ## Tecnologias
+
 - React
 - Next.js
 - Typescript
-- Redux
-- @mantine/core e derivados
+- Mantine
 - @tabler/icons-react
 - lodash
 - date-fns
 
 ## Futuro
 
-- Core functionalities.
-- Página de estatísticas.
-- Página de histórico.
-- Ativar/desativar item na tabela.
-- Iniciar novas tabelas dinamicamente.
+- Mudar forma como os itens são organizados e mostrados mensalmente.
+- Página de estatísticas
+- Edição das etiquetas.
+- Criação de carteiras.
