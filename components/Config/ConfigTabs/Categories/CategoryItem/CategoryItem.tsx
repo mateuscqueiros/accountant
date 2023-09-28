@@ -31,7 +31,7 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 			<Table.Tr className={classes.item} w="100%" px="md" py="sm">
 				<Table.Td
 					onClick={() => {
-						categoryCtx.openModal();
+						categoryCtx.openModal('edit');
 						categoryCtx.setValues(category);
 					}}
 				>
@@ -42,7 +42,7 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 				</Table.Td>
 				<Table.Td
 					onClick={() => {
-						categoryCtx.openModal();
+						categoryCtx.openModal('edit');
 						categoryCtx.setValues(category);
 					}}
 				>
