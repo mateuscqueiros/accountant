@@ -16,7 +16,7 @@ import { theme } from '../theme';
 export default function RootLayout({ children }: { children: any }) {
 	const path = usePathname();
 
-	const shouldHavePadding = !path.includes('user');
+	const shouldHavePadding = !path.includes('categories');
 
 	return (
 		<html lang="pt-BR">

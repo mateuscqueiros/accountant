@@ -1,40 +1,55 @@
-import { tabsData } from '@/consts/UserTab/userTab.consts';
-import { Container, ScrollArea, Tabs, Title, useMantineTheme } from '@mantine/core';
+import { DataContext } from '@/contexts/DataContext';
+import { Container, ScrollArea, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { ConfigTabContext } from 'app/user/page';
+import { CategoryTabsContext } from 'app/categories/page';
 import { useContext } from 'react';
-import doubleNavBarclasses from './DoubleNavBar.module.css';
+import navBarClasses from './NavBar.module.css';
 import tabClasses from './Tabs.module.css';
 
 export function ConfigNav() {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 	const { width } = useViewportSize();
+	const data = useContext(DataContext);
 
-	const configTab = useContext(ConfigTabContext);
+	const categoryTab = useContext(CategoryTabsContext);
+	const categories = data.values.user.categories;
 
-	const items = tabsData.map((tab) => (
+	const tabLinks = categories.map((category) => (
 		<Tabs.Tab
 			onClick={() => {
-				configTab.setActive(tab.id);
+				categoryTab.setActive(category.id);
 			}}
-			value={tab.label}
-			key={tab.label}
+			value={category.label}
+			key={category.label}
 		>
-			{tab.label}
+			{category.label}
 		</Tabs.Tab>
 	));
 
-	const links = tabsData.map((link) => (
+	const links = [
+		{
+			id: -1,
+			label: 'Todas',
+			color: 'blue-6',
+		},
+		...categories,
+	];
+
+	const navLinks = links.map((category) => (
 		<div
-			className={doubleNavBarclasses.link}
-			data-active={configTab.active.id === link.id || undefined}
-			onClick={() => {
-				configTab.setActive(link.id);
+			style={{
+				backgroundColor:
+					categoryTab.active === category.id ? `var(--mantine-color-${category.color})` : undefined,
 			}}
-			key={link.label}
+			className={navBarClasses.link}
+			data-active={categoryTab.active === category.id || undefined}
+			onClick={() => {
+				categoryTab.setActive(category.id);
+			}}
+			key={category.label}
 		>
-			{link.label}
+			{category.label}
 		</div>
 	));
 
@@ -53,7 +68,7 @@ export function ConfigNav() {
 					}}
 				>
 					<Tabs.List w={width}>
-						{items.map((item, index) => {
+						{tabLinks.map((item, index) => {
 							return item;
 						})}
 					</Tabs.List>
@@ -61,13 +76,11 @@ export function ConfigNav() {
 			</ScrollArea>
 		</Container>
 	) : (
-		<nav className={doubleNavBarclasses.navbar}>
-			<div className={doubleNavBarclasses.wrapper}>
-				<div className={doubleNavBarclasses.main}>
-					<Title order={4} className={doubleNavBarclasses.title}>
-						Editar dados
-					</Title>
-					{links}
+		<nav className={navBarClasses.navbar}>
+			<div className={navBarClasses.wrapper}>
+				<div className={navBarClasses.main}>
+					<Text className={navBarClasses.title}>Categorias</Text>
+					{navLinks}
 				</div>
 			</div>
 		</nav>

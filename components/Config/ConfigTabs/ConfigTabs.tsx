@@ -1,20 +1,26 @@
+import { DataContext } from '@/contexts/DataContext';
+import { getCategoryById } from '@/utils/categories';
 import { Text } from '@mantine/core';
-import { ConfigTabContext } from 'app/user/page';
+import { CategoryTabsContext } from 'app/categories/page';
 import { useContext } from 'react';
-import { Categories, User, Wrapper } from '.';
+import { Categories, Wrapper } from '.';
 
 export function ConfigTab() {
-	const tabs = useContext(ConfigTabContext);
+	const categoriesCtx = useContext(CategoryTabsContext);
+	const data = useContext(DataContext);
+	const activeCategory = getCategoryById(data.values.user.categories, categoriesCtx.active);
 
-	return <Wrapper title={tabs.active.label}>{selectActiveTab(tabs.active.id)}</Wrapper>;
+	return (
+		<Wrapper title={activeCategory ? activeCategory.label : 'Editar categorias'}>
+			{selectActiveTab(categoriesCtx.active)}
+		</Wrapper>
+	);
 }
 
-function selectActiveTab(tabId: number) {
-	switch (tabId) {
-		case 1:
+function selectActiveTab(categoryId: number) {
+	switch (categoryId) {
+		case -1:
 			return <Categories />;
-		case 0:
-			return <User />;
 		default:
 			return <Text>Selecione uma tab</Text>;
 	}

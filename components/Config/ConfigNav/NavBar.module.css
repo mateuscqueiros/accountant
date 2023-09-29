@@ -15,15 +15,6 @@
 	flex: 1;
 }
 
-.aside {
-	flex: 0 0 rem(60px);
-	background-color: var(--mantine-color-body);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
-}
-
 .main {
 	flex: 1;
 	background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
@@ -52,9 +43,7 @@
 }
 
 .title {
-	font-family:
-		Greycliff CF,
-		var(--mantine-font-family);
+	font-weight: bold;
 	margin-bottom: var(--mantine-spacing-xl);
 	background-color: var(--mantine-color-body);
 	padding: var(--mantine-spacing-md);
@@ -96,7 +85,7 @@
 		&,
 		&:hover {
 			border-left-color: var(--mantine-color-blue-filled);
-			background-color: var(--mantine-color-blue-filled);
+			/* background-color: var(--mantine-color-blue-filled); */
 			color: var(--mantine-color-white);
 		}
 	}

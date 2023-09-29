@@ -108,3 +108,13 @@ export function getNextCategoryColor(categories: Category[]): string {
 		return colors[categories.length + 1];
 	}
 }
+
+export function getCategoryById(categories: Category[], id: number): Category | undefined {
+	const foundCategory = categories.filter((category) => category.id === id);
+
+	if (foundCategory.length > 0) {
+		return foundCategory[0];
+	}
+
+	return undefined;
+}

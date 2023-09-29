@@ -154,13 +154,13 @@ export default function Home() {
 								<Flex direction="column" justify="center" style={{ gap: 0 }}>
 									<Group style={{ gap: 0 }}>
 										<Text mr={10}>Saldo mensal:</Text>
-										<Text fz="lg" fw={600} color="green.7">
+										<Text fz="lg" fw={600} c="green.7">
 											${(incomeTotal - expensesTotal).toFixed(2)}
 										</Text>
 									</Group>
 									<Group style={{ gap: 0 }}>
 										<Text mr={10}>Total de gastos:</Text>
-										<Text fz="lg" color="red.5" fw={600}>
+										<Text fz="lg" c="red.5" fw={600}>
 											${expensesTotal.toFixed(2)}
 										</Text>
 									</Group>
