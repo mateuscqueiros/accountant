@@ -1,3 +1,3 @@
 export { Categories } from './Categories/Categories';
-export { ConfigTab } from './ConfigTabs';
+export { ConfigTabs } from './ConfigTabs';
 export { Wrapper } from './Wrapper';

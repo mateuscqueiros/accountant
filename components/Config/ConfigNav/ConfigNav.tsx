@@ -1,7 +1,9 @@
 import { DataContext } from '@/contexts/DataContext';
+import { sortCategories } from '@/utils/categories';
 import { Container, ScrollArea, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { CategoryTabsContext } from 'app/categories/page';
+import { CategoryTabsContext } from 'app/categories/layout';
+import Link from 'next/link';
 import { useContext } from 'react';
 import navBarClasses from './NavBar.module.css';
 import tabClasses from './Tabs.module.css';
@@ -13,44 +15,35 @@ export function ConfigNav() {
 	const data = useContext(DataContext);
 
 	const categoryTab = useContext(CategoryTabsContext);
-	const categories = data.values.user.categories;
+	const categories = sortCategories(data.values.user.categories);
 
 	const tabLinks = categories.map((category) => (
-		<Tabs.Tab
-			onClick={() => {
-				categoryTab.setActive(category.id);
-			}}
-			value={category.label}
-			key={category.label}
-		>
-			{category.label}
-		</Tabs.Tab>
+		<Link key={category.id} className={tabClasses.link} href={`/categories/${category.id}`}>
+			<Tabs.Tab value={category.label} key={category.label}>
+				{category.label}
+			</Tabs.Tab>
+		</Link>
 	));
 
-	const links = [
-		{
-			id: -1,
-			label: 'Todas',
-			color: 'blue-6',
-		},
-		...categories,
-	];
-
-	const navLinks = links.map((category) => (
-		<div
-			style={{
-				backgroundColor:
-					categoryTab.active === category.id ? `var(--mantine-color-${category.color})` : undefined,
-			}}
-			className={navBarClasses.link}
-			data-active={categoryTab.active === category.id || undefined}
-			onClick={() => {
-				categoryTab.setActive(category.id);
-			}}
-			key={category.label}
+	const navLinks = categories.map((category) => (
+		<Link
+			className={navBarClasses.link_wrapper}
+			key={category.id}
+			href={`/categories/${String(category.id)}`}
 		>
-			{category.label}
-		</div>
+			<div
+				style={{
+					backgroundColor:
+						categoryTab.active === category.id
+							? `var(--mantine-color-${category.color})`
+							: undefined,
+				}}
+				className={navBarClasses.link}
+				data-active={categoryTab.active === category.id || undefined}
+			>
+				{category.label}
+			</div>
+		</Link>
 	));
 
 	return isMobile ? (
@@ -68,6 +61,9 @@ export function ConfigNav() {
 					}}
 				>
 					<Tabs.List w={width}>
+						<Link className={tabClasses.link} href={`/categories`}>
+							<Tabs.Tab value="Todas">Todas</Tabs.Tab>
+						</Link>
 						{tabLinks.map((item, index) => {
 							return item;
 						})}
@@ -80,6 +76,18 @@ export function ConfigNav() {
 			<div className={navBarClasses.wrapper}>
 				<div className={navBarClasses.main}>
 					<Text className={navBarClasses.title}>Categorias</Text>
+					<Link className={navBarClasses.link_wrapper} href={`/categories`}>
+						<div
+							style={{
+								backgroundColor:
+									categoryTab.active === -1 ? `var(--mantine-color-blue-6)` : undefined,
+							}}
+							className={navBarClasses.link}
+							data-active={categoryTab.active === -1 || undefined}
+						>
+							Todos
+						</div>
+					</Link>
 					{navLinks}
 				</div>
 			</div>
