@@ -2,24 +2,21 @@
 import { Group, Text, Tooltip, UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import classes from './NavIcons.module.css';
 
-export type NavIcon = {
+export type NavIconProps = {
 	icon: JSX.Element;
 	label: string;
 	link: string;
 	setOpened: Dispatch<SetStateAction<boolean>>;
 };
 
-export const NavIcon = ({ data }: { data: NavIcon }) => {
+export const NavIcon = ({ data }: { data: NavIconProps }) => {
 	const { icon, label, link, setOpened } = data;
 	const path = usePathname().split('/');
-	const getActiveNavTab = useCallback((link: string) => {
-		return link.split('/')[1] === path[1];
-	}, []);
 
-	let active = getActiveNavTab(link);
+	let isActive = link.split('/')[1] === path[1];
 
 	return (
 		<Link
@@ -31,7 +28,7 @@ export const NavIcon = ({ data }: { data: NavIcon }) => {
 			style={{ textDecoration: 'inherit' }}
 		>
 			<Tooltip label={label} position="right">
-				<UnstyledButton className={[classes.unstyled_button, active && classes.active].join(' ')}>
+				<UnstyledButton className={[classes.unstyled_button, isActive && classes.active].join(' ')}>
 					<Group>
 						{icon}
 						<Text className={classes.text} size="sm">
