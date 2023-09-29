@@ -7,8 +7,8 @@ import { AddCategory } from './AddCategory/AddCategory';
 import { CategoryItem } from './CategoryItem/CategoryItem';
 import { ColorSwatchInput } from './ColorSwatchInput/ColorSwatchInput';
 
-interface CategoryTabContext {
-	openModal: (action?: CategoryTabContext['action']) => void;
+interface CategoriesModalContext {
+	openModal: (action?: CategoriesModalContext['action']) => void;
 	closeModal: () => void;
 	reset: () => void;
 	setValues: (category: Category) => void;
@@ -17,10 +17,12 @@ interface CategoryTabContext {
 	values: Category;
 }
 
-export const CategoryTabContext = createContext<CategoryTabContext>({} as CategoryTabContext);
+export const CategoriesModalContext = createContext<CategoriesModalContext>(
+	{} as CategoriesModalContext
+);
 
 export function CategoryTabProvider({ children }: { children: ReactElement }) {
-	const openModal = (action?: CategoryTabContext['action']) => {
+	const openModal = (action?: CategoriesModalContext['action']) => {
 		setData((prev) => {
 			return {
 				...prev,
@@ -61,7 +63,7 @@ export function CategoryTabProvider({ children }: { children: ReactElement }) {
 		});
 	};
 
-	const [data, setData] = useState<CategoryTabContext>({
+	const [data, setData] = useState<CategoriesModalContext>({
 		openModal,
 		closeModal,
 		setValues,
@@ -75,7 +77,7 @@ export function CategoryTabProvider({ children }: { children: ReactElement }) {
 		},
 	});
 
-	return <CategoryTabContext.Provider value={data}>{children}</CategoryTabContext.Provider>;
+	return <CategoriesModalContext.Provider value={data}>{children}</CategoriesModalContext.Provider>;
 }
 
 export function Categories() {
@@ -120,7 +122,7 @@ export function Categories() {
 }
 
 function CategoryModal() {
-	const categoryCtx = useContext(CategoryTabContext);
+	const categoryCtx = useContext(CategoriesModalContext);
 	const data = useContext(DataContext);
 
 	const form = useForm<Category>({

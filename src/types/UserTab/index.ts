@@ -1,1 +1,1 @@
-export type { ActiveTabContext, Tab } from './userTab.type';
+export type { CategoryTabsContextType, Tab } from './userTab.type';

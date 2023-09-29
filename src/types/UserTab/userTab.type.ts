@@ -1,6 +1,8 @@
-export interface ActiveTabContext {
-	active: Tab;
-	values: Tab[];
+import { Category } from '..';
+
+export interface CategoryTabsContextType {
+	active: number;
+	values: Category[];
 	setActive: (id: number) => void;
 }
 

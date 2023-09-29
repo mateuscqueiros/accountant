@@ -1,10 +1,10 @@
 import { Button } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { CategoryTabContext } from '../Categories';
+import { CategoriesModalContext } from '../Categories';
 
 export function AddCategory() {
-	const categoryCtx = useContext(CategoryTabContext);
+	const categoryCtx = useContext(CategoriesModalContext);
 
 	return (
 		<Button

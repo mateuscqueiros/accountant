@@ -1,7 +1,7 @@
 'use client';
 import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartBar, IconHome2, IconPigMoney, IconUser } from '@tabler/icons-react';
+import { IconChartBar, IconHome2, IconList, IconPigMoney } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
@@ -52,9 +52,9 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 			link: '/',
 		},
 		{
-			icon: <IconUser />,
-			label: 'Usuário',
-			link: '/user',
+			icon: <IconList />,
+			label: 'Categorias',
+			link: '/categories',
 		},
 		{
 			icon: <IconChartBar />,
