@@ -27,7 +27,7 @@ import {
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ItemForm } from 'src/types/Forms/forms.types';
 import { v4 as uuidv4 } from 'uuid';
@@ -263,21 +263,6 @@ export function ItemsForm() {
 					</form>
 				</Box>
 			</Modal>
-
-			<Tooltip label="Adicionar conta">
-				<ActionIcon
-					data-testid="open-modal-form"
-					size="2.1rem"
-					variant="default"
-					onClick={() => {
-						itemForm.reset();
-						modal.reset();
-						modal.open();
-					}}
-				>
-					<IconPlus size="1.3rem" />
-				</ActionIcon>
-			</Tooltip>
 
 			<Modal
 				opened={confirmModal.opened}
