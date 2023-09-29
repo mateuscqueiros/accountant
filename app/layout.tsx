@@ -3,8 +3,10 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
+import { ItemsForm } from '@/components/ItemForm';
 import { Layout } from '@/components/Layout';
 import { DataContextProvider } from '@/contexts/DataContext';
+import { ModalsContextProvider } from '@/contexts/ModalsContext';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { DatesProvider } from '@mantine/dates';
@@ -36,7 +38,10 @@ export default function RootLayout({ children }: { children: any }) {
 						<ModalsProvider>
 							<DataContextProvider>
 								<Notifications limit={5} />
-								<Layout withPadding={shouldHavePadding}>{children}</Layout>
+								<ModalsContextProvider>
+									<ItemsForm />
+									<Layout withPadding={shouldHavePadding}>{children}</Layout>
+								</ModalsContextProvider>
 							</DataContextProvider>
 						</ModalsProvider>
 					</DatesProvider>

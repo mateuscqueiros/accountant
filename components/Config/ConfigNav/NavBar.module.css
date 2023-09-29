@@ -1,3 +1,13 @@
+.link_wrapper {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	color: light-dark(var(--mantine-color-dark), var(--mantine-color-light));
+	&:hover {
+		color: var(--mantine-color-white);
+	}
+}
+
 .navbar {
 	background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 	height: calc(100dvh - 60px);

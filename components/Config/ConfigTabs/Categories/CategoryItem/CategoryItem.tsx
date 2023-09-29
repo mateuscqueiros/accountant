@@ -1,7 +1,7 @@
+import { DataContext } from '@/contexts/DataContext';
 import { ActionIcon, ColorSwatch, Table, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconTrash } from '@tabler/icons-react';
-import { CategoryTabsContext } from 'app/categories/page';
 import { useContext } from 'react';
 import { Category } from 'src/types';
 import { CategoriesModalContext } from '../Categories';
@@ -13,8 +13,8 @@ type CategoryItemProps = {
 };
 
 export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
-	const categoryTabCtx = useContext(CategoriesModalContext);
-	const categoryTabsCtx = useContext(CategoryTabsContext);
+	const categoriesModalCtx = useContext(CategoriesModalContext);
+	const data = useContext(DataContext);
 
 	const openModal = () => {
 		return modals.openConfirmModal({
@@ -22,7 +22,7 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 			children: (
 				<Text size="sm">
 					Todos os itens com esta categoria serão transferidos para a categoria
-					{categoryTabsCtx.values.filter((category) => category.default)[0].label}
+					{data.values.user.categories.filter((category) => category.default)[0].label}
 				</Text>
 			),
 			labels: { confirm: 'Confirmar', cancel: 'Cancelar' },
@@ -36,8 +36,8 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 			<Table.Tr className={classes.item} w="100%" px="md" py="sm">
 				<Table.Td
 					onClick={() => {
-						categoryTabCtx.openModal('edit');
-						categoryTabCtx.setValues(category);
+						categoriesModalCtx.openModal('edit');
+						categoriesModalCtx.setValues(category);
 					}}
 				>
 					<Text fw={category.default ? 'bold' : undefined}>
@@ -47,8 +47,8 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 				</Table.Td>
 				<Table.Td
 					onClick={() => {
-						categoryTabCtx.openModal('edit');
-						categoryTabCtx.setValues(category);
+						categoriesModalCtx.openModal('edit');
+						categoriesModalCtx.setValues(category);
 					}}
 				>
 					<ColorSwatch color={`var(--mantine-color-${category.color}`} />

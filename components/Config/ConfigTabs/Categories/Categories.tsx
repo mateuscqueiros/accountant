@@ -1,4 +1,5 @@
 import { DataContext } from '@/contexts/DataContext';
+import { sortCategories } from '@/utils/categories';
 import { Box, Button, Group, Modal, Stack, Table, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ReactElement, createContext, useContext, useEffect, useState } from 'react';
@@ -88,12 +89,7 @@ export function Categories() {
 		data.category.delete(id);
 	};
 
-	let sortedCategories = data.values.user.categories.sort((a, b) => {
-		if (a.default) {
-			return 1;
-		}
-		return a.label.localeCompare(b.label);
-	});
+	let sortedCategories = sortCategories(data.values.user.categories);
 
 	return (
 		<CategoryTabProvider>

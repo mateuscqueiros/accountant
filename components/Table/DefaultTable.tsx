@@ -22,7 +22,7 @@ export function DefaultTable({
 	itemClass: ItemForm['class'];
 }) {
 	const data = useContext(DataContext);
-	const modal = useContext(ModalsContext);
+	const modals = useContext(ModalsContext);
 
 	let activeData: BillsDataItem[] = [];
 
@@ -42,14 +42,14 @@ export function DefaultTable({
 				<ActionIcon
 					variant="default"
 					onClick={() => {
-						modal.item.reset();
+						modals.item.reset();
 						if (type) {
-							modal.item.setField('type', type);
+							modals.item.setField('type', type);
 						}
 						if (itemClass) {
-							modal.item.setField('class', itemClass);
+							modals.item.setField('class', itemClass);
 						}
-						modal.item.open();
+						modals.item.open();
 					}}
 				>
 					<IconPlus size="0.9rem" />

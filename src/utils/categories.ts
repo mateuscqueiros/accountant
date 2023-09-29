@@ -109,12 +109,15 @@ export function getNextCategoryColor(categories: Category[]): string {
 	}
 }
 
-export function getCategoryById(categories: Category[], id: number): Category | undefined {
-	const foundCategory = categories.filter((category) => category.id === id);
+export function getCategoryById(categories: Category[], id: number): Category {
+	return categories.filter((category) => category.id === id)[0];
+}
 
-	if (foundCategory.length > 0) {
-		return foundCategory[0];
-	}
-
-	return undefined;
+export function sortCategories(categories: Category[]) {
+	return categories.sort((a, b) => {
+		if (a.default) {
+			return 1;
+		}
+		return a.label.localeCompare(b.label);
+	});
 }

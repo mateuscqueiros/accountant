@@ -1,10 +1,10 @@
 'use client';
 
-import { ItemsForm } from '@/components/ItemForm';
+import { ItemFormAddButton } from '@/components/ItemForm';
 import { DefaultTable } from '@/components/Table';
 import { TransferDataModal } from '@/components/TransferDataForm';
 import { DataContext } from '@/contexts/DataContext/DataContext';
-import { ModalsContext, ModalsContextProvider } from '@/contexts/ModalsContext/ModalsContext';
+import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
 import {
 	compareStartOfMonth,
 	getCategoriesValues,
@@ -70,194 +70,192 @@ export default function Home() {
 
 	return (
 		<>
-			<ModalsContextProvider>
-				<Flex justify="space-between" align="center" mb="md">
-					<Group
-						w="fit-content"
-						style={{ cursor: 'pointer' }}
-						onClick={() => {
-							setMonthPickerStateSelect(!monthPickerStateSelect);
-						}}
-					>
-						<Title order={1}>
-							{format(new Date(data.values.activeMonth), "MMMM' de 'yyyy", {
-								locale: ptBR,
-							}).replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
-						</Title>
-						{monthPickerStateSelect ? <IconCaretUpFilled /> : <IconCaretDownFilled />}
+			<Flex justify="space-between" align="center" mb="md">
+				<Group
+					w="fit-content"
+					style={{ cursor: 'pointer' }}
+					onClick={() => {
+						setMonthPickerStateSelect(!monthPickerStateSelect);
+					}}
+				>
+					<Title order={1}>
+						{format(new Date(data.values.activeMonth), "MMMM' de 'yyyy", {
+							locale: ptBR,
+						}).replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
+					</Title>
+					{monthPickerStateSelect ? <IconCaretUpFilled /> : <IconCaretDownFilled />}
+				</Group>
+				<Modal
+					size="sm"
+					title="Escolha um mês"
+					opened={monthPickerStateSelect}
+					onClose={() => setMonthPickerStateSelect(false)}
+				>
+					<Box w="fit-content" m="0 auto">
+						<MonthPicker
+							placeholder="01/01/2023"
+							value={startOfMonth(new Date(data.values.activeMonth))}
+							getYearControlProps={(date) => {
+								if (date.getFullYear() === new Date().getFullYear()) {
+									return {
+										style: (theme) => ({
+											fontWeight: 700,
+										}),
+									};
+								}
+
+								return {};
+							}}
+							getMonthControlProps={(date) => {
+								if (
+									date.getMonth() === new Date().getMonth() &&
+									date.getFullYear() === new Date().getFullYear()
+								) {
+									return {
+										style: (theme) => ({
+											fontWeight: 700,
+										}),
+									};
+								}
+
+								if (
+									data.values.items.every(
+										(billItem) => !compareStartOfMonth(billItem.date, date.toString())
+									)
+								) {
+									return {
+										style: (theme) => ({
+											opacity: 0.5,
+										}),
+									};
+								}
+
+								return {};
+							}}
+							onChange={(e) => {
+								data.setActiveMonth(new Date(e ? e.toString() : new Date()).toDateString());
+								setMonthPickerStateSelect(false);
+							}}
+						/>
+					</Box>
+				</Modal>
+				{activeData && (
+					<Group>
+						<TransferDataModal />
+						<ItemFormAddButton />
+					</Group>
+				)}
+			</Flex>
+			{activeData ? (
+				<>
+					<Paper mb="1rem" p="1rem" px="2rem">
+						<Flex justify="space-between">
+							<Flex direction="column" justify="center" style={{ gap: 0 }}>
+								<Group style={{ gap: 0 }}>
+									<Text mr={10}>Saldo mensal:</Text>
+									<Text fz="lg" fw={600} c="green.7">
+										${(incomeTotal - expensesTotal).toFixed(2)}
+									</Text>
+								</Group>
+								<Group style={{ gap: 0 }}>
+									<Text mr={10}>Total de gastos:</Text>
+									<Text fz="lg" c="red.5" fw={600}>
+										${expensesTotal.toFixed(2)}
+									</Text>
+								</Group>
+							</Flex>
+							<RingProgress
+								roundCaps
+								sections={
+									ringProgressStatistics || [
+										{
+											value: 100,
+											color: 'gray',
+											tooltip: 'Sem contas',
+										},
+									]
+								}
+							/>
+						</Flex>
+					</Paper>
+					<SimpleGrid cols={{ base: 1, md: 2 }}>
+						<DefaultTable
+							title="Fixas"
+							header={['Nome', 'Valor', 'Vencimento']}
+							type="fixed"
+							itemClass="expense"
+						/>
+						<DefaultTable
+							title="Parceladas"
+							header={['Nome', 'Valor', 'Parcelas', 'Vencimento']}
+							type="installment"
+							itemClass="expense"
+						/>
+						<DefaultTable
+							title="Mensal"
+							header={['Nome', 'Valor', 'Dia']}
+							type="monthly"
+							itemClass="expense"
+						/>
+						<DefaultTable
+							title="Receitas"
+							header={['Nome', 'Valor', 'Dia criado', 'Parcelas', 'Vencimento', 'Categorias']}
+							itemClass="recipe"
+						/>
+					</SimpleGrid>
+				</>
+			) : (
+				<Stack>
+					<Divider />
+					<Text>Sem dados para esse mês.</Text>
+					<Group>
+						<Button>Olá</Button>
+						{data.values.items.length > 0 && (
+							<Button
+								onClick={() => {
+									modals.transferData.open();
+								}}
+							>
+								Importar
+							</Button>
+						)}
 					</Group>
 					<Modal
+						aria-label="Escolher mês dos dados"
 						size="sm"
-						title="Escolha um mês"
-						opened={monthPickerStateSelect}
-						onClose={() => setMonthPickerStateSelect(false)}
+						title="Escolha um mês para importar"
+						opened={monthPickerStateImport}
+						onClose={() => setMonthPickerStateImport(false)}
 					>
 						<Box w="fit-content" m="0 auto">
 							<MonthPicker
 								placeholder="01/01/2023"
-								value={startOfMonth(new Date(data.values.activeMonth))}
-								getYearControlProps={(date) => {
-									if (date.getFullYear() === new Date().getFullYear()) {
-										return {
-											style: (theme) => ({
-												fontWeight: 700,
-											}),
-										};
-									}
-
-									return {};
-								}}
+								defaultValue={startOfMonth(new Date())}
 								getMonthControlProps={(date) => {
-									if (
-										date.getMonth() === new Date().getMonth() &&
-										date.getFullYear() === new Date().getFullYear()
-									) {
-										return {
-											style: (theme) => ({
-												fontWeight: 700,
-											}),
-										};
+									const obj = { disabled: false };
+
+									// Se não houver dados para certo mês
+									const someBillData = data.values.items.some(
+										(billItem) =>
+											date.getMonth() === new Date(billItem.date).getMonth() &&
+											date.getFullYear() === new Date(billItem.date).getFullYear() &&
+											data.values.items &&
+											data.values.items.length > 0
+									);
+									if (!someBillData) {
+										obj.disabled = true;
 									}
 
-									if (
-										data.values.items.every(
-											(billItem) => !compareStartOfMonth(billItem.date, date.toString())
-										)
-									) {
-										return {
-											style: (theme) => ({
-												opacity: 0.5,
-											}),
-										};
-									}
-
-									return {};
+									return obj;
 								}}
-								onChange={(e) => {
-									data.setActiveMonth(new Date(e ? e.toString() : new Date()).toDateString());
-									setMonthPickerStateSelect(false);
+								onChange={() => {
+									setMonthPickerStateImport(false);
 								}}
 							/>
 						</Box>
 					</Modal>
-					{activeData && (
-						<Group>
-							<TransferDataModal />
-							<ItemsForm />
-						</Group>
-					)}
-				</Flex>
-				{activeData ? (
-					<>
-						<Paper mb="1rem" p="1rem" px="2rem">
-							<Flex justify="space-between">
-								<Flex direction="column" justify="center" style={{ gap: 0 }}>
-									<Group style={{ gap: 0 }}>
-										<Text mr={10}>Saldo mensal:</Text>
-										<Text fz="lg" fw={600} c="green.7">
-											${(incomeTotal - expensesTotal).toFixed(2)}
-										</Text>
-									</Group>
-									<Group style={{ gap: 0 }}>
-										<Text mr={10}>Total de gastos:</Text>
-										<Text fz="lg" c="red.5" fw={600}>
-											${expensesTotal.toFixed(2)}
-										</Text>
-									</Group>
-								</Flex>
-								<RingProgress
-									roundCaps
-									sections={
-										ringProgressStatistics || [
-											{
-												value: 100,
-												color: 'gray',
-												tooltip: 'Sem contas',
-											},
-										]
-									}
-								/>
-							</Flex>
-						</Paper>
-						<SimpleGrid cols={{ base: 1, md: 2 }}>
-							<DefaultTable
-								title="Fixas"
-								header={['Nome', 'Valor', 'Vencimento']}
-								type="fixed"
-								itemClass="expense"
-							/>
-							<DefaultTable
-								title="Parceladas"
-								header={['Nome', 'Valor', 'Parcelas', 'Vencimento']}
-								type="installment"
-								itemClass="expense"
-							/>
-							<DefaultTable
-								title="Mensal"
-								header={['Nome', 'Valor', 'Dia']}
-								type="monthly"
-								itemClass="expense"
-							/>
-							<DefaultTable
-								title="Receitas"
-								header={['Nome', 'Valor', 'Dia criado', 'Parcelas', 'Vencimento', 'Categorias']}
-								itemClass="recipe"
-							/>
-						</SimpleGrid>
-					</>
-				) : (
-					<Stack>
-						<Divider />
-						<Text>Sem dados para esse mês.</Text>
-						<Group>
-							<Button>Olá</Button>
-							{data.values.items.length > 0 && (
-								<Button
-									onClick={() => {
-										modals.transferData.open();
-									}}
-								>
-									Importar
-								</Button>
-							)}
-						</Group>
-						<Modal
-							aria-label="Escolher mês dos dados"
-							size="sm"
-							title="Escolha um mês para importar"
-							opened={monthPickerStateImport}
-							onClose={() => setMonthPickerStateImport(false)}
-						>
-							<Box w="fit-content" m="0 auto">
-								<MonthPicker
-									placeholder="01/01/2023"
-									defaultValue={startOfMonth(new Date())}
-									getMonthControlProps={(date) => {
-										const obj = { disabled: false };
-
-										// Se não houver dados para certo mês
-										const someBillData = data.values.items.some(
-											(billItem) =>
-												date.getMonth() === new Date(billItem.date).getMonth() &&
-												date.getFullYear() === new Date(billItem.date).getFullYear() &&
-												data.values.items &&
-												data.values.items.length > 0
-										);
-										if (!someBillData) {
-											obj.disabled = true;
-										}
-
-										return obj;
-									}}
-									onChange={() => {
-										setMonthPickerStateImport(false);
-									}}
-								/>
-							</Box>
-						</Modal>
-					</Stack>
-				)}
-			</ModalsContextProvider>
+				</Stack>
+			)}
 		</>
 	);
 }
