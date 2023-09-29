@@ -1,5 +1,6 @@
 import { TransactionItem } from '@/components/TransactionItem/TransactionItem';
 import { DataContext } from '@/contexts/DataContext';
+import { BillsDataItem } from '@/types/Data';
 import { getCategoryById } from '@/utils/categories';
 import { Table, Text } from '@mantine/core';
 import { CategoryTabsContext } from 'app/categories/layout';
@@ -13,14 +14,13 @@ export function ConfigTabs({ categoryId }: { categoryId: number }) {
 
 	return (
 		<Wrapper title={activeCategory ? activeCategory.label : ''}>
-			{selectActiveTab(categoryId)}
+			{selectActiveTab(data.values.items, categoryId)}
 		</Wrapper>
 	);
 }
 
-function selectActiveTab(categoryId: number) {
-	const data = useContext(DataContext);
-	const items = data.values.items.filter((item) => item.categoryId === categoryId);
+function selectActiveTab(items: BillsDataItem[], categoryId: number) {
+	const categoryItems = items.filter((item) => item.categoryId === categoryId);
 
 	if (items.length > 0) {
 		return (
@@ -34,7 +34,7 @@ function selectActiveTab(categoryId: number) {
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>
-						{items.map((item) => (
+						{categoryItems.map((item) => (
 							<TransactionItem key={item.id} item={item} />
 						))}
 					</Table.Tbody>

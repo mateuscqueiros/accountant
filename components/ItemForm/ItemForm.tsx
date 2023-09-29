@@ -199,23 +199,6 @@ export function ItemsForm() {
 							// itemComponent={SelectItem}
 							searchable
 							allowDeselect={false}
-							// getCreateLabel={(query) => `+ Criar ${query}`}
-							// onCreate={(query) => {
-							// 	const nextId = getNextCategoryId(data.user.categories);
-							// 	data.addCategory({
-							// 		label: query,
-							// 		color: 'gray.6',
-							// 	});
-							// 	const newCategory = getCategory(data.user.categories, nextId);
-							// 	itemForm.setFieldValue('categoryId', String(newCategory && newCategory.id));
-							// 	return {
-							// 		label: query,
-							// 		value: String(nextId),
-							// 	};
-							// }}
-							// filter={(value, item) => {
-							// 	return getCategory(data.user.categories, item.id) !== undefined;
-							// }}
 							{...itemForm.getInputProps('categoryId')}
 						/>
 						<Textarea

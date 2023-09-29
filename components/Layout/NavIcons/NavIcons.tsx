@@ -14,9 +14,8 @@ export type NavIcon = {
 
 export const NavIcon = ({ data }: { data: NavIcon }) => {
 	const { icon, label, link, setOpened } = data;
+	const path = usePathname().split('/');
 	const getActiveNavTab = useCallback((link: string) => {
-		const path = usePathname().split('/');
-
 		return link.split('/')[1] === path[1];
 	}, []);
 
