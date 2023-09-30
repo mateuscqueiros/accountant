@@ -5,6 +5,7 @@ import { IconChartBar, IconHome2, IconList, IconPigMoney } from '@tabler/icons-r
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
+import { VersionBadge } from '../Meta/VersionBadge/VersionBadge';
 import classes from './Layout.module.css';
 
 const HeaderComponent = ({
@@ -37,6 +38,7 @@ const HeaderComponent = ({
 					</Link>
 				</Group>
 				<Group>
+					<VersionBadge />
 					<ToggleTheme />
 				</Group>
 			</Flex>

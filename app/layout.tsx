@@ -2,6 +2,7 @@
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/nprogress/styles.css';
 
 import { ItemsForm } from '@/components/ItemForm';
 import { Layout } from '@/components/Layout';
@@ -12,13 +13,24 @@ import '@mantine/core/styles.css';
 import { DatesProvider } from '@mantine/dates';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { usePathname } from 'next/navigation';
-import { theme } from '../theme';
+import { NavigationProgress, nprogress } from '@mantine/nprogress';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { theme } from '../src/theme';
 
 export default function RootLayout({ children }: { children: any }) {
 	const path = usePathname();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
 	const shouldHavePadding = !path.includes('categories');
+
+	useEffect(() => {
+		nprogress.complete();
+		return () => {
+			nprogress.start();
+		};
+	}, [pathname, searchParams]);
 
 	return (
 		<html lang="pt-BR">
@@ -36,13 +48,16 @@ export default function RootLayout({ children }: { children: any }) {
 				<MantineProvider theme={theme} defaultColorScheme="dark">
 					<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
 						<ModalsProvider>
-							<DataContextProvider>
-								<Notifications limit={5} />
-								<ModalsContextProvider>
-									<ItemsForm />
-									<Layout withPadding={shouldHavePadding}>{children}</Layout>
-								</ModalsContextProvider>
-							</DataContextProvider>
+							<Notifications limit={5} />
+							<NavigationProgress />
+							<>
+								<DataContextProvider>
+									<ModalsContextProvider>
+										<ItemsForm />
+										<Layout withPadding={shouldHavePadding}>{children}</Layout>
+									</ModalsContextProvider>
+								</DataContextProvider>
+							</>
 						</ModalsProvider>
 					</DatesProvider>
 				</MantineProvider>

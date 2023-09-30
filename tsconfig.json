@@ -20,7 +20,8 @@
 			"@/utils/*": ["src/utils/*"],
 			"@/types/*": ["src/types/*"],
 			"@/consts/*": ["src/consts/*"],
-			"@/tests/*": ["tests/*"]
+			"@/tests/*": ["tests/*"],
+			"@/src/*": ["src/*"]
 		},
 		"plugins": [
 			{

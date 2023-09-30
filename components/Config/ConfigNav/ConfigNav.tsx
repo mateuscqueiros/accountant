@@ -1,5 +1,5 @@
 import { DataContext } from '@/contexts/DataContext';
-import { sortCategories } from '@/utils/categories';
+import { getCategoryById, sortCategories } from '@/utils/categories';
 import { Container, ScrollArea, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { CategoryTabsContext } from 'app/categories/layout';
@@ -46,20 +46,23 @@ export function ConfigNav() {
 		</Link>
 	));
 
+	const activeCategory = getCategoryById(data.values.user.categories, categoryTab.active);
+
 	return isMobile ? (
 		<Container className={tabClasses.container} p={0} w="100%">
-			<ScrollArea classNames={tabClasses} maw={width} h={50}>
-				<Tabs
-					inverted
-					defaultValue="Categorias"
-					variant="outline"
-					hiddenFrom="sm"
-					classNames={{
-						root: tabClasses.tabs,
-						list: tabClasses.tabsList,
-						tab: tabClasses.tab,
-					}}
-				>
+			<Tabs
+				inverted
+				defaultValue="Todas"
+				variant="outline"
+				hiddenFrom="sm"
+				value={(activeCategory && activeCategory.label) || 'Todas'}
+				classNames={{
+					root: tabClasses.tabs,
+					list: tabClasses.tabsList,
+					tab: tabClasses.tab,
+				}}
+			>
+				<ScrollArea offsetScrollbars="x">
 					<Tabs.List w={width}>
 						<Link className={tabClasses.link} href={`/categories`}>
 							<Tabs.Tab value="Todas">Todas</Tabs.Tab>
@@ -68,8 +71,8 @@ export function ConfigNav() {
 							return item;
 						})}
 					</Tabs.List>
-				</Tabs>
-			</ScrollArea>
+				</ScrollArea>
+			</Tabs>
 		</Container>
 	) : (
 		<nav className={navBarClasses.navbar}>

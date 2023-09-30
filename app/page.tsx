@@ -26,10 +26,12 @@ import {
 	Title,
 } from '@mantine/core';
 import { MonthPicker } from '@mantine/dates';
+import { nprogress } from '@mantine/nprogress';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
 import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { useContext, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Home() {
 	const data = useContext(DataContext);
@@ -67,6 +69,15 @@ export default function Home() {
 			});
 		}
 	}
+
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	useEffect(() => {
+		nprogress.complete();
+		return () => {
+			nprogress.start();
+		};
+	}, [pathname, searchParams]);
 
 	return (
 		<>

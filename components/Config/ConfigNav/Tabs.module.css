@@ -9,6 +9,7 @@
 }
 
 .tabsList {
+	flex-wrap: nowrap;
 	&::before {
 		display: none;
 	}
@@ -16,7 +17,6 @@
 
 .tab {
 	font-weight: 500;
-	height: rem(38);
 	background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 	position: relative;
 	bottom: -1px;
