@@ -1,13 +1,17 @@
 {
 	"name": "accountant",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"test": "cross-env NODE_ENV=test jest tests/"
+		"test": "cross-env NODE_ENV=test jest tests/",
+		"gen:version": "npx genversion src/version.js",
+		"version:patch": "yarn version --patch && gen:version",
+		"version:minor": "yarn version --minor && gen:version",
+		"version:major": "yarn version --major && gen:version"
 	},
 	"dependencies": {
 		"@mantine/core": "^7.1.0",
@@ -21,6 +25,7 @@
 		"cookies-next": "^4.0.0",
 		"date-fns": "^2.30.0",
 		"dayjs": "^1.11.10",
+		"genversion": "^3.1.1",
 		"next": "^13.5.3",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
