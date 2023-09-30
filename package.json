@@ -9,9 +9,9 @@
 		"lint": "next lint",
 		"test": "cross-env NODE_ENV=test jest tests/",
 		"gen:version": "npx genversion src/version.js",
-		"version:patch": "yarn version --patch && gen:version",
-		"version:minor": "yarn version --minor && gen:version",
-		"version:major": "yarn version --major && gen:version"
+		"version:patch": "yarn version --patch && yarn gen:version",
+		"version:minor": "yarn version --minor && yarn gen:version",
+		"version:major": "yarn version --major && yarn gen:version"
 	},
 	"dependencies": {
 		"@mantine/core": "^7.1.0",
