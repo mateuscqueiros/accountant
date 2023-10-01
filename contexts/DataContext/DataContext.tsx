@@ -2,9 +2,10 @@ import { defaultData as dataInitialValues } from '@/consts/Data';
 import { NotificationError, NotificationSuccess } from '@/utils/Notifications';
 import { getNextCategoryId } from '@/utils/categories';
 import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext } from 'react';
 import { BillsDataItem, Category, DataContextType, TransferData, UserData } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -284,12 +285,12 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	// const [data, setData] = useLocalStorage<UserData>({
-	// 	key: 'accountant-data',
-	// 	defaultValue: dataInitialValues,
-	// });
+	const [data, setData] = useLocalStorage<UserData>({
+		key: 'accountant-data',
+		defaultValue: dataInitialValues,
+	});
 
-	const [data, setData] = useState<UserData>(dataInitialValues);
+	// const [data, setData] = useState<UserData>(dataInitialValues);
 
 	return (
 		<DataContext.Provider
