@@ -1,4 +1,4 @@
-import { BillsDataItem } from '../types';
+import { BillsDataItem } from '@/types/Data';
 
 export function getItemTypeLabel(type: BillsDataItem['type']) {
 	switch (type) {

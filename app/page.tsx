@@ -3,8 +3,8 @@
 import { ItemFormAddButton } from '@/components/ItemForm';
 import { DefaultTable } from '@/components/Table';
 import { TransferDataModal } from '@/components/TransferDataForm';
-import { DataContext } from '@/contexts/DataContext/DataContext';
-import { ModalsContext } from '@/contexts/ModalsContext/ModalsContext';
+import { DataContext } from '@/providers/DataProvider';
+import { ModalsContext } from '@/providers/ModalsProvider';
 import {
 	compareStartOfMonth,
 	getCategoriesValues,

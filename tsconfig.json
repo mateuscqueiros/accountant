@@ -15,8 +15,8 @@
 		"incremental": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/components/*": ["components/*"],
-			"@/contexts/*": ["contexts/*"],
+			"@/components/*": ["src/components/*"],
+			"@/providers/*": ["src/providers/*"],
 			"@/utils/*": ["src/utils/*"],
 			"@/types/*": ["src/types/*"],
 			"@/consts/*": ["src/consts/*"],
@@ -29,13 +29,6 @@
 			}
 		]
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		"jest.config.js",
-		"src/contexts/FormsContext",
-		".next/types/**/*.ts"
-	],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }
