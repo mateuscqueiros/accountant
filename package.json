@@ -1,6 +1,6 @@
 {
 	"name": "accountant",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -9,9 +9,9 @@
 		"lint": "next lint",
 		"test": "jest --watch",
 		"gen:version": "npx genversion src/version.js",
-		"version:patch": "yarn version --patch && npx genversion src/version.js",
-		"version:minor": "yarn version --minor && npx genversion src/version.js",
-		"version:major": "yarn version --major && npx genversion src/version.js"
+		"version:patch": "yarn version --patch && yarn gen:version",
+		"version:minor": "yarn version --minor && yarn gen:version",
+		"version:major": "yarn version --major && yarn gen:version"
 	},
 	"dependencies": {
 		"@mantine/core": "^7.1.2",
