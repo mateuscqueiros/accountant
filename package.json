@@ -1,6 +1,6 @@
 {
 	"name": "accountant",
-	"version": "0.4.3",
+	"version": "0.4.4",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -9,7 +9,7 @@
 		"lint": "next lint",
 		"test": "jest --watch",
 		"gen:version": "npx genversion src/version.js",
-		"version:patch": "yarn version --patch && yarn gen:version",
+		"version:patch": "yarn version --patch && npx genversion src/version.js",
 		"version:minor": "yarn version --minor && yarn gen:version",
 		"version:major": "yarn version --major && yarn gen:version"
 	},
