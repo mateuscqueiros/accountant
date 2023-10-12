@@ -1,8 +1,8 @@
-import { TransactionItem } from '@/components/TransactionItem/TransactionItem';
+import { TransactionItem } from '@/components/Transactions/TransactionItem/TransactionItem';
+import { getCategoryById } from '@/lib/categories';
 import { CategoryTabsContext } from '@/providers/CategoriesProvider';
 import { DataContext } from '@/providers/DataProvider';
 import { BillsDataItem } from '@/types/Data';
-import { getCategoryById } from '@/utils/categories';
 import { Table, Text } from '@mantine/core';
 import { useContext } from 'react';
 import { Wrapper } from '.';
@@ -29,8 +29,10 @@ function selectActiveTab(items: BillsDataItem[], categoryId: number) {
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>Nome</Table.Th>
-							<Table.Th>Valor</Table.Th>
+							<Table.Th>Data</Table.Th>
+							<Table.Th>Categoria</Table.Th>
 							<Table.Th>Tipo</Table.Th>
+							<Table.Th>Valor</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
 					<Table.Tbody>

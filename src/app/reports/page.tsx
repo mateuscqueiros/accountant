@@ -1,5 +1,5 @@
 'use client';
 
-export default function HomePage() {
+export default function ReportsPage() {
 	return <div>Relatórios (em breve)</div>;
 }

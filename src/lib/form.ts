@@ -1,7 +1,7 @@
 import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
 import { BillsDataItem, Category } from 'src/types/Data/data.types';
 import { ItemForm } from 'src/types/Forms/forms.types';
-import { getCategory } from '.';
+import { getCategory } from './categories';
 
 export function getValidateObject(): FormValidateInput<ItemForm> {
 	/* Obtém um objeto "validate" para o mantine, que valida os inputs */

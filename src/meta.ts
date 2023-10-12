@@ -1,5 +1,7 @@
+import version from './version';
+
 const meta = {
-	version: '0.4.2',
+	version,
 };
 
 export default meta;

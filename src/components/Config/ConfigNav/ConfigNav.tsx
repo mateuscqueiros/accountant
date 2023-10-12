@@ -1,7 +1,7 @@
+import { getCategoryById, sortCategories } from '@/lib/categories';
 import { CategoryTabsContext } from '@/providers/CategoriesProvider';
 import { DataContext } from '@/providers/DataProvider';
-import { getCategoryById, sortCategories } from '@/utils/categories';
-import { Container, ScrollArea, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Box, Container, ScrollArea, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import Link from 'next/link';
 import { useContext } from 'react';
@@ -32,18 +32,13 @@ export function ConfigNav() {
 			href={`/categories/${String(category.id)}`}
 			data-testid={`category-${category.id}`}
 		>
-			<div
-				style={{
-					backgroundColor:
-						categoryTab.active === category.id
-							? `var(--mantine-color-${category.color})`
-							: undefined,
-				}}
+			<Box
+				bg={categoryTab.active === category.id ? category.color : undefined}
 				className={navBarClasses.link}
 				data-active={categoryTab.active === category.id || undefined}
 			>
 				{category.label}
-			</div>
+			</Box>
 		</Link>
 	));
 

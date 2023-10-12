@@ -1,6 +1,6 @@
+import { sortCategories } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/Data';
-import { sortCategories } from '@/utils/categories';
 import { Box, Button, Group, Modal, Stack, Table, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ReactElement, createContext, useContext, useEffect, useState } from 'react';
@@ -84,11 +84,6 @@ export function CategoryTabProvider({ children }: { children: ReactElement }) {
 export function Categories() {
 	const data = useContext(DataContext);
 
-	const handleDelete = (id: number) => {
-		console.log('deletando');
-		data.category.delete(id);
-	};
-
 	let sortedCategories = sortCategories(data.values.user.categories);
 
 	return (
@@ -105,7 +100,7 @@ export function Categories() {
 						</Table.Thead>
 						<Table.Tbody>
 							{sortedCategories.map((category) => (
-								<CategoryItem key={category.label} deleteItem={handleDelete} category={category} />
+								<CategoryItem key={category.label} category={category} />
 							))}
 						</Table.Tbody>
 					</Table>
@@ -150,18 +145,17 @@ function CategoryModal() {
 	};
 
 	const inputColors = [
-		'red-6',
-		'pink-6',
-		'grape-6',
-		'violet-6',
-		'indigo-6',
-		'blue-6',
-		'cyan-6',
-		'teal-6',
-		'green-6',
-		'lime-6',
-		'yellow-6',
-		'orange-6',
+		'red.6',
+		'pink.6',
+		'violet.6',
+		'indigo.6',
+		'blue.6',
+		'cyan.6',
+		'teal.6',
+		'green.6',
+		'lime.6',
+		'yellow.6',
+		'orange.6',
 	];
 
 	return (

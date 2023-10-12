@@ -1,6 +1,6 @@
+import { compareStartOfMonth } from '@/lib/dates';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import {
 	ActionIcon,
 	Box,
@@ -151,7 +151,9 @@ export function TransferDataModal() {
 							mb="md"
 							maw={400}
 							getYearControlProps={(date) => {
-								if (date.getFullYear() === new Date().getFullYear()) {
+								let isSameYear = date.getFullYear() === new Date().getFullYear();
+
+								if (isSameYear) {
 									return {
 										style: (theme) => ({
 											color: theme.primaryColor,
@@ -164,6 +166,9 @@ export function TransferDataModal() {
 							}}
 							getMonthControlProps={(date) => {
 								const obj = { disabled: false };
+								let isSameYear =
+									date.getFullYear() === new Date(data.values.activeMonth).getFullYear();
+								let isSameMonth = date.getMonth() === new Date(data.values.activeMonth).getMonth();
 
 								// Se não houver dados para certo mês
 								const someBillData = data.values.items.some(
@@ -176,10 +181,10 @@ export function TransferDataModal() {
 									obj.disabled = true;
 								}
 
-								if (date.getMonth() === new Date(data.values.activeMonth).getMonth()) {
+								if (isSameYear && isSameMonth) {
 									return {
 										style: (theme) => ({
-											color: theme.primaryColor,
+											color: theme.colors.blue[6],
 											fontWeight: 700,
 										}),
 										disabled: true,
@@ -295,7 +300,7 @@ export function TransferDataModal() {
 								<Group justify="flex-end">
 									<Button
 										onClick={() => {
-											modal.open();
+											modal.close();
 										}}
 										variant="outline"
 									>

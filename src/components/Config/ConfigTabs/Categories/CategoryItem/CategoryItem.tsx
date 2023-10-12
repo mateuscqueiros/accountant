@@ -1,7 +1,15 @@
+import { confirmModal } from '@/lib/modals';
 import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/Data';
-import { ActionIcon, ColorSwatch, Table, Text, Tooltip } from '@mantine/core';
-import { modals } from '@mantine/modals';
+import {
+	ActionIcon,
+	ColorSwatch,
+	Table,
+	Text,
+	Tooltip,
+	parseThemeColor,
+	useMantineTheme,
+} from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { CategoriesModalContext } from '../Categories';
@@ -9,27 +17,21 @@ import classes from './CategoryItem.module.css';
 
 type CategoryItemProps = {
 	category: Category;
-	deleteItem: (id: number) => void;
 };
 
-export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
+export const CategoryItem = ({ category }: CategoryItemProps) => {
 	const categoriesModalCtx = useContext(CategoriesModalContext);
 	const data = useContext(DataContext);
+	const theme = useMantineTheme();
 
-	const openModal = () => {
-		return modals.openConfirmModal({
-			title: `Deseja deletar a categoria ${category.label}?`,
-			children: (
-				<Text size="sm">
-					Todos os itens com esta categoria serão transferidos para a categoria
-					{data.values.user.categories.filter((category) => category.default)[0].label}
-				</Text>
-			),
-			labels: { confirm: 'Confirmar', cancel: 'Cancelar' },
-			onCancel: () => undefined,
-			onConfirm: () => deleteItem(category.id),
+	const confirmDelete = () => {
+		confirmModal({
+			title: 'Deseja deletar a categoria?',
+			onConfirm: () => data.category.delete(category.id),
 		});
 	};
+
+	const categoryColor = parseThemeColor({ color: category.color, theme }).color;
 
 	return (
 		<>
@@ -51,7 +53,7 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 						categoriesModalCtx.setValues(category);
 					}}
 				>
-					<ColorSwatch color={`var(--mantine-color-${category.color}`} />
+					<ColorSwatch color={categoryColor} />
 				</Table.Td>
 				<Table.Td>
 					{!category.default && (
@@ -61,7 +63,7 @@ export const CategoryItem = ({ category, deleteItem }: CategoryItemProps) => {
 								role="button-delete"
 								variant="transparent"
 								color="red"
-								onClick={openModal}
+								onClick={confirmDelete}
 							>
 								<IconTrash size="1rem" />
 							</ActionIcon>

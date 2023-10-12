@@ -1,7 +1,7 @@
 import {
 	itemModalInitialValues,
 	transferDataModalInitialValues,
-} from '@/consts/Modals/modals.consts';
+} from '@/consts/modals/modals.consts';
 import { BillsDataItem } from '@/types/Data/data.types';
 import { ItemForm } from '@/types/Forms/forms.types';
 import { ModalsContextType } from '@/types/Modals/modals.types';
@@ -20,6 +20,27 @@ export function ModalsProvider({ children }: { children: ReactNode }) {
 					values: {
 						...prev.item.values,
 						opened: true,
+					},
+				},
+			};
+		});
+	};
+
+	const openUpdateItem = (billDataItem: BillsDataItem) => {
+		setData((prev) => {
+			return {
+				...prev,
+				item: {
+					...prev.item,
+					values: {
+						...prev.item.values,
+						opened: true,
+						command: {
+							...billDataItem,
+							categoryId: String(billDataItem.categoryId),
+						},
+						updateItem: billDataItem.id,
+						action: 'update',
 					},
 				},
 			};
@@ -107,27 +128,6 @@ export function ModalsProvider({ children }: { children: ReactNode }) {
 		setData((prev) => {
 			prev.item.values.command[field] = value;
 			return prev;
-		});
-	};
-
-	const openUpdateItem = (billDataItem: BillsDataItem) => {
-		setData((prev) => {
-			return {
-				...prev,
-				item: {
-					...prev.item,
-					values: {
-						...prev.item.values,
-						opened: true,
-						command: {
-							...billDataItem,
-							categoryId: String(billDataItem.categoryId),
-						},
-						updateItem: billDataItem.id,
-						action: 'update',
-					},
-				},
-			};
 		});
 	};
 

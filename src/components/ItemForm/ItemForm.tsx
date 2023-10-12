@@ -1,12 +1,8 @@
-import { itemFormInitialValues as initialValues } from '@/consts/Forms/forms.consts';
+import { itemFormInitialValues as initialValues } from '@/consts/forms/forms.consts';
+import { getCategoriesForm } from '@/lib/categories';
+import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '@/lib/form';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { getCategoriesForm } from '@/utils/categories';
-import {
-	getTransformObject,
-	getValidateObject,
-	sanitizeBeforeCommiting,
-} from '@/utils/sanitizeForm';
 import {
 	ActionIcon,
 	Box,

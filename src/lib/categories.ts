@@ -7,8 +7,6 @@ export type CategoryValue = {
 	label: string;
 };
 
-const colors = ['cyan', 'orange', 'grape', 'teal', 'blue', 'yellow', 'orange', 'red'];
-
 export function getCategoriesLabels(categories: Category[]): CategoryForm[] {
 	return categories.map((category) => {
 		return {
@@ -24,19 +22,19 @@ export function getCategory(categories: Category[], id: number): Category {
 		return category.id === id;
 	})[0];
 
-	if (foundCategory !== undefined) {
-		return {
-			id: foundCategory.id,
-			label: foundCategory.label,
-			color: foundCategory.color,
-		};
-	} else {
-		return {
-			id: 0,
-			label: 'Outros',
-			color: 'blue',
-		};
+	if (foundCategory === undefined) {
+		const defaultCategory = categories.filter((category) => {
+			return category.default === true;
+		})[0];
+
+		return defaultCategory;
 	}
+
+	return {
+		id: foundCategory.id,
+		label: foundCategory.label,
+		color: foundCategory.color,
+	};
 }
 
 export function getNextCategoryId(categories: Category[]): number {
@@ -99,14 +97,6 @@ export function getCategoriesValues(data: BillsDataItem[], categories: Category[
 	});
 
 	return categoriesValues;
-}
-
-export function getNextCategoryColor(categories: Category[]): string {
-	if (categories.length + 1 > colors.length) {
-		return colors[0];
-	} else {
-		return colors[categories.length + 1];
-	}
 }
 
 export function getCategoryById(categories: Category[], id: number): Category {

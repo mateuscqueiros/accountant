@@ -1,8 +1,8 @@
-import { defaultData as dataInitialValues } from '@/consts/Data';
+import { defaultData as dataInitialValues } from '@/consts/data';
+import { getNextCategoryId } from '@/lib/categories';
+import { compareStartOfMonth } from '@/lib/dates';
+import { NotificationError, NotificationSuccess } from '@/lib/notifications';
 import { BillsDataItem, Category, DataContextType, TransferData, UserData } from '@/types/Data';
-import { NotificationError, NotificationSuccess } from '@/utils/Notifications';
-import { getNextCategoryId } from '@/utils/categories';
-import { compareStartOfMonth } from '@/utils/compareStartOfMonth';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { ReactNode, createContext, useState } from 'react';
@@ -15,10 +15,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 		setData((prev) => {
 			return {
 				...prev,
-				user: {
-					...prev.user,
-					activeMonth: startOfMonth(new Date(date)).toString(),
-				},
+				activeMonth: startOfMonth(new Date(date)).toString(),
 			};
 		});
 	};
@@ -135,11 +132,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
 	};
 
 	const selectActiveData = () => {
-		return data !== undefined
-			? data.items.filter((billItem) => compareStartOfMonth(billItem.date, data.activeMonth))
-			: dataInitialValues.items.filter((billItem) =>
-					compareStartOfMonth(billItem.date, dataInitialValues.activeMonth)
-			  );
+		if (data === undefined) {
+			return [];
+		}
+
+		let activeMonthItems = data.items.filter((billItem) => {
+			return compareStartOfMonth(billItem.date, data.activeMonth);
+		});
+
+		return activeMonthItems;
 	};
 
 	const log = (pre?: string) => {
@@ -234,10 +235,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
 	};
 
 	const deleteCategory = (id: number) => {
-		data.items.map((item) => {
-			console.log(item.categoryId, ', ');
-		});
-
 		let categoryToDelete = data.user.categories.filter((category) => {
 			return category.id === id;
 		})[0];
@@ -268,10 +265,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
 						categories: [...otherCategories],
 					},
 				};
-			});
-
-			data.items.map((item) => {
-				console.log(item.categoryId, ', ');
 			});
 
 			return NotificationSuccess({
