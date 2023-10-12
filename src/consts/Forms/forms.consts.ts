@@ -2,7 +2,7 @@ import { startOfMonth, subMonths } from 'date-fns';
 import { ItemForm, TransferDataForm } from '../../types/Forms/forms.types';
 
 export const transferDataForminitialValues: TransferDataForm = {
-	date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
+	date: startOfMonth(new Date(subMonths(new Date(), 1))),
 	fixed: true,
 	installments: true,
 	transform: 0,
@@ -13,7 +13,7 @@ export const transferDataForminitialValues: TransferDataForm = {
 export const itemFormInitialValues: ItemForm = {
 	label: '',
 	value: 0,
-	date: new Date().toString(),
+	date: new Date(),
 	type: 'monthly',
 	class: 'expense',
 	categoryId: '0',

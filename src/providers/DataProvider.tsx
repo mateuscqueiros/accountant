@@ -15,7 +15,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 		setData((prev) => {
 			return {
 				...prev,
-				activeMonth: startOfMonth(new Date(date)).toString(),
+				activeMonth: startOfMonth(new Date(date)),
 			};
 		});
 	};
@@ -28,7 +28,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 				state &&
 				state.items.filter((item) => {
 					/* Pegar itens com base no mês e tipos selecionados */
-					const isFromMonth = compareStartOfMonth(item.date, payload.from);
+					const isFromMonth = compareStartOfMonth(item.date, new Date(payload.from));
 
 					return (
 						isFromMonth &&
@@ -48,7 +48,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 						date: setYear(
 							setMonth(new Date(item.date), getMonth(new Date(payload.to))),
 							getYear(new Date(payload.to))
-						).toString(),
+						),
 					};
 					return newItem;
 				});
@@ -119,7 +119,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 			} else if (payload.action === 'replace') {
 				// Se a ação for Substituir, os itens antigos serão removidos e substituídos pelos novos
 				let itemsToKeep = state.items.filter((item) => {
-					return !compareStartOfMonth(item.date, payload.to);
+					return !compareStartOfMonth(item.date, new Date(payload.to));
 				});
 				return {
 					...state,
@@ -135,6 +135,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 		if (data === undefined) {
 			return [];
 		}
+
+		console.log('ola');
 
 		let activeMonthItems = data.items.filter((billItem) => {
 			return compareStartOfMonth(billItem.date, data.activeMonth);

@@ -2,17 +2,22 @@
 
 import {
 	HomeActions,
-	HomePageContent,
+	HomeContent,
 	HomePageFallback,
 	HomeStatistics,
 } from '@/components/pages/Home';
 import { DataContext } from '@/providers/DataProvider';
+import { BillsDataItem } from '@/types/Data';
 import { Box, rem } from '@mantine/core';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Home() {
 	const data = useContext(DataContext);
-	const activeData = data.selectActiveData();
+	let [activeData, setActiveData] = useState<BillsDataItem[]>([]);
+
+	useEffect(() => {
+		setActiveData(data.selectActiveData());
+	}, []);
 
 	return (
 		<Box maw={rem('1200px')} mx="auto">
@@ -20,7 +25,7 @@ export default function Home() {
 			{activeData.length > 0 ? (
 				<>
 					<HomeStatistics />
-					<HomePageContent />
+					<HomeContent />
 				</>
 			) : (
 				<HomePageFallback />

@@ -1,4 +1,4 @@
 export { HomeActions } from './HomeActions';
-export { HomePageContent } from './HomePageContent';
+export { HomeContent } from './HomeContent';
 export { HomePageFallback } from './HomePageFallback';
 export { HomeStatistics } from './HomeStatistics';

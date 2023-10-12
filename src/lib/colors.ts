@@ -1,2 +1,4 @@
-export const expenseColor = 'red.6';
-export const recipeColor = 'green.6';
+export const colors = {
+	expenses: 'red.6',
+	recipes: 'green.6',
+};

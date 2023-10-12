@@ -42,7 +42,7 @@ export const defaultCategories: Category[] = [
 ];
 
 export const defaultData: UserData = {
-	activeMonth: startOfMonth(new Date()).toString(),
+	activeMonth: startOfMonth(new Date()),
 	user: {
 		name: 'Mateus Queirós',
 		image: '/avatar.jpg',
@@ -54,7 +54,7 @@ export const defaultData: UserData = {
 			label: 'Compras mensais',
 			categoryId: 1,
 			value: 255.6,
-			date: new Date('09/01/2023').toString(),
+			date: new Date('09/01/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -70,7 +70,7 @@ export const defaultData: UserData = {
 			label: 'Compras fixas',
 			categoryId: 1,
 			value: 20,
-			date: new Date('09/23/2023').toString(),
+			date: new Date('09/23/2023'),
 			type: 'fixed',
 			class: 'expense',
 			installments: {
@@ -87,7 +87,7 @@ export const defaultData: UserData = {
 			label: 'Receita',
 			categoryId: 1,
 			value: 1200,
-			date: new Date('09/12/2023').toString(),
+			date: new Date('09/12/2023'),
 			type: 'fixed',
 			class: 'recipe',
 			installments: {
@@ -104,7 +104,7 @@ export const defaultData: UserData = {
 			label: 'Compras parceladas',
 			categoryId: 1,
 			value: 20,
-			date: new Date('9/7/2023').toString(),
+			date: new Date('9/7/2023'),
 			type: 'installment',
 			class: 'expense',
 			installments: {
@@ -121,7 +121,7 @@ export const defaultData: UserData = {
 			label: 'Compras mensal',
 			categoryId: 1,
 			value: 255.6,
-			date: new Date('07/14/2023').toString(),
+			date: new Date('07/14/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -137,7 +137,7 @@ export const defaultData: UserData = {
 			label: 'Outras compras',
 			categoryId: 1,
 			value: 24,
-			date: new Date('06/13/2023').toString(),
+			date: new Date('06/13/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -154,7 +154,7 @@ export const defaultData: UserData = {
 			label: 'Outras compras',
 			categoryId: 1,
 			value: 24,
-			date: new Date('06/08/2023').toString(),
+			date: new Date('06/08/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -170,7 +170,7 @@ export const defaultData: UserData = {
 			label: 'Outras compras',
 			categoryId: 7,
 			value: 24,
-			date: new Date('06/10/2023').toString(),
+			date: new Date('06/10/2023'),
 			type: 'monthly',
 			class: 'recipe',
 			installments: {
@@ -186,7 +186,7 @@ export const defaultData: UserData = {
 			label: 'Outras compras',
 			categoryId: 6,
 			value: 24,
-			date: new Date('03/10/2023').toString(),
+			date: new Date('03/10/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -202,7 +202,7 @@ export const defaultData: UserData = {
 			label: 'Outras compras',
 			categoryId: 3,
 			value: 24,
-			date: new Date('06/10/2023').toString(),
+			date: new Date('06/10/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -215,10 +215,10 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Outras compras',
+			label: 'Luffy',
 			categoryId: 4,
 			value: 24,
-			date: new Date('10/12/2023').toString(),
+			date: new Date('10/12/2023'),
 			type: 'monthly',
 			class: 'recipe',
 			installments: {
@@ -231,12 +231,12 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Outras compras',
+			label: 'Zoro',
 			categoryId: 3,
-			value: 24,
-			date: new Date('10/20/2023').toString(),
+			value: 2400,
+			date: new Date('10/20/2023'),
 			type: 'monthly',
-			class: 'expense',
+			class: 'recipe',
 			installments: {
 				current: 0,
 				total: 0,
@@ -247,10 +247,10 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Outras compras',
+			label: 'Nami',
 			categoryId: 1,
-			value: 24,
-			date: new Date('10/26/2023').toString(),
+			value: 1200,
+			date: new Date('10/26/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -263,10 +263,10 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Outras compras',
+			label: 'Ussopp',
 			categoryId: 5,
 			value: 24,
-			date: new Date('10/21/2023').toString(),
+			date: new Date('10/21/2023'),
 			type: 'monthly',
 			class: 'expense',
 			installments: {
@@ -274,6 +274,54 @@ export const defaultData: UserData = {
 				total: 0,
 			},
 			dueDay: 0,
+			note: 'Uma nota que ninguém vai ler',
+			active: true,
+		},
+		{
+			id: uuidv4(),
+			label: 'Sanji',
+			categoryId: 5,
+			value: 24,
+			date: new Date('10/21/2023'),
+			type: 'monthly',
+			class: 'expense',
+			installments: {
+				current: 0,
+				total: 0,
+			},
+			dueDay: 0,
+			note: 'Uma nota que ninguém vai ler',
+			active: true,
+		},
+		{
+			id: uuidv4(),
+			label: 'A',
+			categoryId: 1,
+			value: 22.7,
+			date: new Date('10/21/2023'),
+			type: 'monthly',
+			class: 'expense',
+			installments: {
+				current: 0,
+				total: 0,
+			},
+			dueDay: 0,
+			note: 'Uma nota que ninguém vai ler',
+			active: true,
+		},
+		{
+			id: uuidv4(),
+			label: 'Z',
+			categoryId: 7,
+			value: 55.7,
+			date: new Date('10/21/2023'),
+			type: 'fixed',
+			class: 'expense',
+			installments: {
+				current: 0,
+				total: 0,
+			},
+			dueDay: 12,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
 		},

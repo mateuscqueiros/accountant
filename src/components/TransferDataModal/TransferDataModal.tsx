@@ -28,7 +28,7 @@ export function TransferDataModal() {
 	const modal = useContext(ModalsContext).transferData;
 
 	const initialValues: TransferDataForm = {
-		date: startOfMonth(new Date(subMonths(new Date(), 1).toString())).toString(),
+		date: startOfMonth(new Date(subMonths(new Date(), 1).toString())),
 		fixed: true,
 		installments: true,
 		monthly: false,
@@ -66,7 +66,7 @@ export function TransferDataModal() {
 	);
 
 	let findData = useCallback(
-		(date: string) => {
+		(date: Date) => {
 			let dataToImport = data.values.items.filter((billItem) =>
 				compareStartOfMonth(billItem.date, date)
 			);
@@ -79,7 +79,7 @@ export function TransferDataModal() {
 	);
 
 	let dataToImport = useMemo(() => {
-		return findData(transferDataForm.values.date);
+		return findData(new Date(transferDataForm.values.date));
 	}, [transferDataForm, findData]);
 
 	let sumOfSelectedItems = useMemo(() => {
@@ -89,7 +89,7 @@ export function TransferDataModal() {
 	const handleSubmit = useCallback(
 		(values: TransferDataForm) => {
 			data.transferData({
-				from: values.date,
+				from: new Date(values.date),
 				to: data.values.activeMonth,
 				fixed: values.fixed,
 				installments: values.installments,
@@ -195,12 +195,10 @@ export function TransferDataModal() {
 							}}
 							{...transferDataForm.getInputProps('date')}
 							value={
-								new Date(
-									transferDataForm.values.date === '' ? new Date() : transferDataForm.values.date
-								)
+								new Date(!transferDataForm.values.date ? new Date() : transferDataForm.values.date)
 							}
 							onChange={(e) => {
-								transferDataForm.setFieldValue('date', e && e.toString() ? e.toString() : '');
+								transferDataForm.setFieldValue('date', e ? e : new Date());
 							}}
 						/>
 						<Select
@@ -308,7 +306,7 @@ export function TransferDataModal() {
 									</Button>
 									<Button
 										type="submit"
-										disabled={transferDataForm.values.date === '' || sumOfSelectedItems < 1}
+										disabled={!transferDataForm.values.date || sumOfSelectedItems < 1}
 									>
 										Importar
 									</Button>

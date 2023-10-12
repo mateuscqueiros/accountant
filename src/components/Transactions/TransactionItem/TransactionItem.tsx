@@ -1,5 +1,5 @@
 import { getCategory } from '@/lib/categories';
-import { expenseColor, recipeColor } from '@/lib/colors';
+import { colors } from '@/lib/colors';
 import { getItemTypeIcon } from '@/lib/item';
 import { confirmModal } from '@/lib/modals';
 import { DataContext } from '@/providers/DataProvider';
@@ -65,7 +65,7 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 			)}
 			{(!hasOptions || options.value) && (
 				<Table.Td>
-					<Text c={isExpense ? expenseColor : recipeColor}>${item.value}</Text>
+					<Text c={isExpense ? colors.expenses : colors.recipes}>${item.value}</Text>
 				</Table.Td>
 			)}
 

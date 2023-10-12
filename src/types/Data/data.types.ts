@@ -35,7 +35,7 @@ export type BillsDataItem = {
 	class: 'expense' | 'recipe';
 
 	/* Date é usado para inserir o item no billData certo dele */
-	date: string;
+	date: Date;
 
 	/* Categoria personalizada do item */
 	categoryId: number;
@@ -58,7 +58,7 @@ export type BillsDataItem = {
 
 export type UserData = {
 	user: User;
-	activeMonth: string;
+	activeMonth: Date;
 	items: BillsDataItem[];
 };
 
@@ -69,8 +69,8 @@ export type User = {
 };
 
 export type TransferData = {
-	from: string;
-	to: string;
+	from: Date;
+	to: Date;
 	installments: boolean;
 	fixed: boolean;
 	monthly: boolean;

@@ -17,7 +17,7 @@ export function MonthlyItem({ item }: { item: BillsDataItem }) {
 			>
 				<Table.Td>{item.label}</Table.Td>
 				<Table.Td>{item.value}</Table.Td>
-				<Table.Td>{format(new Date(item.date !== '' ? item.date : new Date()), 'dd')}</Table.Td>
+				<Table.Td>{format(new Date(item.date), 'dd')}</Table.Td>
 			</Table.Tr>
 		</>
 	);

@@ -67,9 +67,7 @@ export function HomeActions() {
 								}
 
 								if (
-									data.values.items.every(
-										(billItem) => !compareStartOfMonth(billItem.date, date.toString())
-									)
+									data.values.items.every((billItem) => !compareStartOfMonth(billItem.date, date))
 								) {
 									return {
 										style: () => ({

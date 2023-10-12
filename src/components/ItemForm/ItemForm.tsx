@@ -172,9 +172,9 @@ export function ItemsForm() {
 								placeholder="01/01/2023"
 								mb="md"
 								{...itemForm.getInputProps('date')}
-								value={new Date(itemForm.values.date === '' ? new Date() : itemForm.values.date)}
+								value={new Date(!itemForm.values.date ? new Date() : itemForm.values.date)}
 								onChange={(e) => {
-									itemForm.setFieldValue('date', e && e.toString() ? e.toString() : '');
+									itemForm.setFieldValue('date', e && e ? e : new Date());
 								}}
 							/>
 							<Tooltip multiline label="Define se o item deve ser computado nos cálculos" withArrow>

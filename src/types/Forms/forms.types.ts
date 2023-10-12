@@ -1,7 +1,7 @@
 export interface ItemForm {
 	label: string;
 	value: number | '';
-	date: string;
+	date: Date;
 	type: 'monthly' | 'installment' | 'fixed';
 	class: 'recipe' | 'expense';
 	categoryId: string | null;
@@ -12,13 +12,10 @@ export interface ItemForm {
 		total: number | '';
 	};
 	dueDay: number | '';
-	// fixed: {
-	// 	dueDay: number | '';
-	// };
 }
 
 export type TransferDataForm = {
-	date: string;
+	date: Date;
 	fixed: boolean;
 	installments: boolean;
 	transform: number;

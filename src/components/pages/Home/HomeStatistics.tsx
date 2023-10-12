@@ -1,9 +1,9 @@
 import { getCategoriesValues, getCategory } from '@/lib/categories';
-import { expenseColor, recipeColor } from '@/lib/colors';
+import { colors } from '@/lib/colors';
 import { getPercentageArray } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
 import { Flex, Group, Paper, RingProgress, Text } from '@mantine/core';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 export function HomeStatistics() {
 	const data = useContext(DataContext);
@@ -12,6 +12,8 @@ export function HomeStatistics() {
 	let expensesTotal = 0;
 	let incomeTotal = 0;
 	let ringProgressStatistics: any[] = [];
+
+	const [displayData, setDisplayData] = useState(activeData);
 
 	if (activeData.length > 0) {
 		expensesTotal = activeData
@@ -42,13 +44,17 @@ export function HomeStatistics() {
 					<Flex direction="column" justify="center" gap={0}>
 						<Group gap={0}>
 							<Text mr={10}>Saldo mensal:</Text>
-							<Text fz="lg" fw={600} c={recipeColor}>
+							<Text
+								fz="lg"
+								fw={600}
+								c={incomeTotal - expensesTotal > 0 ? colors.recipes : colors.expenses}
+							>
 								${(incomeTotal - expensesTotal).toFixed(2)}
 							</Text>
 						</Group>
 						<Group style={{ gap: 0 }}>
 							<Text mr={10}>Total de gastos:</Text>
-							<Text fz="lg" c={expenseColor} fw={600}>
+							<Text fz="lg" c={colors.expenses} fw={600}>
 								${expensesTotal.toFixed(2)}
 							</Text>
 						</Group>
@@ -56,6 +62,7 @@ export function HomeStatistics() {
 					<Flex>
 						<RingProgress
 							roundCaps
+							thickness={15}
 							sections={
 								ringProgressStatistics || [
 									{

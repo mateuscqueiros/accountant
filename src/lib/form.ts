@@ -74,7 +74,7 @@ export function getTransformObject(values: ItemForm, categories: Category[]): It
 
 	let transform: ItemForm = {
 		...values,
-		date: values.date.toString(),
+		date: values.date,
 	};
 	if (values.type === 'monthly') {
 		transform = {
