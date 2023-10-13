@@ -16,7 +16,8 @@ export default function Home() {
 	const data = useContext(DataContext);
 	let activeData = data.selectActiveData();
 
-	const displayData = useState<BillsDataItem[]>(activeData);
+	const displayData = useState<BillsDataItem[]>([]);
+	const [_, setDisplayData] = displayData;
 
 	const orders = useState<OrdersOptions>({
 		label: 1,
@@ -27,9 +28,8 @@ export default function Home() {
 	});
 
 	useEffect(() => {
-		const [_, setDisplayData] = displayData;
 		setDisplayData(data.selectActiveData());
-	}, [activeData]);
+	}, [data]);
 
 	return (
 		<Box maw={rem('1200px')} mx="auto">

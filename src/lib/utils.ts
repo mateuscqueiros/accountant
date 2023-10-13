@@ -51,3 +51,19 @@ export function orderItems(items: BillsDataItem[], prop: keyof BillsDataItem, in
 
 	return sortedItems;
 }
+
+/**
+ * Filtra itens com base nas opções passadas.
+ * @param items Os itens a serem filtrados
+ * @param prop A propriedade para comparar
+ */
+export function filterItems(items: BillsDataItem[], prop: keyof BillsDataItem) {
+	const filterData = (filter: string[], invert: boolean = false): any[] => {
+		let newFilteredData: any[] = [];
+		newFilteredData.push(items.filter((item) => filter.every((i) => i.includes(i) != invert)));
+
+		return newFilteredData[0];
+	};
+
+	return filterData;
+}

@@ -8,7 +8,7 @@ export interface DataContextType {
 	};
 
 	category: {
-		add: ({ label, color }: { label: string; color: string }) => void;
+		add: ({ label, slug, color }: { label: string; slug: string; color: string }) => void;
 		edit: (category: Category) => void;
 		delete: (id: number) => void;
 	};
@@ -82,5 +82,6 @@ export type Category = {
 	id: number;
 	label: string;
 	color: string;
+	slug: string;
 	default?: boolean;
 };

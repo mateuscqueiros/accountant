@@ -78,7 +78,6 @@ export function ItemsForm() {
 	return (
 		<>
 			<Modal
-				data-testid="modal-form"
 				opened={modal.values.opened}
 				onClose={() => {
 					modal.reset();

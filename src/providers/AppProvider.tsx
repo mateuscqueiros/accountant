@@ -21,16 +21,16 @@ export const AppProvider = ({ children }: { children: any }) => {
 		<MantineProvider theme={theme} defaultColorScheme="auto">
 			<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
 				<ModalsProvider>
-					<Notifications limit={5} />
-					<NavigationProgress />
-					<>
-						<DataProvider>
-							<MntModalsProvider>
+					<MntModalsProvider>
+						<Notifications limit={5} />
+						<NavigationProgress />
+						<>
+							<DataProvider>
 								<ItemsForm />
 								<Layout withPadding={shouldHavePadding}>{children}</Layout>
-							</MntModalsProvider>
-						</DataProvider>
-					</>
+							</DataProvider>
+						</>
+					</MntModalsProvider>
 				</ModalsProvider>
 			</DatesProvider>
 		</MantineProvider>

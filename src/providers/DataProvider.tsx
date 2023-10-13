@@ -195,7 +195,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
 	};
 
 	/* Categories */
-	const addCategory = ({ label, color }: { label: string; color: string }) => {
+	const addCategory = (props: { label: string; slug: string; color: string }) => {
+		const { label, slug, color } = props;
+		const nextId = getNextCategoryId(data.user.categories);
 		setData((prev) => {
 			return {
 				...prev,
@@ -204,7 +206,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 					categories: [
 						...prev.user.categories,
 						{
-							id: getNextCategoryId(data.user.categories),
+							id: nextId,
+							slug,
 							label,
 							color,
 						},
@@ -212,6 +215,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 				},
 			};
 		});
+		log();
 	};
 
 	const editCategory = (category: Category) => {

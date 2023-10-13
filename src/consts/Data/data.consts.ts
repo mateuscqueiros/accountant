@@ -6,35 +6,42 @@ export const defaultCategories: Category[] = [
 	{
 		id: 1,
 		label: 'Carro',
+		slug: 'carro',
 		color: 'violet.6',
 	},
 	{
 		label: 'Casa',
+		slug: 'casa',
 		id: 2,
 		color: 'orange.6',
 	},
 	{
 		label: 'Investimento',
+		slug: 'investimento',
 		id: 3,
 		color: 'red.6',
 	},
 	{
 		label: 'Roupas',
+		slug: 'roupas',
 		id: 4,
 		color: 'green.6',
 	},
 	{
 		label: 'Entretenimento',
+		slug: 'entretenimento',
 		id: 5,
-		color: 'teal.6',
+		color: 'indigo.6',
 	},
 	{
 		label: 'Assinaturas',
+		slug: 'assinaturas',
 		id: 6,
 		color: 'yellow.6',
 	},
 	{
 		label: 'Outros',
+		slug: 'outros',
 		id: 0,
 		color: 'blue.6',
 		default: true,
@@ -263,7 +270,7 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Ussopp',
+			label: 'Usopp',
 			categoryId: 5,
 			value: 24,
 			date: new Date('10/21/2023'),

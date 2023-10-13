@@ -32,18 +32,19 @@ export function getCategory(categories: Category[], id: number): Category {
 
 	return {
 		id: foundCategory.id,
+		slug: foundCategory.slug,
 		label: foundCategory.label,
 		color: foundCategory.color,
 	};
 }
 
 export function getNextCategoryId(categories: Category[]): number {
-	return (
+	const nextId =
 		Math.max.apply(
 			null,
 			categories.map((item) => item.id)
-		) + 1
-	);
+		) + 1;
+	return nextId;
 }
 
 export function getCategoriesForm(categories: Category[], id?: number): CategoryForm[] {

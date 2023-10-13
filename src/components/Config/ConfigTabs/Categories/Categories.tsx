@@ -57,6 +57,7 @@ export function CategoryTabProvider({ children }: { children: ReactElement }) {
 				...prev,
 				values: {
 					id: -1,
+					slug: '',
 					label: '',
 					color: '',
 				},
@@ -73,6 +74,7 @@ export function CategoryTabProvider({ children }: { children: ReactElement }) {
 		action: 'edit',
 		values: {
 			id: -1,
+			slug: '',
 			label: '',
 			color: '',
 		},
@@ -119,6 +121,7 @@ function CategoryModal() {
 	const form = useForm<Category>({
 		initialValues: {
 			id: -1,
+			slug: '',
 			label: '',
 			color: '',
 		},
@@ -126,6 +129,10 @@ function CategoryModal() {
 			label: (value) => (value.length < 2 ? 'O nome deve ter mais de 2 caracteres' : null),
 			color: (value) => (!value ? 'Selecione uma cor' : null),
 		},
+		transformValues: (values) => ({
+			...values,
+			slug: values.label.toLowerCase(),
+		}),
 	});
 
 	useEffect(() => {
