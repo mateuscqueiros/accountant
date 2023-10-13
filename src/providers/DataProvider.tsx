@@ -136,8 +136,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
 			return [];
 		}
 
-		console.log('ola');
-
 		let activeMonthItems = data.items.filter((billItem) => {
 			return compareStartOfMonth(billItem.date, data.activeMonth);
 		});

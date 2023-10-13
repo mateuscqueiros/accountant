@@ -8,7 +8,7 @@ import { ModalsProvider as MntModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress } from '@mantine/nprogress';
 import { usePathname } from 'next/navigation';
-import { theme } from '../theme';
+import { theme } from '../lib/theme';
 import { DataProvider } from './DataProvider';
 import { ModalsProvider } from './ModalsProvider';
 
@@ -18,7 +18,7 @@ export const AppProvider = ({ children }: { children: any }) => {
 	const shouldHavePadding = !path.includes('categories');
 
 	return (
-		<MantineProvider theme={theme} defaultColorScheme="dark">
+		<MantineProvider theme={theme} defaultColorScheme="auto">
 			<DatesProvider settings={{ locale: 'pt-br', firstDayOfWeek: 0, weekendDays: [0] }}>
 				<ModalsProvider>
 					<Notifications limit={5} />

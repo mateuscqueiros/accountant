@@ -1,7 +1,12 @@
 import { OrdersOptions, TableHeaderItem, TransactionItem } from '@/components/Transactions';
-import { DataContext } from '@/providers/DataProvider';
+import { BillsDataItem } from '@/types/Data';
 import { Table } from '@mantine/core';
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
+
+interface HomeContentProps {
+	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	orders: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
+}
 
 interface TableHeaderData {
 	label: string;
@@ -29,24 +34,13 @@ const tableHeaderData: TableHeaderData[] = [
 		hiddenMobile: true,
 	},
 	{
-		label: 'Preço',
+		label: 'Valor',
 		prop: 'value',
 	},
 ];
 
-export function HomeContent() {
-	const data = useContext(DataContext);
-	let activeData = data.selectActiveData();
-
-	const [displayData, setDisplayData] = useState(activeData);
-
-	const orders = useState<OrdersOptions>({
-		label: 0,
-		categoryId: 0,
-		date: 0,
-		type: 0,
-		value: 0,
-	});
+export function HomeContent({ dataState, orders }: HomeContentProps) {
+	const [data, setData] = dataState;
 
 	return (
 		<>
@@ -57,10 +51,10 @@ export function HomeContent() {
 							return (
 								<TableHeaderItem
 									key={dataItem.prop}
-									items={activeData}
+									items={data}
 									prop={dataItem.prop}
 									options={orders}
-									setData={setDisplayData}
+									setData={setData}
 									hiddenMobile={dataItem.hiddenMobile}
 								>
 									{dataItem.label}
@@ -70,7 +64,7 @@ export function HomeContent() {
 					</Table.Tr>
 				</Table.Thead>
 				<Table.Tbody>
-					{displayData.map((item) => {
+					{data.map((item) => {
 						return <TransactionItem dateFormat="'Dia ' dd" key={item.id} item={item} />;
 					})}
 				</Table.Tbody>

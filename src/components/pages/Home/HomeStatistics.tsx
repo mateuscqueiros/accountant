@@ -1,30 +1,34 @@
 import { getCategoriesValues, getCategory } from '@/lib/categories';
-import { colors } from '@/lib/colors';
+import { useColors } from '@/lib/theme';
 import { getPercentageArray } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
+import { BillsDataItem } from '@/types/Data';
 import { Flex, Group, Paper, RingProgress, Text } from '@mantine/core';
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 
-export function HomeStatistics() {
-	const data = useContext(DataContext);
-	const activeData = data.selectActiveData();
+interface HomeStatisticsProps {
+	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+}
+
+export function HomeStatistics({ dataState }: HomeStatisticsProps) {
+	const dataProvider = useContext(DataContext);
+	const [data] = dataState;
+	const colors = useColors();
 
 	let expensesTotal = 0;
 	let incomeTotal = 0;
 	let ringProgressStatistics: any[] = [];
 
-	const [displayData, setDisplayData] = useState(activeData);
-
-	if (activeData.length > 0) {
-		expensesTotal = activeData
+	if (data.length > 0) {
+		expensesTotal = data
 			.filter((item) => item.active && !(item.class === 'recipe'))
 			.reduce((partialSum, a) => partialSum + a.value, 0);
 
-		incomeTotal = activeData
+		incomeTotal = data
 			.filter((item) => item.active && item.class === 'recipe')
 			.reduce((partialSum, a) => partialSum + a.value, 0);
 
-		let categoriesValues = getCategoriesValues(activeData, data.values.user.categories);
+		let categoriesValues = getCategoriesValues(data, dataProvider.values.user.categories);
 		let categoriesValuesToPercentage = getPercentageArray(
 			categoriesValues.map((item) => item.value)
 		);
@@ -32,7 +36,7 @@ export function HomeStatistics() {
 			return {
 				value: item,
 				tooltip: `${categoriesValues[index].label} (${categoriesValuesToPercentage[index]}%)`,
-				color: getCategory(data.values.user.categories, categoriesValues[index].id).color,
+				color: getCategory(dataProvider.values.user.categories, categoriesValues[index].id).color,
 			};
 		});
 	}

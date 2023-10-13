@@ -1,4 +1,4 @@
-import meta from '@/meta';
+import meta from '@/lib/meta';
 import { Badge } from '@mantine/core';
 
 export function VersionBadge() {

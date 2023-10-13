@@ -1,5 +1,6 @@
+import { ActionIcon } from '@/components/Icons';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
 

@@ -249,7 +249,7 @@ export const defaultData: UserData = {
 			id: uuidv4(),
 			label: 'Nami',
 			categoryId: 1,
-			value: 1200,
+			value: 120,
 			date: new Date('10/26/2023'),
 			type: 'monthly',
 			class: 'expense',

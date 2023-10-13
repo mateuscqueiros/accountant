@@ -1,10 +1,11 @@
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { ActionIcon, Card, Flex, Table, Text } from '@mantine/core';
+import { Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { BillsDataItem } from 'src/types/Data/data.types';
 import { ItemForm } from 'src/types/Forms/forms.types';
+import { ActionIcon } from '../Icons';
 import { DefaultItem } from './DefaultItem/DefaultItem';
 import { FixedItem } from './FixedItem/FixedItem';
 import { InstallmentItem } from './InstallmentItem/InstallmentItem';

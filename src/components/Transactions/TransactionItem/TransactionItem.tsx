@@ -1,11 +1,12 @@
+import { ActionIcon } from '@/components/Icons';
 import { getCategory } from '@/lib/categories';
-import { colors } from '@/lib/colors';
 import { getItemTypeIcon } from '@/lib/item';
 import { confirmModal } from '@/lib/modals';
+import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { BillsDataItem } from '@/types/Data';
-import { ActionIcon, Group, Table, Text, rem } from '@mantine/core';
+import { Group, Table, Text, rem } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useContext } from 'react';
@@ -29,6 +30,7 @@ interface TransactionItemProps {
 export function TransactionItem({ item, options, dateFormat }: TransactionItemProps) {
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
+	const colors = useColors();
 
 	const hasOptions = options !== undefined;
 

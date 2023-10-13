@@ -4,7 +4,6 @@ import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import {
-	ActionIcon,
 	Box,
 	Button,
 	Checkbox,
@@ -27,6 +26,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ItemForm } from 'src/types/Forms/forms.types';
 import { v4 as uuidv4 } from 'uuid';
+import { ActionIcon } from '../Icons';
 
 export function ItemsForm() {
 	const modal = useContext(ModalsContext).item;
@@ -210,7 +210,6 @@ export function ItemsForm() {
 							{modal.values.action === 'update' && (
 								<ActionIcon
 									size="2.2rem"
-									role="button-delete"
 									variant="outline"
 									color="red"
 									onClick={() => {

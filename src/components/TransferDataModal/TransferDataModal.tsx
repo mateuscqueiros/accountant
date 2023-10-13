@@ -2,7 +2,6 @@ import { compareStartOfMonth } from '@/lib/dates';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import {
-	ActionIcon,
 	Box,
 	Button,
 	Checkbox,
@@ -22,6 +21,7 @@ import { ptBR } from 'date-fns/locale';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { BillsDataItem } from 'src/types/Data/data.types';
 import { TransferDataForm } from 'src/types/Forms/forms.types';
+import { ActionIcon } from '../Icons';
 
 export function TransferDataModal() {
 	const data = useContext(DataContext);
@@ -217,7 +217,7 @@ export function TransferDataModal() {
 										Tipos
 									</Text>
 									<Text fz="xs" lh="0.1rem" mt={1} color="gray.6">
-										({sumOfSelectedItems} para importar)
+										({sumOfSelectedItems} itens)
 									</Text>
 								</Flex>
 

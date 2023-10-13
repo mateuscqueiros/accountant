@@ -1,8 +1,8 @@
-import { IconArrowDoubleVertical, IconArrowDown, IconArrowUp } from '@/components/Icons';
+import { IconArrowDown, IconArrowUp } from '@/components/Icons';
 import { orderItems } from '@/lib/utils';
 import { BillsDataItem } from '@/types/Data';
 import { Box, Flex, Table, Text } from '@mantine/core';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 
 export interface OrdersOptions {
 	label: number;
@@ -45,14 +45,10 @@ export function TableHeaderItem({
 }: TableHeaderOrderProps) {
 	const mobileBreakpoint = 'sm';
 
-	const optionIcons = [
-		<IconArrowDoubleVertical size="1rem" />,
-		<IconArrowDown size="1rem" />,
-		<IconArrowUp size="1rem" />,
-	];
+	const optionIcons = [undefined, <IconArrowDown size="1rem" />, <IconArrowUp size="1rem" />];
 
 	const [optionsState, setOptions] = options;
-	const [icon, setIcon] = useState(optionIcons[0]);
+	const [icon, setIcon] = useState(optionIcons[optionsState[prop]]);
 
 	const reset: OrdersOptions = {
 		label: 0,
@@ -88,22 +84,25 @@ export function TableHeaderItem({
 		[options]
 	);
 
+	useEffect(() => {
+		let indexOfIcon = options[0][prop];
+		setIcon(optionIcons[indexOfIcon]);
+	}, [options]);
+
 	return (
 		<Table.Th
 			style={{ cursor: 'pointer' }}
 			visibleFrom={hiddenMobile ? mobileBreakpoint : undefined}
+			onClick={() => {
+				setNextOrder(prop);
+			}}
 		>
-			<Box
-				w="full"
-				onClick={() => {
-					setNextOrder(prop);
-				}}
-			>
-				<Flex align="center" gap="xs">
-					<Text>{children}</Text>
-					{icon}
-				</Flex>
-			</Box>
+			<Flex align="center" gap="xs">
+				<Text>{children}</Text>
+				<Box miw={20} h="full">
+					<Flex justify="center">{icon}</Flex>
+				</Box>
+			</Flex>
 		</Table.Th>
 	);
 }

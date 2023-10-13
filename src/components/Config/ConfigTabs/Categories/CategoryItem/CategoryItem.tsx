@@ -1,15 +1,8 @@
+import { ActionIcon } from '@/components/Icons';
 import { confirmModal } from '@/lib/modals';
 import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/Data';
-import {
-	ActionIcon,
-	ColorSwatch,
-	Table,
-	Text,
-	Tooltip,
-	parseThemeColor,
-	useMantineTheme,
-} from '@mantine/core';
+import { ColorSwatch, Table, Text, Tooltip, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';
 import { CategoriesModalContext } from '../Categories';
@@ -24,7 +17,8 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
 	const data = useContext(DataContext);
 	const theme = useMantineTheme();
 
-	const confirmDelete = () => {
+	const confirmDelete = (e: any) => {
+		e.stopPropagation();
 		confirmModal({
 			title: 'Deseja deletar a categoria?',
 			onConfirm: () => data.category.delete(category.id),
@@ -58,13 +52,7 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
 				<Table.Td>
 					{!category.default && (
 						<Tooltip label="Deletar categoria">
-							<ActionIcon
-								size="2.2rem"
-								role="button-delete"
-								variant="transparent"
-								color="red"
-								onClick={confirmDelete}
-							>
+							<ActionIcon variant="subtle" color="red" onClick={confirmDelete}>
 								<IconTrash size="1rem" />
 							</ActionIcon>
 						</Tooltip>
