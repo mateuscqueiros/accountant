@@ -1,4 +1,4 @@
-import { itemFormInitialValues, transferDataForminitialValues } from '@/consts/forms/forms.consts';
+import { itemFormInitialValues, transferDataForminitialValues } from '@/consts/forms';
 import { ItemModal, TransferDataModal } from 'src/types/Modals/modals.types';
 
 export const itemModalInitialValues: ItemModal = {

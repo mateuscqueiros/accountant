@@ -1,4 +1,4 @@
-import { itemFormInitialValues as initialValues } from '@/consts/forms/forms.consts';
+import { itemFormInitialValues as initialValues } from '@/consts/forms';
 import { getCategoriesForm } from '@/lib/categories';
 import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '@/lib/form';
 import { DataContext } from '@/providers/DataProvider';

@@ -1,7 +1,4 @@
-import {
-	itemModalInitialValues,
-	transferDataModalInitialValues,
-} from '@/consts/modals/modals.consts';
+import { itemModalInitialValues, transferDataModalInitialValues } from '@/consts/modals';
 import { BillsDataItem } from '@/types/Data/data.types';
 import { ItemForm } from '@/types/Forms/forms.types';
 import { ModalsContextType } from '@/types/Modals/modals.types';
