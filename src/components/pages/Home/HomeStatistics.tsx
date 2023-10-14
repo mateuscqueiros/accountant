@@ -2,7 +2,8 @@ import { getCategoryStatistics, getTotalValues } from '@/lib/statistics';
 import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { BillsDataItem } from '@/types/Data';
-import { Flex, Group, Paper, RingProgress, Text } from '@mantine/core';
+import { Flex, Group, Paper, RingProgress, Text, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useContext } from 'react';
 
 interface HomeStatisticsProps {
@@ -14,6 +15,8 @@ export function HomeStatistics({ dataState }: HomeStatisticsProps) {
 	const [data] = dataState;
 	const categories = dataProvider.values.user.categories;
 	const colors = useColors();
+	const theme = useMantineTheme();
+	const isSmallMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
 
 	let { expenses, recipes } = getTotalValues(data);
 	let ringProgressStatistics: any[] = getCategoryStatistics(data, categories);
@@ -21,7 +24,13 @@ export function HomeStatistics({ dataState }: HomeStatisticsProps) {
 	return (
 		<>
 			<Paper mb="md" p="md" px="2rem">
-				<Flex justify="space-between" wrap="wrap" gap="md">
+				<Flex
+					direction={isSmallMobile ? 'column' : 'row'}
+					justify="space-between"
+					align={isSmallMobile ? 'center' : 'space-between'}
+					wrap="wrap"
+					gap="md"
+				>
 					<Flex direction="column" justify="center" gap={0}>
 						<Group gap={0}>
 							<Text mr={10}>Saldo mensal:</Text>
@@ -36,9 +45,7 @@ export function HomeStatistics({ dataState }: HomeStatisticsProps) {
 							</Text>
 						</Group>
 					</Flex>
-					<Flex>
-						<RingProgress roundCaps thickness={15} sections={ringProgressStatistics} />
-					</Flex>
+					<RingProgress roundCaps thickness={15} sections={ringProgressStatistics} />
 				</Flex>
 			</Paper>
 		</>

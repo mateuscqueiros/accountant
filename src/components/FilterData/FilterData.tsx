@@ -2,7 +2,8 @@ import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions, someKeyIsNotEmpty } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
 import { BillsDataItem } from '@/types/Data';
-import { Anchor, Flex, Menu, Text } from '@mantine/core';
+import { Anchor, Flex, Menu, Text, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { ActionIcon, IconFilter, IconFilterFilled } from '../Icons';
 import { FilterDataMenu } from './FilterDataMenu';
@@ -14,6 +15,7 @@ interface FilterDataProps {
 export function FilterData({ displayDataState }: FilterDataProps) {
 	const dataProvider = useContext(DataContext);
 	const activeData = dataProvider.selectActiveData();
+	const theme = useMantineTheme();
 
 	const [opened, setOpened] = useState(false);
 	const [displayData] = displayDataState;
@@ -22,6 +24,10 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 	const filterState = useState<FilterOptions<BillsDataItem>>(initialFilterValue);
 	const [filter, setFilters] = filterState;
 
+	const isSmallMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+
+	console.log(isSmallMobile);
+
 	return (
 		<Menu
 			shadow="md"
@@ -29,7 +35,7 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 			closeOnItemClick={false}
 			opened={opened}
 			onChange={setOpened}
-			position="bottom-end"
+			position={isSmallMobile ? 'right-start' : 'left-start'}
 		>
 			<Menu.Target>
 				<ActionIcon>
