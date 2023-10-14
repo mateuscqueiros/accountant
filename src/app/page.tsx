@@ -1,12 +1,12 @@
 'use client';
 
-import { OrdersOptions } from '@/components/Transactions';
 import {
 	HomeActions,
 	HomeContent,
 	HomePageFallback,
 	HomeStatistics,
 } from '@/components/pages/Home';
+import { initialOrdernateValue } from '@/consts/actions';
 import { DataContext } from '@/providers/DataProvider';
 import { BillsDataItem } from '@/types/Data';
 import { Box, rem } from '@mantine/core';
@@ -16,16 +16,10 @@ export default function Home() {
 	const data = useContext(DataContext);
 	let activeData = data.selectActiveData();
 
-	const displayData = useState<BillsDataItem[]>([]);
-	const [_, setDisplayData] = displayData;
+	const displayDataState = useState<BillsDataItem[]>([]);
+	const [_, setDisplayData] = displayDataState;
 
-	const orders = useState<OrdersOptions>({
-		label: 1,
-		categoryId: 0,
-		date: 0,
-		type: 0,
-		value: 0,
-	});
+	const ordenationState = useState(initialOrdernateValue);
 
 	useEffect(() => {
 		setDisplayData(data.selectActiveData());
@@ -33,14 +27,16 @@ export default function Home() {
 
 	return (
 		<Box maw={rem('1200px')} mx="auto">
-			<HomeActions dataState={displayData} />
+			<HomeActions displayDataState={displayDataState} />
 			{activeData.length > 0 ? (
 				<>
-					<HomeStatistics dataState={displayData} />
-					<HomeContent dataState={displayData} orders={orders} />
+					<HomeStatistics dataState={displayDataState} />
+					<HomeContent dataState={displayDataState} ordenationState={ordenationState} />
 				</>
 			) : (
-				<HomePageFallback />
+				<>
+					<HomePageFallback />
+				</>
 			)}
 		</Box>
 	);

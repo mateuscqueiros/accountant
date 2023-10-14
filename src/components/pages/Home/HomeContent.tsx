@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface HomeContentProps {
 	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
-	orders: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
+	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
 }
 
 interface TableHeaderData {
@@ -39,7 +39,7 @@ const tableHeaderData: TableHeaderData[] = [
 	},
 ];
 
-export function HomeContent({ dataState, orders }: HomeContentProps) {
+export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 	const [data, setData] = dataState;
 
 	return (
@@ -53,7 +53,7 @@ export function HomeContent({ dataState, orders }: HomeContentProps) {
 									key={dataItem.prop}
 									items={data}
 									prop={dataItem.prop}
-									options={orders}
+									ordenationState={ordenationState}
 									setData={setData}
 									hiddenMobile={dataItem.hiddenMobile}
 								>

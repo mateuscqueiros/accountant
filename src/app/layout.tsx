@@ -6,13 +6,14 @@ import '@mantine/nprogress/styles.css';
 import { AppProvider } from '@/providers/AppProvider';
 import { ColorSchemeScript } from '@mantine/core';
 import { Metadata } from 'next';
+import { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Accountant',
 	description: 'Para organizar suas contas!',
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="pt-BR">
 			<head>

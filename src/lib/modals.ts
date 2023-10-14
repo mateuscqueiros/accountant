@@ -1,13 +1,18 @@
 import { modals } from '@mantine/modals';
+import { PropsWithChildren } from 'react';
 
 interface ConfirmModalProps {
 	title: string;
-	children?: JSX.Element;
 	onCancel?: () => void;
 	onConfirm: () => void;
 }
 
-export const confirmModal = ({ title, children, onCancel, onConfirm }: ConfirmModalProps) => {
+export const confirmModal = ({
+	title,
+	children,
+	onCancel,
+	onConfirm,
+}: PropsWithChildren<ConfirmModalProps>) => {
 	modals.openConfirmModal({
 		title,
 		children,

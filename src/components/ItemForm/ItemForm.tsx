@@ -251,7 +251,7 @@ export function ItemsForm() {
 				}}
 				withCloseButton={false}
 			>
-				<Stack style={{ gap: 0 }}>
+				<Stack gap={0}>
 					<Text mb="1.5rem" mt="0.5rem">
 						Deseja realmente deletar?
 					</Text>

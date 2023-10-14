@@ -13,12 +13,12 @@ import { ptBR } from 'date-fns/locale';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 interface HomeActionsProps {
-	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	displayDataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
 }
 
-export function HomeActions({ dataState }: HomeActionsProps) {
+export function HomeActions({ displayDataState }: HomeActionsProps) {
 	const dataProvider = useContext(DataContext);
-	const [data] = dataState;
+	const [data] = displayDataState;
 	const activeMonthDisplay = format(new Date(dataProvider.values.activeMonth), "MMMM' de 'yyyy", {
 		locale: ptBR,
 	});
@@ -96,7 +96,7 @@ export function HomeActions({ dataState }: HomeActionsProps) {
 				</Modal>
 				{data !== undefined && (
 					<Group>
-						<FilterData />
+						<FilterData displayDataState={displayDataState} />
 						<TransferDataModal />
 						<ItemFormAddButton />
 					</Group>

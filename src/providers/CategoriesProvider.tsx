@@ -4,13 +4,13 @@ import { ConfigNav } from '@/components/Config';
 import { CategoryTabsContextType } from '@/types/UserTab';
 import { Flex, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { ReactNode, createContext, useState } from 'react';
+import { PropsWithChildren, createContext, useState } from 'react';
 
 export const CategoryTabsContext = createContext<CategoryTabsContextType>(
 	{} as CategoryTabsContextType
 );
 
-export function CategoryTabProvider({ children }: { children: ReactNode }) {
+export function CategoryTabProvider({ children }: PropsWithChildren) {
 	const [active, setActiveTab] = useState<number>(-1);
 
 	const setActive = (id: number) => {
@@ -29,7 +29,7 @@ export function CategoryTabProvider({ children }: { children: ReactNode }) {
 	);
 }
 
-export const CategoriesProvider = ({ children }: { children: any }) => {
+export const CategoriesProvider = ({ children }: PropsWithChildren) => {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 

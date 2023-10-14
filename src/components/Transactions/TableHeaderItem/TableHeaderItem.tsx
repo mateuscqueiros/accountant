@@ -1,8 +1,16 @@
 import { IconArrowDown, IconArrowUp } from '@/components/Icons';
+import { initialOrdernateValue } from '@/consts/actions';
 import { orderItems } from '@/lib/utils';
 import { BillsDataItem } from '@/types/Data';
 import { Box, Flex, Table, Text } from '@mantine/core';
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import {
+	Dispatch,
+	PropsWithChildren,
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 
 export interface OrdersOptions {
 	label: number;
@@ -16,7 +24,7 @@ interface TableHeaderOrderProps {
 	children: string;
 	prop: keyof OrdersOptions;
 	items: BillsDataItem[];
-	options: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
+	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
 	setData: Dispatch<SetStateAction<BillsDataItem[]>>;
 	hiddenMobile?: boolean;
 }
@@ -29,42 +37,32 @@ interface TableHeaderOrderProps {
  * @param setData Uma função para setar os dados
  * @param hiddenMobile Se o item deve ser oculto no Mobile ou não
  * @param options Um objeto com opções de ordenação. Cada opção é uma key de um item. Seu valor é um número:
- *  - 0 - A sequência retornada é a recebida em "items"
- * 	- 1 - Os itens serão ordenados (ordem alfabética ou numérica)
- * 	- 2 - Os itens serão ordenados porém invetidos (ordem alfabética ou numérica)
- *
- * @returns
+ *  - `0` - A sequência retornada é a recebida em `items`
+ * 	- `1` - Os itens serão ordenados (ordem alfabética ou numérica)
+ * 	- `2` - Os itens serão ordenados porém invetidos (ordem alfabética ou numérica)
  */
 export function TableHeaderItem({
 	children,
 	prop,
 	items,
-	options,
+	ordenationState,
 	setData,
 	hiddenMobile,
-}: TableHeaderOrderProps) {
+}: PropsWithChildren<TableHeaderOrderProps>) {
 	const mobileBreakpoint = 'sm';
 
 	const optionIcons = [undefined, <IconArrowDown size="1rem" />, <IconArrowUp size="1rem" />];
 
-	const [optionsState, setOptions] = options;
-	const [icon, setIcon] = useState(optionIcons[optionsState[prop]]);
-
-	const reset: OrdersOptions = {
-		label: 0,
-		categoryId: 0,
-		date: 0,
-		type: 0,
-		value: 0,
-	};
+	const [ordenation, setOrdenation] = ordenationState;
+	const [icon, setIcon] = useState(optionIcons[ordenation[prop]]);
 
 	const setNextOrder = useCallback(
 		(prop: keyof OrdersOptions) => {
-			const propValue = optionsState[prop];
+			const propValue = ordenation[prop];
 			const next = propValue > 1 ? 0 : propValue + 1;
 
-			setOptions({
-				...reset,
+			setOrdenation({
+				...initialOrdernateValue,
 				[prop]: next,
 			});
 			setIcon(optionIcons[next]);
@@ -81,13 +79,13 @@ export function TableHeaderItem({
 				setData(orderItems(items, prop, true));
 			}
 		},
-		[options]
+		[ordenationState]
 	);
 
 	useEffect(() => {
-		let indexOfIcon = options[0][prop];
+		let indexOfIcon = ordenation[prop];
 		setIcon(optionIcons[indexOfIcon]);
-	}, [options]);
+	}, [ordenation]);
 
 	return (
 		<Table.Th

@@ -3,7 +3,7 @@ import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/Data';
 import { Box, Button, Group, Modal, Stack, Table, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { ReactElement, createContext, useContext, useEffect, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { AddCategory } from './AddCategory/AddCategory';
 import { CategoryItem } from './CategoryItem/CategoryItem';
 import { ColorSwatchInput } from './ColorSwatchInput/ColorSwatchInput';
@@ -22,7 +22,7 @@ export const CategoriesModalContext = createContext<CategoriesModalContext>(
 	{} as CategoriesModalContext
 );
 
-export function CategoryTabProvider({ children }: { children: ReactElement }) {
+export function CategoryTabProvider({ children }: PropsWithChildren) {
 	const openModal = (action?: CategoriesModalContext['action']) => {
 		setData((prev) => {
 			return {

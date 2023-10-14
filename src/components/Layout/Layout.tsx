@@ -3,7 +3,7 @@ import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from 
 import { useMediaQuery } from '@mantine/hooks';
 import { IconChartBar, IconHome2, IconList, IconPigMoney } from '@tabler/icons-react';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
 import { VersionBadge } from '../Meta/VersionBadge/VersionBadge';
 import classes from './Layout.module.css';
@@ -89,7 +89,10 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 	);
 };
 
-export function Layout({ children, withPadding = true }: { withPadding?: boolean; children: any }) {
+export function Layout({
+	children,
+	withPadding = true,
+}: PropsWithChildren<{ withPadding?: boolean }>) {
 	const [opened, setOpened] = useState(false);
 
 	return (

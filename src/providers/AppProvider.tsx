@@ -8,11 +8,12 @@ import { ModalsProvider as MntModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress } from '@mantine/nprogress';
 import { usePathname } from 'next/navigation';
+import { PropsWithChildren } from 'react';
 import { theme } from '../lib/theme';
 import { DataProvider } from './DataProvider';
 import { ModalsProvider } from './ModalsProvider';
 
-export const AppProvider = ({ children }: { children: any }) => {
+export const AppProvider = ({ children }: PropsWithChildren) => {
 	const path = usePathname();
 
 	const shouldHavePadding = !path.includes('categories');

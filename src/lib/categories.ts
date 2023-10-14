@@ -1,12 +1,6 @@
 import { BillsDataItem, Category } from 'src/types/Data/data.types';
 import { CategoryForm } from 'src/types/Forms/forms.types';
 
-export type CategoryValue = {
-	id: number;
-	value: number;
-	label: string;
-};
-
 export function getCategoriesLabels(categories: Category[]): CategoryForm[] {
 	return categories.map((category) => {
 		return {
@@ -69,35 +63,53 @@ export function getCategoriesForm(categories: Category[], id?: number): Category
 	});
 }
 
-export function getCategoriesValues(data: BillsDataItem[], categories: Category[]) {
+export type CategoryValue = {
+	id: number;
+	value: number;
+	label: string;
+};
+
+export function getCategoriesExpensesTotals(data: BillsDataItem[], categories: Category[]) {
 	let categoriesValues: CategoryValue[] = [];
 
 	data.map((item) => {
-		if (!(item.class === 'recipe') && item.active) {
-			if (categoriesValues.some((category) => category.id === item.categoryId)) {
-				let categoryToUpdateValue = categoriesValues.filter((categoryValue) => {
-					return categoryValue.id === item.categoryId;
-				})[0];
-				categoryToUpdateValue.value = categoryToUpdateValue.value + item.value;
-
-				let otherCategoryValues = categoriesValues.filter((categoryValue) => {
-					return categoryValue.id !== item.categoryId;
-				});
-
-				categoriesValues = [...otherCategoryValues, categoryToUpdateValue];
-			} else {
-				const category = getCategory(categories, item.categoryId);
-				if (category) {
-					categoriesValues = [
-						...categoriesValues,
-						{ id: category.id, value: item.value, label: category.label },
-					];
-				}
-			}
+		if (item.class === 'recipe') {
+			return;
 		}
+		if (containsCategory(categoriesValues, item.categoryId)) {
+			let categoryToUpdate = getCategoryValueItem(categoriesValues, item.categoryId);
+
+			categoryToUpdate.value = categoryToUpdate.value + item.value;
+
+			let otherCategories = categoriesValues.filter(
+				(categoryValue) => categoryValue.id !== item.categoryId
+			);
+
+			categoriesValues = [...otherCategories, categoryToUpdate];
+			return;
+		}
+		categoriesValues.push({
+			id: item.categoryId,
+			label: getCategory(categories, item.categoryId).label,
+			value: item.value,
+		});
 	});
 
 	return categoriesValues;
+}
+
+function containsCategory(categoriesValues: CategoryValue[], categoryId: number) {
+	let contains = categoriesValues.some((categoryValue) => categoryValue.id === categoryId);
+
+	return contains;
+}
+
+function getCategoryValueItem(categoriesValues: CategoryValue[], categoryId: number) {
+	let categoryValue = categoriesValues.filter(
+		(categoryValue) => categoryValue.id === categoryId
+	)[0];
+
+	return categoryValue;
 }
 
 export function getCategoryById(categories: Category[], id: number): Category {

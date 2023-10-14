@@ -5,11 +5,11 @@ import {
 import { BillsDataItem } from '@/types/Data/data.types';
 import { ItemForm } from '@/types/Forms/forms.types';
 import { ModalsContextType } from '@/types/Modals/modals.types';
-import { ReactNode, createContext, useState } from 'react';
+import { PropsWithChildren, createContext, useState } from 'react';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);
 
-export function ModalsProvider({ children }: { children: ReactNode }) {
+export function ModalsProvider({ children }: PropsWithChildren) {
 	/* Item Form Modal */
 	const openItem = () => {
 		setData((prev) => {

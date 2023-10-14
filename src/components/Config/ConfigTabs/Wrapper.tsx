@@ -1,7 +1,7 @@
 import { Container, Flex, Title } from '@mantine/core';
-import { ReactElement } from 'react';
+import { PropsWithChildren } from 'react';
 
-export function Wrapper({ children, title }: { children: ReactElement; title: string }) {
+export function Wrapper({ children, title }: PropsWithChildren<{ title: string }>) {
 	return (
 		<Container p="lg" w="100%" m={0}>
 			<Title mb="lg">{title}</Title>

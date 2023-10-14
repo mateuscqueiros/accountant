@@ -302,7 +302,7 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'A',
+			label: 'Robin',
 			categoryId: 1,
 			value: 22.7,
 			date: new Date('10/21/2023'),
@@ -318,8 +318,8 @@ export const defaultData: UserData = {
 		},
 		{
 			id: uuidv4(),
-			label: 'Z',
-			categoryId: 7,
+			label: 'Brook',
+			categoryId: 0,
 			value: 55.7,
 			date: new Date('10/21/2023'),
 			type: 'fixed',

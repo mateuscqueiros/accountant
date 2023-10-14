@@ -5,12 +5,12 @@ import { NotificationError, NotificationSuccess } from '@/lib/notifications';
 import { BillsDataItem, Category, DataContextType, TransferData, UserData } from '@/types/Data';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { ReactNode, createContext, useState } from 'react';
+import { PropsWithChildren, createContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
 
-export function DataProvider({ children }: { children: ReactNode }) {
+export function DataProvider({ children }: PropsWithChildren) {
 	const setActiveMonth = (date: string) => {
 		setData((prev) => {
 			return {
