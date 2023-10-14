@@ -1,7 +1,7 @@
 import { IconFixed, IconInstallment, IconMonthly } from '@/components/Icons';
-import { BillsDataItem } from '@/types/Data';
+import { Transaction } from '@/types/data';
 
-export function getItemTypeIcon(type: BillsDataItem['type']) {
+export function getItemTypeIcon(type: Transaction['type']) {
 	switch (type) {
 		case 'fixed':
 			return IconFixed;

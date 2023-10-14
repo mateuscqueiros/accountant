@@ -3,6 +3,7 @@ import { getCategoriesForm } from '@/lib/categories';
 import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '@/lib/form';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
+import { ItemForm } from '@/types/forms/forms.types';
 import {
 	Box,
 	Button,
@@ -24,7 +25,6 @@ import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ItemForm } from 'src/types/Forms/forms.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionIcon } from '../Icons';
 
@@ -179,7 +179,7 @@ export function ItemsForm() {
 							<Tooltip multiline label="Define se o item deve ser computado nos cálculos" withArrow>
 								<Checkbox
 									mt={10}
-									label="Pago"
+									label="Ativo"
 									checked={itemForm.values.active}
 									{...itemForm.getInputProps('active')}
 								/>

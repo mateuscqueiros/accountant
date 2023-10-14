@@ -2,8 +2,8 @@ export interface DataContextType {
 	values: UserData;
 
 	item: {
-		create: (item: BillsDataItem) => void;
-		update: (item: BillsDataItem) => void;
+		create: (item: Transaction) => void;
+		update: (item: Transaction) => void;
 		delete: (id: string) => void;
 	};
 
@@ -15,12 +15,12 @@ export interface DataContextType {
 
 	setActiveMonth: (date: string) => void;
 	transferData: (transferData: TransferData) => void;
-	selectActiveData: () => BillsDataItem[];
+	selectActiveData: () => Transaction[];
 
 	log: () => void;
 }
 
-export type BillsDataItem = {
+export type Transaction = {
 	id: string;
 	/* Nome do item para ser mostrado*/
 	label: string;
@@ -59,7 +59,7 @@ export type BillsDataItem = {
 export type UserData = {
 	user: User;
 	activeMonth: Date;
-	items: BillsDataItem[];
+	items: Transaction[];
 };
 
 export type User = {

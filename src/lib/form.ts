@@ -1,6 +1,6 @@
+import { Category, Transaction } from '@/types/data';
+import { ItemForm } from '@/types/forms/forms.types';
 import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
-import { BillsDataItem, Category } from 'src/types/Data/data.types';
-import { ItemForm } from 'src/types/Forms/forms.types';
 import { getCategory } from './categories';
 
 export function getValidateObject(): FormValidateInput<ItemForm> {
@@ -112,8 +112,8 @@ export function sanitizeBeforeCommiting(
 	id: string,
 	values: ItemForm,
 	categories: Category[]
-): BillsDataItem {
-	/* Adapta os itens do formulário (ItemForm) para inserção no banco (BillDataItem) */
+): Transaction {
+	/* Adapta os itens do formulário (ItemForm) para inserção no banco (Transaction) */
 	const category = getCategory(categories, 0);
 
 	return {
@@ -134,8 +134,8 @@ export function sanitizeBeforeCommiting(
 		// fixed: {
 		// 	dueDay: values.fixed.dueDay === '' ? 0 : values.fixed.dueDay,
 		// },
-		type: values.type as BillsDataItem['type'],
-		class: values.class as BillsDataItem['class'],
+		type: values.type as Transaction['type'],
+		class: values.class as Transaction['class'],
 		note: values.note,
 		active: values.active,
 	};

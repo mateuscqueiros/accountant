@@ -1,12 +1,12 @@
 import { FilterOptions } from '@/lib/utils';
-import { BillsDataItem } from '@/types/Data';
+import { Transaction } from '@/types/data';
 import { Checkbox, Menu } from '@mantine/core';
 import { Dispatch, PropsWithChildren, SetStateAction, useCallback, useState } from 'react';
 
 interface MenuItemProps<T> {
 	filters: [T, Dispatch<SetStateAction<T>>];
 	prop: keyof T;
-	value: BillsDataItem['type'] | BillsDataItem['categoryId'] | BillsDataItem['class'];
+	value: Transaction['type'] | Transaction['categoryId'] | Transaction['class'];
 }
 
 export function MenuItem({
@@ -14,14 +14,14 @@ export function MenuItem({
 	prop,
 	value,
 	children,
-}: PropsWithChildren<MenuItemProps<FilterOptions<BillsDataItem>>>) {
+}: PropsWithChildren<MenuItemProps<FilterOptions<Transaction>>>) {
 	const [filter, setFilters] = filters;
 
 	const propItems: any[] | undefined = filter[prop];
 	const [checked, setChecked] = useState(propItems?.includes(value));
 
 	const handleChange = useCallback(
-		(filter: FilterOptions<BillsDataItem>, isChecked: boolean) => {
+		(filter: FilterOptions<Transaction>, isChecked: boolean) => {
 			const propItems: any[] | undefined = filter[prop];
 			if (!propItems) {
 				return;

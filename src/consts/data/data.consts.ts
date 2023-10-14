@@ -1,4 +1,4 @@
-import { Category, UserData } from '@/types/Data';
+import { Category, UserData } from '@/types/data';
 import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 

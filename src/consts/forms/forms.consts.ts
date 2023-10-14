@@ -1,5 +1,5 @@
 import { startOfMonth, subMonths } from 'date-fns';
-import { ItemForm, TransferDataForm } from '../../types/Forms/forms.types';
+import { ItemForm, TransferDataForm } from '../../types/forms/forms.types';
 
 export const transferDataForminitialValues: TransferDataForm = {
 	date: startOfMonth(new Date(subMonths(new Date(), 1))),

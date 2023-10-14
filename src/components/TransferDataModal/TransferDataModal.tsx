@@ -1,6 +1,8 @@
 import { compareStartOfMonth } from '@/lib/dates';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
+import { Transaction } from '@/types/data/data.types';
+import { TransferDataForm } from '@/types/forms/forms.types';
 import {
 	Box,
 	Button,
@@ -19,8 +21,6 @@ import { IconArrowRight, IconTransfer } from '@tabler/icons-react';
 import { format, startOfMonth, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
-import { BillsDataItem } from 'src/types/Data/data.types';
-import { TransferDataForm } from 'src/types/Forms/forms.types';
 import { ActionIcon } from '../Icons';
 
 export function TransferDataModal() {
@@ -45,7 +45,7 @@ export function TransferDataModal() {
 	});
 
 	let calculateSumOfSelectedItems = useCallback(
-		(data: BillsDataItem[] | undefined, form: TransferDataForm) => {
+		(data: Transaction[] | undefined, form: TransferDataForm) => {
 			let sum = 0;
 			if (data) {
 				data.filter((item) => {

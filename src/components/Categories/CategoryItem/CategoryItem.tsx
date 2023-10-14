@@ -1,7 +1,7 @@
 import { ActionIcon } from '@/components/Icons';
 import { confirmModal } from '@/lib/modals';
 import { DataContext } from '@/providers/DataProvider';
-import { Category } from '@/types/Data';
+import { Category } from '@/types/data';
 import { ColorSwatch, Table, Text, Tooltip, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';

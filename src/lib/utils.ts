@@ -1,8 +1,8 @@
-import { BillsDataItem } from '@/types/Data';
+import { Transaction } from '@/types/data';
 
 interface OrderItemFn {
-	items: BillsDataItem[];
-	prop: keyof BillsDataItem;
+	items: Transaction[];
+	prop: keyof Transaction;
 	invert?: boolean;
 }
 
@@ -36,7 +36,7 @@ export function capitalizeFirstLetter(str: string) {
  * @param prop A propriedade para comparar
  * @param invert Se a ordem deve ser invertida
  */
-export function orderItems(items: BillsDataItem[], prop: keyof BillsDataItem, invert?: boolean) {
+export function orderItems(items: Transaction[], prop: keyof Transaction, invert?: boolean) {
 	const inverse = invert !== undefined ? invert : false;
 
 	const sortedItems = items.sort((a, b) => {
@@ -63,8 +63,8 @@ export type FilterOptions<T> = {
  * @param contains Se verdadeiro, os itens retornados serão os que contiverem as opções passadas. (verdadeiro por padrão)
  */
 export function filterItems(
-	items: BillsDataItem[],
-	options: FilterOptions<BillsDataItem>,
+	items: Transaction[],
+	options: FilterOptions<Transaction>,
 	contains?: boolean
 ) {
 	let filteredItems = items;
@@ -75,7 +75,7 @@ export function filterItems(
 	const keys = Object.keys(options);
 
 	keys.map((k) => {
-		const key = k as keyof FilterOptions<BillsDataItem>;
+		const key = k as keyof FilterOptions<Transaction>;
 		const values: any[] | undefined = options[key];
 
 		if (values === undefined || !(values.length > 0)) {
@@ -94,7 +94,7 @@ export function filterItems(
  * @param prop A propriedade para verificar
  * @param values Array de valores. A propriedade deve conter um desses valores para retornar verdadeiro
  */
-export function propHasValue(item: BillsDataItem, prop: keyof BillsDataItem, values: any[]) {
+export function propHasValue(item: Transaction, prop: keyof Transaction, values: any[]) {
 	const itemKeyValue = item[prop];
 
 	return values.includes(itemKeyValue);
@@ -108,8 +108,8 @@ export function propHasValue(item: BillsDataItem, prop: keyof BillsDataItem, val
  * @param contains Se o item deve conter o valor ou não (true por padrão)
  */
 export function filterItemsByKeyValues(
-	items: BillsDataItem[],
-	key: keyof BillsDataItem,
+	items: Transaction[],
+	key: keyof Transaction,
 	values: any[],
 	contains?: boolean
 ) {
@@ -148,8 +148,8 @@ export function someKeyIsNotEmpty(obj: Object) {
  * @returns
  */
 export function getNumberOfItemsByPropValue(
-	items: BillsDataItem[],
-	prop: keyof BillsDataItem,
+	items: Transaction[],
+	prop: keyof Transaction,
 	value: any
 ) {
 	let count = 0;

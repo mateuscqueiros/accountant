@@ -1,8 +1,8 @@
-import { BillsDataItem, Category } from '@/types/Data';
+import { Category, Transaction } from '@/types/data';
 import { getCategoriesExpensesTotals, getCategory } from './categories';
 import { getPercentageArray } from './utils';
 
-export function getCategoryStatistics(data: BillsDataItem[], categories: Category[]) {
+export function getCategoryStatistics(data: Transaction[], categories: Category[]) {
 	let categoriesValues = getCategoriesExpensesTotals(data, categories);
 	let statistics: any[] = [
 		{
@@ -28,7 +28,7 @@ export function getCategoryStatistics(data: BillsDataItem[], categories: Categor
 	return statistics;
 }
 
-export function getTotalValues(data: BillsDataItem[]) {
+export function getTotalValues(data: Transaction[]) {
 	let expenses = 0;
 	let recipes = 0;
 
