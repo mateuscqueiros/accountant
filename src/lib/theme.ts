@@ -1,6 +1,12 @@
 'use client';
 
-import { createTheme, useMantineColorScheme } from '@mantine/core';
+import {
+	MantineColor,
+	createTheme,
+	parseThemeColor,
+	useMantineColorScheme,
+	useMantineTheme,
+} from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 export const theme = createTheme({
@@ -16,7 +22,7 @@ export const theme = createTheme({
 	},
 });
 
-export function useLightDark<T>(light: T, dark: T): T {
+export function useLightDark(light: string, dark: string) {
 	const { colorScheme } = useMantineColorScheme();
 	const [isLight, setIsLight] = useState<boolean>(colorScheme === 'light');
 
@@ -24,15 +30,31 @@ export function useLightDark<T>(light: T, dark: T): T {
 		setIsLight(colorScheme === 'light');
 	}, [colorScheme]);
 
-	return isLight ? light : dark;
+	if (isLight) {
+		const parseLight = parseColor(light);
+		return parseLight.isThemeColor ? parseLight.color : parseLight.value;
+	} else {
+		const parseDark = parseColor(dark);
+		return parseDark.isThemeColor ? parseDark.color : parseDark.value;
+	}
+}
+
+export function parseColor(color: MantineColor) {
+	const theme = useMantineTheme();
+	const parseColor = parseThemeColor({ color, theme });
+
+	return parseColor;
 }
 
 export function useColors() {
-	return {
+	const colors = {
+		logo: useLightDark('black', 'white'),
 		expenses: useLightDark('red.6', 'red.7'),
 		recipes: useLightDark('green.6', 'green.8'),
 		text: {
 			secondary: 'gray.6',
 		},
 	};
+
+	return colors;
 }

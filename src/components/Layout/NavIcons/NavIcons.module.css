@@ -16,26 +16,19 @@
 
 	@mixin dark {
 		color: var(--mantine-color-gray-0);
-		@mixin hover {
-			background-color: var(--mantine-color-gray-9);
-		}
-		&.active {
-			background-color: var(--mantine-color-blue-7);
-			@mixin hover {
-				background-color: var(--mantine-color-blue-5);
-			}
-		}
 	}
 	@mixin light {
 		color: var(--mantine-color-black);
+	}
+
+	@mixin hover {
+		background-color: var(--mantine-primary-color-light);
+	}
+	&.active {
+		color: var(--mantine-color-white);
+		background-color: var(--mantine-primary-color-filled);
 		@mixin hover {
-			background-color: var(--mantine-color-gray-1);
-		}
-		&.active {
-			background-color: var(--mantine-color-blue-2);
-			@mixin hover {
-				background-color: var(--mantine-color-blue-2);
-			}
+			background-color: var(--mantine-primary-color-filled-hover);
 		}
 	}
 
