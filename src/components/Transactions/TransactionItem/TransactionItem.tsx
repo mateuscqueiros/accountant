@@ -6,24 +6,19 @@ import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data';
-import { Group, Table, Text, rem } from '@mantine/core';
+import { Group, Table, Text, rem, useMantineTheme } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useContext } from 'react';
 import { CategoryBadge } from '../CategoryBadge/CategoryBadge';
 
-interface TransactionItemOptions {
-	label: boolean;
-	date: boolean;
-	type: boolean;
-	category: boolean;
-	value: boolean;
-	actions: boolean;
-}
+export type TransactionItemOptions<T> = {
+	[K in keyof Partial<Omit<T, 'installments'>>]: boolean;
+} & { actions?: boolean };
 
 interface TransactionItemProps {
 	item: Transaction;
-	options?: Partial<TransactionItemOptions>;
+	options?: Partial<TransactionItemOptions<Transaction>>;
 	dateFormat?: string;
 }
 
@@ -31,12 +26,20 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
 	const colors = useColors();
-
-	const hasOptions = options !== undefined;
+	let optionsValues = {
+		actions: true,
+		categoryId: true,
+		date: true,
+		label: true,
+		type: true,
+		value: true,
+		...options,
+	};
 
 	const category = getCategory(data.values.user.categories, item.categoryId);
 	const IconType = getItemTypeIcon(item.type);
 	const isExpense = item.class === 'expense';
+	const theme = useMantineTheme();
 
 	return (
 		<Table.Tr
@@ -45,34 +48,34 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 				modals.item.openUpdate(item);
 			}}
 		>
-			{(!hasOptions || options.label) && (
+			{optionsValues.label && (
 				<Table.Td>
 					<Text>{item.label}</Text>
 				</Table.Td>
 			)}
-			{(!hasOptions || options.date) && (
+			{optionsValues.date && (
 				<Table.Td>
 					<Text>{format(new Date(item.date), dateFormat || 'dd/MM/yyyy')}</Text>
 				</Table.Td>
 			)}
-			{(!hasOptions || options.category) && (
-				<Table.Td visibleFrom="sm">
+			{optionsValues.categoryId && (
+				<Table.Td>
 					<CategoryBadge category={category} />
 				</Table.Td>
 			)}
-			{(!hasOptions || options.type) && (
-				<Table.Td visibleFrom="sm">
+			{optionsValues.type && (
+				<Table.Td>
 					<IconType />
 				</Table.Td>
 			)}
-			{(!hasOptions || options.value) && (
+			{optionsValues.value && (
 				<Table.Td>
 					<Text c={isExpense ? colors.expenses : colors.recipes}>${item.value}</Text>
 				</Table.Td>
 			)}
 
-			{(!hasOptions || options.actions) && (
-				<Table.Td visibleFrom="sm">
+			{optionsValues.actions && (
+				<Table.Td>
 					<Group gap={0} justify="flex-end">
 						<ActionIcon
 							onClick={(e) => {

@@ -1,6 +1,12 @@
-import { OrdersOptions, TableHeaderItem, TransactionItem } from '@/components/Transactions';
+import {
+	OrdersOptions,
+	TableHeaderItem,
+	TransactionItem,
+	TransactionItemOptions,
+} from '@/components/Transactions';
 import { Transaction } from '@/types/data';
-import { Table } from '@mantine/core';
+import { MantineBreakpoint, Table, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction } from 'react';
 
 interface HomeContentProps {
@@ -8,10 +14,10 @@ interface HomeContentProps {
 	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
 }
 
-interface TableHeaderData {
+export interface TableHeaderData {
 	label: string;
 	prop: keyof OrdersOptions;
-	hiddenMobile?: boolean;
+	visibleFrom?: MantineBreakpoint;
 }
 
 const tableHeaderData: TableHeaderData[] = [
@@ -26,12 +32,12 @@ const tableHeaderData: TableHeaderData[] = [
 	{
 		label: 'Categoria',
 		prop: 'categoryId',
-		hiddenMobile: true,
+		visibleFrom: 'sm',
 	},
 	{
 		label: 'Tipo',
 		prop: 'type',
-		hiddenMobile: true,
+		visibleFrom: 'sm',
 	},
 	{
 		label: 'Valor',
@@ -41,6 +47,18 @@ const tableHeaderData: TableHeaderData[] = [
 
 export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 	const [data, setData] = dataState;
+	const theme = useMantineTheme();
+
+	const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
+
+	const itemOptions: TransactionItemOptions<Transaction> = {
+		label: true,
+		date: true,
+		value: true,
+		type: isDesktop,
+		categoryId: isDesktop,
+		actions: isDesktop,
+	};
 
 	return (
 		<>
@@ -55,7 +73,7 @@ export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 									prop={dataItem.prop}
 									ordenationState={ordenationState}
 									setData={setData}
-									hiddenMobile={dataItem.hiddenMobile}
+									visibleFrom={dataItem.visibleFrom}
 								>
 									{dataItem.label}
 								</TableHeaderItem>
@@ -65,7 +83,14 @@ export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 				</Table.Thead>
 				<Table.Tbody>
 					{data.map((item) => {
-						return <TransactionItem dateFormat="'Dia ' dd" key={item.id} item={item} />;
+						return (
+							<TransactionItem
+								options={itemOptions}
+								dateFormat="'Dia ' dd"
+								key={item.id}
+								item={item}
+							/>
+						);
 					})}
 				</Table.Tbody>
 			</Table>

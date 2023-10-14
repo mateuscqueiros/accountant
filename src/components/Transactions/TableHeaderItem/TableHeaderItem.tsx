@@ -2,7 +2,7 @@ import { IconArrowDown, IconArrowUp } from '@/components/Icons';
 import { initialOrdernateValue } from '@/consts/actions';
 import { orderItems } from '@/lib/utils';
 import { Transaction } from '@/types/data';
-import { Box, Flex, Table, Text } from '@mantine/core';
+import { Box, Flex, MantineBreakpoint, Table, Text } from '@mantine/core';
 import {
 	Dispatch,
 	PropsWithChildren,
@@ -26,17 +26,17 @@ interface TableHeaderOrderProps {
 	items: Transaction[];
 	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
 	setData: Dispatch<SetStateAction<Transaction[]>>;
-	hiddenMobile?: boolean;
+	visibleFrom?: MantineBreakpoint;
 }
 
 /**
  * Item que serve como item de um header de tabela. Ordena os itens recebidos com base em uma propriedade e seta eles em uma função recebida.
- * @param label Nome do item para mostrar
- * @param prop Propriedade dos itens para ordenação
- * @param items Items para ordernar
- * @param setData Uma função para setar os dados
- * @param hiddenMobile Se o item deve ser oculto no Mobile ou não
- * @param options Um objeto com opções de ordenação. Cada opção é uma key de um item. Seu valor é um número:
+ * @param label Nome do item para mostrar na tabela.
+ * @param prop Propriedade dos itens para comparar na ordenação.
+ * @param items Items para ordernar.
+ * @param setData Uma função para setar os dados (geralmente vem de um estado com os itens mostrados na tela).
+ * @param visibleFrom Se o item deve ser oculto no Mobile ou não.
+ * @param options Um objeto com opções de ordenação. Cada opção é uma key de um item. Seu valor é um número.
  *  - `0` - A sequência retornada é a recebida em `items`
  * 	- `1` - Os itens serão ordenados (ordem alfabética ou numérica)
  * 	- `2` - Os itens serão ordenados porém invetidos (ordem alfabética ou numérica)
@@ -47,19 +47,22 @@ export function TableHeaderItem({
 	items,
 	ordenationState,
 	setData,
-	hiddenMobile,
+	visibleFrom,
 }: PropsWithChildren<TableHeaderOrderProps>) {
-	const mobileBreakpoint = 'sm';
-
-	const optionIcons = [undefined, <IconArrowDown size="1rem" />, <IconArrowUp size="1rem" />];
+	const optionIcons = [
+		<IconArrowDown size="1rem" />,
+		<IconArrowDown size="1rem" />,
+		<IconArrowUp size="1rem" />,
+	];
 
 	const [ordenation, setOrdenation] = ordenationState;
 	const [icon, setIcon] = useState(optionIcons[ordenation[prop]]);
+	const [hoverIcon, setHoverIcon] = useState(false);
 
 	const setNextOrder = useCallback(
 		(prop: keyof OrdersOptions) => {
 			const propValue = ordenation[prop];
-			const next = propValue > 1 ? 0 : propValue + 1;
+			const next = propValue > 2 ? 0 : propValue + 1;
 
 			setOrdenation({
 				...initialOrdernateValue,
@@ -90,15 +93,19 @@ export function TableHeaderItem({
 	return (
 		<Table.Th
 			style={{ cursor: 'pointer' }}
-			visibleFrom={hiddenMobile ? mobileBreakpoint : undefined}
+			visibleFrom={visibleFrom}
 			onClick={() => {
 				setNextOrder(prop);
 			}}
+			onMouseEnter={() => setHoverIcon(true)}
+			onMouseLeave={() => setHoverIcon(false)}
 		>
 			<Flex align="center" gap="xs">
 				<Text>{children}</Text>
-				<Box miw={20} h="full">
-					<Flex justify="center">{icon}</Flex>
+				<Box miw={20}>
+					<Flex display={hoverIcon || ordenation[prop] !== 0 ? 'block' : 'none'} justify="center">
+						{icon}
+					</Flex>
 				</Box>
 			</Flex>
 		</Table.Th>

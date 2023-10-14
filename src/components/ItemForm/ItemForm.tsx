@@ -179,7 +179,7 @@ export function ItemsForm() {
 							<Tooltip multiline label="Define se o item deve ser computado nos cálculos" withArrow>
 								<Checkbox
 									mt={10}
-									label="Pago"
+									label="Ativo"
 									checked={itemForm.values.active}
 									{...itemForm.getInputProps('active')}
 								/>
