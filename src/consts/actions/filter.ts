@@ -1,5 +1,5 @@
 import { FilterOptions } from '@/lib/utils';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 
 export const initialFilterValue: FilterOptions<BillsDataItem> = {
 	type: [],

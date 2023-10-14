@@ -1,4 +1,4 @@
-import { Category } from '@/types/Data';
+import { Category } from '@/types/data';
 import { Badge, parseThemeColor, useMantineTheme } from '@mantine/core';
 
 interface CategoryBadgeProps {

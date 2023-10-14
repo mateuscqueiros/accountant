@@ -1,4 +1,4 @@
-import { BillsDataItem, Category } from '@/types/Data';
+import { BillsDataItem, Category } from '@/types/data';
 import { getCategoriesExpensesTotals, getCategory } from './categories';
 import { getPercentageArray } from './utils';
 

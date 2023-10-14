@@ -4,7 +4,7 @@ import { TransferDataModal } from '@/components/TransferDataModal';
 import { compareStartOfMonth } from '@/lib/dates';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Box, Flex, Group, Modal, Title } from '@mantine/core';
 import { MonthPicker } from '@mantine/dates';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';

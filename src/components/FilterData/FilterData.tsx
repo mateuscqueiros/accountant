@@ -1,7 +1,7 @@
 import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions, someKeyIsNotEmpty } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Anchor, Flex, Menu, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';

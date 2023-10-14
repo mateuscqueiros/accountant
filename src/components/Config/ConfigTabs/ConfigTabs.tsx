@@ -2,7 +2,7 @@ import { TransactionItem } from '@/components/Transactions/TransactionItem/Trans
 import { getCategoryById } from '@/lib/categories';
 import { CategoryTabsContext } from '@/providers/CategoriesProvider';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Table, Text } from '@mantine/core';
 import { useContext } from 'react';
 import { Wrapper } from '.';

@@ -1,4 +1,4 @@
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 
 interface OrderItemFn {
 	items: BillsDataItem[];

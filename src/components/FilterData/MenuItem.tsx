@@ -1,5 +1,5 @@
 import { FilterOptions } from '@/lib/utils';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Checkbox, Menu } from '@mantine/core';
 import { Dispatch, PropsWithChildren, SetStateAction, useCallback, useState } from 'react';
 

@@ -8,7 +8,7 @@ import {
 } from '@/components/pages/Home';
 import { initialOrdernateValue } from '@/consts/actions';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Box, rem } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 

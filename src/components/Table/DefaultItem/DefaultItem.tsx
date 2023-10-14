@@ -1,10 +1,10 @@
 import { getCategory } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
+import { BillsDataItem } from '@/types/data/data.types';
 import { Badge, Table, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { getDay } from 'date-fns';
 import { useContext } from 'react';
-import { BillsDataItem } from 'src/types/Data/data.types';
 
 export function DefaultItem({ item }: { item: BillsDataItem }) {
 	const modals = useContext(ModalsContext);

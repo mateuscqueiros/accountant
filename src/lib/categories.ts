@@ -1,5 +1,5 @@
-import { BillsDataItem, Category } from 'src/types/Data/data.types';
-import { CategoryForm } from 'src/types/Forms/forms.types';
+import { BillsDataItem, Category } from '@/types/data/data.types';
+import { CategoryForm } from '@/types/forms/forms.types';
 
 export function getCategoriesLabels(categories: Category[]): CategoryForm[] {
 	return categories.map((category) => {

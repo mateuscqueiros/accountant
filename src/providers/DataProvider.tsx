@@ -2,7 +2,7 @@ import { defaultData as dataInitialValues } from '@/consts/data';
 import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
-import { BillsDataItem, Category, DataContextType, TransferData, UserData } from '@/types/Data';
+import { BillsDataItem, Category, DataContextType, TransferData, UserData } from '@/types/data';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { PropsWithChildren, createContext, useState } from 'react';

@@ -1,7 +1,7 @@
 import { useColors } from '@/lib/theme';
 import { FilterOptions, filterItems, getNumberOfItemsByPropValue } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem, UserData } from '@/types/Data';
+import { BillsDataItem, UserData } from '@/types/data';
 import { Box, Flex, Menu, Switch, Text } from '@mantine/core';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { MenuItem } from './MenuItem';

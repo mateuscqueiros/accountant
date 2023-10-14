@@ -1,7 +1,7 @@
 import { itemModalInitialValues, transferDataModalInitialValues } from '@/consts/modals';
-import { BillsDataItem } from '@/types/Data/data.types';
-import { ItemForm } from '@/types/Forms/forms.types';
-import { ModalsContextType } from '@/types/Modals/modals.types';
+import { BillsDataItem } from '@/types/data/data.types';
+import { ItemForm } from '@/types/forms/forms.types';
+import { ModalsContextType } from '@/types/modals/modals.types';
 import { PropsWithChildren, createContext, useState } from 'react';
 
 export const ModalsContext = createContext<ModalsContextType>({} as ModalsContextType);

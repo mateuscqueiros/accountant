@@ -1,5 +1,5 @@
 import { OrdersOptions, TableHeaderItem, TransactionItem } from '@/components/Transactions';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Table } from '@mantine/core';
 import { Dispatch, SetStateAction } from 'react';
 

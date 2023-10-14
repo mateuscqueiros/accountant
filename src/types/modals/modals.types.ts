@@ -1,5 +1,5 @@
-import { BillsDataItem } from '../Data/data.types';
-import { ItemForm, TransferDataForm } from '../Forms/forms.types';
+import { BillsDataItem } from '../data/data.types';
+import { ItemForm, TransferDataForm } from '../forms/forms.types';
 
 export interface ModalsContextType {
 	item: {

@@ -1,7 +1,7 @@
 import { IconArrowDown, IconArrowUp } from '@/components/Icons';
 import { initialOrdernateValue } from '@/consts/actions';
 import { orderItems } from '@/lib/utils';
-import { BillsDataItem } from '@/types/Data';
+import { BillsDataItem } from '@/types/data';
 import { Box, Flex, Table, Text } from '@mantine/core';
 import {
 	Dispatch,

@@ -1,6 +1,6 @@
 import { sortCategories } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
-import { Category } from '@/types/Data';
+import { Category } from '@/types/data';
 import { Box, Button, Group, Modal, Stack, Table, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
