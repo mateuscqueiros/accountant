@@ -1,4 +1,4 @@
-import { BillsDataItem, Category } from '@/types/data/data.types';
+import { Category, Transaction } from '@/types/data/data.types';
 import { CategoryForm } from '@/types/forms/forms.types';
 
 export function getCategoriesLabels(categories: Category[]): CategoryForm[] {
@@ -69,7 +69,7 @@ export type CategoryValue = {
 	label: string;
 };
 
-export function getCategoriesExpensesTotals(data: BillsDataItem[], categories: Category[]) {
+export function getCategoriesExpensesTotals(data: Transaction[], categories: Category[]) {
 	let categoriesValues: CategoryValue[] = [];
 
 	data.map((item) => {

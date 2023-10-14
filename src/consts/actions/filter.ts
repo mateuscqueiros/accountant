@@ -1,7 +1,7 @@
 import { FilterOptions } from '@/lib/utils';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 
-export const initialFilterValue: FilterOptions<BillsDataItem> = {
+export const initialFilterValue: FilterOptions<Transaction> = {
 	type: [],
 	categoryId: [],
 	class: [],

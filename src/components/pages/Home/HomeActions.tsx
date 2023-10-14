@@ -4,7 +4,7 @@ import { TransferDataModal } from '@/components/TransferDataModal';
 import { compareStartOfMonth } from '@/lib/dates';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Box, Flex, Group, Modal, Title } from '@mantine/core';
 import { MonthPicker } from '@mantine/dates';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
@@ -13,7 +13,7 @@ import { ptBR } from 'date-fns/locale';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 interface HomeActionsProps {
-	displayDataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
 }
 
 export function HomeActions({ displayDataState }: HomeActionsProps) {

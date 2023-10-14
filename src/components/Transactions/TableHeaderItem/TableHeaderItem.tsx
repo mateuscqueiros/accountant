@@ -1,7 +1,7 @@
 import { IconArrowDown, IconArrowUp } from '@/components/Icons';
 import { initialOrdernateValue } from '@/consts/actions';
 import { orderItems } from '@/lib/utils';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Box, Flex, Table, Text } from '@mantine/core';
 import {
 	Dispatch,
@@ -23,9 +23,9 @@ export interface OrdersOptions {
 interface TableHeaderOrderProps {
 	children: string;
 	prop: keyof OrdersOptions;
-	items: BillsDataItem[];
+	items: Transaction[];
 	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
-	setData: Dispatch<SetStateAction<BillsDataItem[]>>;
+	setData: Dispatch<SetStateAction<Transaction[]>>;
 	hiddenMobile?: boolean;
 }
 

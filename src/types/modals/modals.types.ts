@@ -1,4 +1,4 @@
-import { BillsDataItem } from '../data/data.types';
+import { Transaction } from '../data/data.types';
 import { ItemForm, TransferDataForm } from '../forms/forms.types';
 
 export interface ModalsContextType {
@@ -10,7 +10,7 @@ export interface ModalsContextType {
 		commandForm: (fields: ItemForm) => void;
 		setAction: (action: string) => void;
 		setUpdateItem: (action: string) => void;
-		openUpdate: (billData: BillsDataItem) => void;
+		openUpdate: (billData: Transaction) => void;
 		setField: <T extends keyof ItemForm, R extends ItemForm[T]>(field: T, value: R) => void;
 		reset: () => void;
 	};

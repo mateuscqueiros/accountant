@@ -1,10 +1,10 @@
 import { OrdersOptions, TableHeaderItem, TransactionItem } from '@/components/Transactions';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Table } from '@mantine/core';
 import { Dispatch, SetStateAction } from 'react';
 
 interface HomeContentProps {
-	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	dataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
 	ordenationState: [OrdersOptions, Dispatch<SetStateAction<OrdersOptions>>];
 }
 

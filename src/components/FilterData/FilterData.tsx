@@ -1,7 +1,7 @@
 import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions, someKeyIsNotEmpty } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Anchor, Flex, Menu, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
@@ -9,7 +9,7 @@ import { ActionIcon, IconFilter, IconFilterFilled } from '../Icons';
 import { FilterDataMenu } from './FilterDataMenu';
 
 interface FilterDataProps {
-	displayDataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
 }
 
 export function FilterData({ displayDataState }: FilterDataProps) {
@@ -21,7 +21,7 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 	const [displayData] = displayDataState;
 	const dataLength = activeData.length;
 
-	const filterState = useState<FilterOptions<BillsDataItem>>(initialFilterValue);
+	const filterState = useState<FilterOptions<Transaction>>(initialFilterValue);
 	const [filter, setFilters] = filterState;
 
 	const isSmallMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);

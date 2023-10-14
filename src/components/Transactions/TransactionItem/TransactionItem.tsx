@@ -5,7 +5,7 @@ import { confirmModal } from '@/lib/modals';
 import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Group, Table, Text, rem } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
@@ -22,7 +22,7 @@ interface TransactionItemOptions {
 }
 
 interface TransactionItemProps {
-	item: BillsDataItem;
+	item: Transaction;
 	options?: Partial<TransactionItemOptions>;
 	dateFormat?: string;
 }

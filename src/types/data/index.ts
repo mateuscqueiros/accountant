@@ -1,7 +1,7 @@
 export type {
-	BillsDataItem,
 	Category,
 	DataContextType,
+	Transaction,
 	TransferData,
 	User,
 	UserData,

@@ -1,5 +1,5 @@
 import { itemModalInitialValues, transferDataModalInitialValues } from '@/consts/modals';
-import { BillsDataItem } from '@/types/data/data.types';
+import { Transaction } from '@/types/data';
 import { ItemForm } from '@/types/forms/forms.types';
 import { ModalsContextType } from '@/types/modals/modals.types';
 import { PropsWithChildren, createContext, useState } from 'react';
@@ -23,7 +23,7 @@ export function ModalsProvider({ children }: PropsWithChildren) {
 		});
 	};
 
-	const openUpdateItem = (billDataItem: BillsDataItem) => {
+	const openUpdateItem = (transaction: Transaction) => {
 		setData((prev) => {
 			return {
 				...prev,
@@ -33,10 +33,10 @@ export function ModalsProvider({ children }: PropsWithChildren) {
 						...prev.item.values,
 						opened: true,
 						command: {
-							...billDataItem,
-							categoryId: String(billDataItem.categoryId),
+							...transaction,
+							categoryId: String(transaction.categoryId),
 						},
-						updateItem: billDataItem.id,
+						updateItem: transaction.id,
 						action: 'update',
 					},
 				},

@@ -1,7 +1,7 @@
 import { compareStartOfMonth } from '@/lib/dates';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { BillsDataItem } from '@/types/data/data.types';
+import { Transaction } from '@/types/data/data.types';
 import { TransferDataForm } from '@/types/forms/forms.types';
 import {
 	Box,
@@ -45,7 +45,7 @@ export function TransferDataModal() {
 	});
 
 	let calculateSumOfSelectedItems = useCallback(
-		(data: BillsDataItem[] | undefined, form: TransferDataForm) => {
+		(data: Transaction[] | undefined, form: TransferDataForm) => {
 			let sum = 0;
 			if (data) {
 				data.filter((item) => {

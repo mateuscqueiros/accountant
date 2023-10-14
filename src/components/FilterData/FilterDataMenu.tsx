@@ -1,24 +1,21 @@
 import { useColors } from '@/lib/theme';
 import { FilterOptions, filterItems, getNumberOfItemsByPropValue } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem, UserData } from '@/types/data';
+import { Transaction, UserData } from '@/types/data';
 import { Box, Flex, Menu, Switch, Text } from '@mantine/core';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { MenuItem } from './MenuItem';
 
 interface FilterDataMenuProps {
-	data: BillsDataItem[];
-	displayDataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
-	filterState: [
-		FilterOptions<BillsDataItem>,
-		Dispatch<SetStateAction<FilterOptions<BillsDataItem>>>,
-	];
+	data: Transaction[];
+	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
+	filterState: [FilterOptions<Transaction>, Dispatch<SetStateAction<FilterOptions<Transaction>>>];
 }
 
 interface MenuItemComponentType<T> {
 	label: string;
 	prop: keyof T;
-	value: BillsDataItem['type'] | BillsDataItem['categoryId'] | BillsDataItem['class'];
+	value: Transaction['type'] | Transaction['categoryId'] | Transaction['class'];
 }
 
 function getMenuItemsData(data: UserData): any {
@@ -94,7 +91,7 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 		label,
 		prop,
 		value,
-	}: MenuItemComponentType<FilterOptions<BillsDataItem>>) => {
+	}: MenuItemComponentType<FilterOptions<Transaction>>) => {
 		return (
 			<MenuItem filters={filterState} prop={prop} value={value}>
 				<Flex direction="row" align="center" justify="space-between" gap="xxs">
@@ -119,7 +116,7 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 			</Menu.Item>
 
 			{Object.entries(getMenuItemsData(dataProvider.values)).map((entry) => {
-				const values = entry[1] as MenuItemComponentType<FilterOptions<BillsDataItem>>[];
+				const values = entry[1] as MenuItemComponentType<FilterOptions<Transaction>>[];
 				return (
 					<Box key={entry[0]}>
 						<Menu.Divider />

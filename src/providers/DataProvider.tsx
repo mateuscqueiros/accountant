@@ -2,7 +2,7 @@ import { defaultData as dataInitialValues } from '@/consts/data';
 import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
-import { BillsDataItem, Category, DataContextType, TransferData, UserData } from '@/types/data';
+import { Category, DataContextType, Transaction, TransferData, UserData } from '@/types/data';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
 import { PropsWithChildren, createContext, useState } from 'react';
@@ -38,7 +38,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 					);
 				});
 
-			let updatedItems: BillsDataItem[] = [];
+			let updatedItems: Transaction[] = [];
 
 			/* Mudar a data para o novo mês */
 			if (dataFromMonth && dataFromMonth.length > 0) {
@@ -152,7 +152,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 	};
 
 	/* Items */
-	const createItem = (item: BillsDataItem) => {
+	const createItem = (item: Transaction) => {
 		setData((prev) => {
 			return {
 				...prev,
@@ -166,7 +166,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
-	const updateItem = (item: BillsDataItem) => {
+	const updateItem = (item: Transaction) => {
 		setData((prev) => {
 			let itemToUpdate = prev.items.filter((billItem) => billItem.id === item.id)[0];
 

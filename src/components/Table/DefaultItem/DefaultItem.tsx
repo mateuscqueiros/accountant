@@ -1,12 +1,12 @@
 import { getCategory } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { BillsDataItem } from '@/types/data/data.types';
+import { Transaction } from '@/types/data/data.types';
 import { Badge, Table, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { getDay } from 'date-fns';
 import { useContext } from 'react';
 
-export function DefaultItem({ item }: { item: BillsDataItem }) {
+export function DefaultItem({ item }: { item: Transaction }) {
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
 

@@ -1,13 +1,13 @@
 import { getCategoryStatistics, getTotalValues } from '@/lib/statistics';
 import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
-import { BillsDataItem } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { Flex, Group, Paper, RingProgress, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useContext } from 'react';
 
 interface HomeStatisticsProps {
-	dataState: [BillsDataItem[], Dispatch<SetStateAction<BillsDataItem[]>>];
+	dataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
 }
 
 export function HomeStatistics({ dataState }: HomeStatisticsProps) {

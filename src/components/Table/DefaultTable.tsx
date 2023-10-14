@@ -1,6 +1,6 @@
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { BillsDataItem } from '@/types/data/data.types';
+import { Transaction } from '@/types/data/data.types';
 import { ItemForm } from '@/types/forms/forms.types';
 import { Card, Flex, Table, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
@@ -25,7 +25,7 @@ export function DefaultTable({
 	const data = useContext(DataContext);
 	const modals = useContext(ModalsContext);
 
-	let activeData: BillsDataItem[] = [];
+	let activeData: Transaction[] = [];
 
 	activeData = data.selectActiveData().filter((billItem) => {
 		return (

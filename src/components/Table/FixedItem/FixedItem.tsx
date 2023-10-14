@@ -1,9 +1,9 @@
 import { ModalsContext } from '@/providers/ModalsProvider';
-import { BillsDataItem } from '@/types/data/data.types';
+import { Transaction } from '@/types/data/data.types';
 import { Table } from '@mantine/core';
 import { useContext } from 'react';
 
-export function FixedItem({ item }: { item: BillsDataItem }) {
+export function FixedItem({ item }: { item: Transaction }) {
 	const modals = useContext(ModalsContext);
 
 	return (
