@@ -190,7 +190,7 @@ export function ItemsForm() {
 							label="Categoria"
 							placeholder="Selecione etiquetas"
 							mb="md"
-							data={getCategoriesForm(data.values.user.categories)}
+							data={getCategoriesForm()}
 							// itemComponent={SelectItem}
 							searchable
 							allowDeselect={false}

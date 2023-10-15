@@ -9,3 +9,4 @@
 - Add favicons.
 - Change theme logic to parse mantine colors.
 - Change NavIcons colors.
+- Better favicons

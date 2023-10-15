@@ -22,7 +22,7 @@ export const CategoriesModalContext = createContext<CategoriesModalContext>(
 	{} as CategoriesModalContext
 );
 
-export function CategoryTabProvider({ children }: PropsWithChildren) {
+export function CategoriesModalProvider({ children }: PropsWithChildren) {
 	const openModal = (action?: CategoriesModalContext['action']) => {
 		setData((prev) => {
 			return {
@@ -81,37 +81,6 @@ export function CategoryTabProvider({ children }: PropsWithChildren) {
 	});
 
 	return <CategoriesModalContext.Provider value={data}>{children}</CategoriesModalContext.Provider>;
-}
-
-export function Categories() {
-	const data = useContext(DataContext);
-
-	let sortedCategories = sortCategories(data.values.user.categories);
-
-	return (
-		<CategoryTabProvider>
-			<>
-				<Box w="100%">
-					<Table maw={500}>
-						<Table.Thead>
-							<Table.Tr>
-								<Table.Td fw="bold">Nome</Table.Td>
-								<Table.Td fw="bold">Cor</Table.Td>
-								<Table.Td fw="bold">Ações</Table.Td>
-							</Table.Tr>
-						</Table.Thead>
-						<Table.Tbody>
-							{sortedCategories.map((category) => (
-								<CategoryItem key={category.label} category={category} />
-							))}
-						</Table.Tbody>
-					</Table>
-				</Box>
-				<AddCategory />
-				<CategoryModal />
-			</>
-		</CategoryTabProvider>
-	);
 }
 
 function CategoryModal() {
@@ -226,5 +195,36 @@ function CategoryModal() {
 				</Group>
 			</form>
 		</Modal>
+	);
+}
+
+export function CategoriesActions() {
+	const data = useContext(DataContext);
+
+	let sortedCategories = sortCategories(data.values.user.categories);
+
+	return (
+		<CategoriesModalProvider>
+			<>
+				<Box w="100%">
+					<Table maw={500}>
+						<Table.Thead>
+							<Table.Tr>
+								<Table.Td fw="bold">Nome</Table.Td>
+								<Table.Td fw="bold">Cor</Table.Td>
+								<Table.Td fw="bold">Ações</Table.Td>
+							</Table.Tr>
+						</Table.Thead>
+						<Table.Tbody>
+							{sortedCategories.map((category) => (
+								<CategoryItem key={category.label} category={category} />
+							))}
+						</Table.Tbody>
+					</Table>
+				</Box>
+				<AddCategory />
+				<CategoryModal />
+			</>
+		</CategoriesModalProvider>
 	);
 }
