@@ -12,3 +12,4 @@
 
 - Better favicons
 - Refactor Categories code and logic
+- Fix color bugs on Config Nav

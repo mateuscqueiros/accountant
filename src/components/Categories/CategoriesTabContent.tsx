@@ -60,36 +60,40 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 
 	return (
 		<>
-			{categoryItems.length > 0 ? (
-				<>
-					<Table highlightOnHover>
-						<Table.Thead>
-							<Table.Tr fw="bold">
-								{tableHeaderData.map((dataItem) => {
-									return (
-										<TableHeaderItem
-											key={dataItem.prop + dataItem.label}
-											items={categoryItems}
-											prop={dataItem.prop}
-											ordenationState={ordenationState}
-											setData={setCategoryItems}
-											visibleFrom={dataItem.visibleFrom}
-										>
-											{dataItem.label}
-										</TableHeaderItem>
-									);
-								})}
-							</Table.Tr>
-						</Table.Thead>
-						<Table.Tbody>
-							{categoryItems.map((item) => (
-								<TransactionItem options={itemOptions} key={item.id} item={item} />
-							))}
-						</Table.Tbody>
-					</Table>
-				</>
+			{categoryExists ? (
+				categoryItems.length > 0 ? (
+					<>
+						<Table highlightOnHover>
+							<Table.Thead>
+								<Table.Tr fw="bold">
+									{tableHeaderData.map((dataItem) => {
+										return (
+											<TableHeaderItem
+												key={dataItem.prop + dataItem.label}
+												items={categoryItems}
+												prop={dataItem.prop}
+												ordenationState={ordenationState}
+												setData={setCategoryItems}
+												visibleFrom={dataItem.visibleFrom}
+											>
+												{dataItem.label}
+											</TableHeaderItem>
+										);
+									})}
+								</Table.Tr>
+							</Table.Thead>
+							<Table.Tbody>
+								{categoryItems.map((item) => (
+									<TransactionItem options={itemOptions} key={item.id} item={item} />
+								))}
+							</Table.Tbody>
+						</Table>
+					</>
+				) : (
+					<Text>Sem itens.</Text>
+				)
 			) : (
-				<Text>Sem itens.</Text>
+				<Text fw="bold">Não existe categoria com ID {categoryId}</Text>
 			)}
 		</>
 	);
