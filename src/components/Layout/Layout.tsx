@@ -1,10 +1,12 @@
 'use client';
+import { useColors } from '@/lib/theme';
 import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartBar, IconHome2, IconList, IconPigMoney } from '@tabler/icons-react';
+import { IconChartBar, IconHome2, IconList } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
+import { IconLogo } from '../Icons';
 import { VersionBadge } from '../Meta/VersionBadge/VersionBadge';
 import classes from './Layout.module.css';
 
@@ -17,6 +19,7 @@ const HeaderComponent = ({
 }) => {
 	const theme = useMantineTheme();
 	const largeScreen = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
+	const colors = useColors();
 
 	return (
 		<Box w="100%" px="1rem" h="100%">
@@ -34,7 +37,7 @@ const HeaderComponent = ({
 				/>
 				<Group style={{ height: '100%' }}>
 					<Link href="/">
-						<IconPigMoney size="2rem" />
+						<IconLogo color={colors.logo} size="2rem" />
 					</Link>
 				</Group>
 				<Group>

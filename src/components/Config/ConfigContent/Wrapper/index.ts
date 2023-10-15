@@ -1,0 +1,1 @@
+export { ConfigContentWrapper } from './ContentWrapper';

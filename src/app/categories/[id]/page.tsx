@@ -1,13 +1,20 @@
 'use client';
-import { ConfigTabs } from '@/components/Config';
-import { CategoryTabsContext } from '@/providers/CategoriesProvider';
-import { useContext, useEffect } from 'react';
+import { CategoriesTabContent, ConfigContentWrapper } from '@/components/Config';
+import { getCategoryById } from '@/lib/categories';
+import { DataContext } from '@/providers/DataProvider';
+import { useParams } from 'next/navigation';
+import { useContext } from 'react';
 
-export default function CategoryIdPage({ params }: { params: { id: string } }) {
-	const categoryCtx = useContext(CategoryTabsContext);
-	useEffect(() => {
-		categoryCtx.setActive(Number(params.id));
-	}, []);
+export default function CategoryIdPage() {
+	const data = useContext(DataContext);
+	const params = useParams();
+	const activeId = Number(params.id);
 
-	return <ConfigTabs categoryId={Number(params.id)} />;
+	const activeCategory = getCategoryById(activeId);
+
+	return (
+		<ConfigContentWrapper title={activeCategory ? activeCategory.label : ''}>
+			<CategoriesTabContent categoryId={activeId} />
+		</ConfigContentWrapper>
+	);
 }

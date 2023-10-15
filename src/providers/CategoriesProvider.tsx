@@ -1,44 +1,31 @@
 'use client';
 
 import { ConfigNav } from '@/components/Config';
-import { CategoryTabsContextType } from '@/types/UserTab';
+import { sortCategories } from '@/lib/categories';
 import { Flex, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { PropsWithChildren, createContext, useState } from 'react';
+import { PropsWithChildren, useContext } from 'react';
+import { DataContext } from './DataProvider';
 
-export const CategoryTabsContext = createContext<CategoryTabsContextType>(
-	{} as CategoryTabsContextType
-);
-
-export function CategoryTabProvider({ children }: PropsWithChildren) {
-	const [active, setActiveTab] = useState<number>(-1);
-
-	const setActive = (id: number) => {
-		setActiveTab(id);
-	};
-
-	return (
-		<CategoryTabsContext.Provider
-			value={{
-				active,
-				setActive,
-			}}
-		>
-			{children}
-		</CategoryTabsContext.Provider>
-	);
+interface CategoriesProvidersProps {
+	categoryId: number | null;
 }
 
-export const CategoriesProvider = ({ children }: PropsWithChildren) => {
+export const CategoriesProvider = ({
+	children,
+	categoryId,
+}: PropsWithChildren<CategoriesProvidersProps>) => {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 
+	const data = useContext(DataContext);
+	const categories = data.values.user.categories;
+	const sortedCategories = sortCategories(categories);
+
 	return (
-		<CategoryTabProvider>
-			<Flex direction={isMobile ? 'column' : 'row'}>
-				<ConfigNav />
-				{children}
-			</Flex>
-		</CategoryTabProvider>
+		<Flex direction={isMobile ? 'column' : 'row'}>
+			<ConfigNav items={sortedCategories} activeId={categoryId} />
+			{children}
+		</Flex>
 	);
 };

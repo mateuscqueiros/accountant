@@ -1,4 +1,4 @@
-import { getCategory } from '@/lib/categories';
+import { getCategoryById } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data/data.types';
@@ -10,7 +10,7 @@ export function DefaultItem({ item }: { item: Transaction }) {
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
 
-	const category = getCategory(data.values.user.categories, item.categoryId);
+	const category = getCategoryById(item.categoryId);
 	const theme = useMantineTheme();
 	const categoryColor = parseThemeColor({ color: category.color, theme }).color;
 

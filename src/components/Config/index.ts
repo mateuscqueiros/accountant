@@ -1,2 +1,2 @@
+export * from './ConfigContent';
 export * from './ConfigNav';
-export * from './ConfigTabs';

@@ -1,9 +1,9 @@
 import { Category, Transaction } from '@/types/data';
-import { getCategoriesExpensesTotals, getCategory } from './categories';
+import { getCategoriesExpensesTotals, getCategoryById } from './categories';
 import { getPercentageArray } from './utils';
 
-export function getCategoryStatistics(data: Transaction[], categories: Category[]) {
-	let categoriesValues = getCategoriesExpensesTotals(data, categories);
+export function getCategoryStatistics(items: Transaction[], categories: Category[]) {
+	let categoriesValues = getCategoriesExpensesTotals(items);
 	let statistics: any[] = [
 		{
 			value: 100,
@@ -20,7 +20,7 @@ export function getCategoryStatistics(data: Transaction[], categories: Category[
 			return {
 				value: item,
 				tooltip: `${categoriesValues[index].label} (${categoriesValuesToPercentage[index]}%)`,
-				color: getCategory(categories, categoriesValues[index].id).color,
+				color: getCategoryById(categoriesValues[index].id).color,
 			};
 		});
 	}
