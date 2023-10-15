@@ -18,16 +18,18 @@ export default function RootLayout({ children }: PropsWithChildren) {
 		<html lang="pt-BR">
 			<head>
 				<ColorSchemeScript />
-				<link rel="shortcut icon" href="/favicon.svg" />
 				<meta
 					name="viewport"
 					content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
 				/>
+				<link rel="shortcut icon" href="/icons/favicon.svg" />
 				<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
 				<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
 				<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
 				<link rel="manifest" href="/icons/site.webmanifest" />
-				<meta name="theme-color" content="#F00" />
+				<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5" />
+				<meta name="msapplication-TileColor" content="#da532c" />
+				<meta name="theme-color" content="#ffffff" />
 			</head>
 			<body>
 				<AppProvider>{children}</AppProvider>
