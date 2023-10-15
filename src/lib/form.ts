@@ -1,7 +1,7 @@
 import { Category, Transaction } from '@/types/data';
 import { ItemForm } from '@/types/forms/forms.types';
 import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
-import { getCategory } from './categories';
+import { getCategoryById } from './categories';
 
 export function getValidateObject(): FormValidateInput<ItemForm> {
 	/* Obtém um objeto "validate" para o mantine, que valida os inputs */
@@ -96,7 +96,7 @@ export function getTransformObject(values: ItemForm, categories: Category[]): It
 		};
 	}
 	if (values.categoryId !== null) {
-		const category = getCategory(categories, Number(values.categoryId));
+		const category = getCategoryById(Number(values.categoryId));
 		if (category) {
 			transform = {
 				...transform,
@@ -114,7 +114,7 @@ export function sanitizeBeforeCommiting(
 	categories: Category[]
 ): Transaction {
 	/* Adapta os itens do formulário (ItemForm) para inserção no banco (Transaction) */
-	const category = getCategory(categories, 0);
+	const category = getCategoryById(0);
 
 	return {
 		id,

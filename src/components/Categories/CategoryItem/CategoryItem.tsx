@@ -5,7 +5,7 @@ import { Category } from '@/types/data';
 import { ColorSwatch, Table, Text, Tooltip, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';
-import { CategoriesModalContext } from '../Categories';
+import { CategoriesModalContext } from '../CategoriesActions';
 import classes from './CategoryItem.module.css';
 
 type CategoryItemProps = {

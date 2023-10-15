@@ -1,5 +1,5 @@
 import { ActionIcon } from '@/components/Icons';
-import { getCategory } from '@/lib/categories';
+import { getCategoryById } from '@/lib/categories';
 import { getItemTypeIcon } from '@/lib/item';
 import { confirmModal } from '@/lib/modals';
 import { useColors } from '@/lib/theme';
@@ -36,7 +36,7 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 		...options,
 	};
 
-	const category = getCategory(data.values.user.categories, item.categoryId);
+	const category = getCategoryById(item.categoryId);
 	const IconType = getItemTypeIcon(item.type);
 	const isExpense = item.class === 'expense';
 	const theme = useMantineTheme();

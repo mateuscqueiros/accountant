@@ -197,7 +197,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 	/* Categories */
 	const addCategory = (props: { label: string; slug: string; color: string }) => {
 		const { label, slug, color } = props;
-		const nextId = getNextCategoryId(data.user.categories);
+		const nextId = getNextCategoryId();
 		setData((prev) => {
 			return {
 				...prev,
