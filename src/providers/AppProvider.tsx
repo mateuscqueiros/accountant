@@ -1,17 +1,19 @@
 'use client';
 
-import { ItemsForm } from '@/components/ItemForm';
 import { Layout } from '@/components/Layout';
 import { MantineProvider } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
 import { ModalsProvider as MntModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress } from '@mantine/nprogress';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 import { theme } from '../lib/theme';
 import { DataProvider } from './DataProvider';
 import { ModalsProvider } from './ModalsProvider';
+
+const ItemsForm = dynamic(() => import('@/components/ItemsForm').then((mod) => mod.ItemsForm));
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
 	const path = usePathname();

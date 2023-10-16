@@ -1,8 +1,12 @@
 'use client';
 
-import { CategoriesProvider } from '@/providers/CategoriesProvider';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+
+const CategoriesProvider = dynamic(() =>
+	import('@/providers/CategoriesProvider').then((mod) => mod.CategoriesProvider)
+);
 
 export default function CategoryLayout({ children }: PropsWithChildren) {
 	const params = useParams();

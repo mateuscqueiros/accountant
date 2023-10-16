@@ -1,43 +1,49 @@
 'use client';
 
-import {
-	HomeActions,
-	HomeContent,
-	HomePageFallback,
-	HomeStatistics,
-} from '@/components/pages/Home';
 import { initialOrdernateValue } from '@/consts/actions';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
-import { Box, rem } from '@mantine/core';
+import { Box } from '@mantine/core';
+import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
+
+const HomeActions = dynamic(() => import('@/components/pages/Home').then((mod) => mod.HomeActions));
+const HomeStatistics = dynamic(() =>
+	import('@/components/pages/Home').then((mod) => mod.HomeStatistics)
+);
+const HomeContent = dynamic(() => import('@/components/pages/Home').then((mod) => mod.HomeContent));
+const HomePageFallback = dynamic(() =>
+	import('@/components/pages/Home').then((mod) => mod.HomePageFallback)
+);
 
 export default function Home() {
 	const data = useContext(DataContext);
-	let activeData = data.selectActiveData();
-
 	const displayDataState = useState<Transaction[]>([]);
 	const [_, setDisplayData] = displayDataState;
 
 	const ordenationState = useState(initialOrdernateValue);
 
 	useEffect(() => {
-		setDisplayData(data.selectActiveData());
-	}, [data]);
+		const activeData = data.selectActiveData();
+		setDisplayData(activeData);
+	}, []);
 
 	return (
-		<Box maw={rem('1200px')} mx="auto">
-			<HomeActions displayDataState={displayDataState} />
-			{activeData.length > 0 ? (
-				<>
-					<HomeStatistics dataState={displayDataState} />
-					<HomeContent dataState={displayDataState} ordenationState={ordenationState} />
-				</>
-			) : (
-				<>
-					<HomePageFallback />
-				</>
-			)}
-		</Box>
+		<>
+			<Box mx="auto">
+				<HomeActions displayDataState={displayDataState} />
+				{displayDataState.length > 0 ? (
+					<>
+						<HomeStatistics dataState={displayDataState} />
+						<HomeContent dataState={displayDataState} ordenationState={ordenationState} />
+					</>
+				) : (
+					<>
+						<></>
+						<HomePageFallback />
+					</>
+				)}
+			</Box>
+		</>
 	);
 }
