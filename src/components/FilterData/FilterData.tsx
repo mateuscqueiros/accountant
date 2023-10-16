@@ -26,8 +26,6 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 
 	const isSmallMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
 
-	console.log(isSmallMobile);
-
 	return (
 		<Menu
 			shadow="md"

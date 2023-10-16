@@ -1,6 +1,12 @@
 'use client';
-import { CategoriesActions } from '@/components/Categories';
-import { ConfigContentWrapper } from '@/components/Config';
+import dynamic from 'next/dynamic';
+
+const ConfigContentWrapper = dynamic(() =>
+	import('@/components/Config').then((mod) => mod.ConfigContentWrapper)
+);
+const CategoriesActions = dynamic(() =>
+	import('@/components/Categories').then((mod) => mod.CategoriesActions)
+);
 
 export default function CategoriesPage() {
 	return (
