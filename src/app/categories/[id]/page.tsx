@@ -1,12 +1,16 @@
 'use client';
-import { CategoriesTabContent, ConfigContentWrapper } from '@/components/Config';
 import { getCategoryById } from '@/lib/categories';
-import { DataContext } from '@/providers/DataProvider';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
-import { useContext } from 'react';
+
+const ConfigContentWrapper = dynamic(() =>
+	import('@/components/Config').then((mod) => mod.ConfigContentWrapper)
+);
+const CategoriesTabContent = dynamic(() =>
+	import('@/components/Config').then((mod) => mod.CategoriesTabContent)
+);
 
 export default function CategoryIdPage() {
-	const data = useContext(DataContext);
 	const params = useParams();
 	const activeId = Number(params.id);
 
