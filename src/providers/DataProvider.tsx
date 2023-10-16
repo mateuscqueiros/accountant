@@ -3,9 +3,10 @@ import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
 import { Category, DataContextType, Transaction, TransferData, UserData } from '@/types/data';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { PropsWithChildren, createContext, useState } from 'react';
+import { PropsWithChildren, createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
@@ -281,12 +282,12 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
-	// const [data, setData] = useLocalStorage<UserData>({
-	// 	key: 'accountant-data',
-	// 	defaultValue: dataInitialValues,
-	// });
+	const [data, setData] = useLocalStorage<UserData>({
+		key: 'accountant-data',
+		defaultValue: dataInitialValues,
+	});
 
-	const [data, setData] = useState<UserData>(dataInitialValues);
+	// const [data, setData] = useState<UserData>(dataInitialValues);
 
 	return (
 		<DataContext.Provider
