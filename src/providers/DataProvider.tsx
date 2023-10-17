@@ -3,10 +3,9 @@ import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
 import { Category, DataContextType, Transaction, TransferData, UserData } from '@/types/data';
-import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { PropsWithChildren, createContext } from 'react';
+import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
@@ -198,7 +197,8 @@ export function DataProvider({ children }: PropsWithChildren) {
 	/* Categories */
 	const addCategory = (props: { label: string; slug: string; color: string }) => {
 		const { label, slug, color } = props;
-		const nextId = getNextCategoryId();
+		const categories = data.user.categories;
+		const nextId = getNextCategoryId(categories);
 		setData((prev) => {
 			return {
 				...prev,
@@ -282,12 +282,15 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
-	const [data, setData] = useLocalStorage<UserData>({
-		key: 'accountant-data',
-		defaultValue: dataInitialValues,
-	});
+	// const [data, setData] = useLocalStorage<UserData>('accountant-data', {
+	// 	defaultValue: dataInitialValues,
+	// });
 
-	// const [data, setData] = useState<UserData>(dataInitialValues);
+	const [data, setData] = useState<UserData>(dataInitialValues);
+
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<DataContext.Provider

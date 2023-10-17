@@ -26,7 +26,7 @@ export default function Home() {
 	useEffect(() => {
 		const activeData = data.selectActiveData();
 		setDisplayData(activeData);
-	}, []);
+	}, [data]);
 
 	return (
 		<>

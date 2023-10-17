@@ -42,8 +42,9 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 	const theme = useMantineTheme();
 	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
 	const ordenationState = useState(initialOrdernateValue);
+	const categories = useContext(DataContext).values.user.categories;
 
-	const categoryExists = getCategoryById(categoryId);
+	const categoryExists = getCategoryById(categoryId, categories);
 
 	const [categoryItems, setCategoryItems] = useState(
 		data.values.items.filter((item) => item.categoryId === categoryId)

@@ -1,11 +1,9 @@
 import { Category, Transaction } from '@/types/data';
 import { ItemForm } from '@/types/forms/forms.types';
 import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
-import { getCategoryById } from './categories';
 
+/** Obtém um objeto "validate" para o mantine, que valida os inputs ap submeter um formulário */
 export function getValidateObject(): FormValidateInput<ItemForm> {
-	/* Obtém um objeto "validate" para o mantine, que valida os inputs */
-
 	const validate: FormValidateInput<ItemForm> = {
 		label: undefined,
 		value: undefined,
@@ -96,33 +94,27 @@ export function getTransformObject(values: ItemForm, categories: Category[]): It
 		};
 	}
 	if (values.categoryId !== null) {
-		const category = getCategoryById(Number(values.categoryId));
-		if (category) {
-			transform = {
-				...transform,
-				categoryId: String(category.id),
-			};
-		}
+		// const category = getCategoryById(Number(values.categoryId));
+		// if (category) {
+		transform = {
+			...transform,
+			// categoryId: String(category.id),
+			categoryId: String(values.categoryId),
+		};
+		// }
 	}
 
 	return transform;
 }
 
-export function sanitizeBeforeCommiting(
-	id: string,
-	values: ItemForm,
-	categories: Category[]
-): Transaction {
-	/* Adapta os itens do formulário (ItemForm) para inserção no banco (Transaction) */
-	const category = getCategoryById(0);
+/** Adapta os itens do formulário (ItemForm) para inserção no banco (Transaction) */
+export function sanitizeBeforeCommiting(id: string, values: ItemForm): Transaction {
+	// const category = getCategoryById(0);
 
 	return {
 		id,
 		label: values.label,
-		categoryId:
-			values.categoryId !== null
-				? Number(values.categoryId)
-				: Number(category !== undefined ? category.id : 0),
+		categoryId: values.categoryId !== null ? Number(values.categoryId) : 0,
 		value: values.value === '' ? 0 : values.value,
 		date: values.date,
 		dueDay: values.dueDay === '' ? 0 : values.dueDay,

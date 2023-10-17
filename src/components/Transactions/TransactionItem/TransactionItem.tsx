@@ -6,7 +6,7 @@ import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data';
-import { Group, Table, Text, rem, useMantineTheme } from '@mantine/core';
+import { Group, Table, Text, rem } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useContext } from 'react';
@@ -25,6 +25,8 @@ interface TransactionItemProps {
 export function TransactionItem({ item, options, dateFormat }: TransactionItemProps) {
 	const modals = useContext(ModalsContext);
 	const data = useContext(DataContext);
+	const categories = useContext(DataContext).values.user.categories;
+
 	const colors = useColors();
 	let optionsValues = {
 		actions: true,
@@ -36,10 +38,9 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 		...options,
 	};
 
-	const category = getCategoryById(item.categoryId);
+	const category = getCategoryById(item.categoryId, categories);
 	const IconType = getItemTypeIcon(item.type);
 	const isExpense = item.class === 'expense';
-	const theme = useMantineTheme();
 
 	return (
 		<Table.Tr
