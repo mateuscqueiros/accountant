@@ -29,6 +29,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 				<link rel="manifest" href="/icons/site.webmanifest" />
 				<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5" />
 				<meta name="msapplication-TileColor" content="#da532c" />
+				<meta name="theme-color" content="#FFFFF" media="(prefers-color-scheme: light)" />
+				<meta name="theme-color" content="#1a1b1e" media="(prefers-color-scheme: dark)" />
 			</head>
 			<body>
 				<AppProvider>{children}</AppProvider>
