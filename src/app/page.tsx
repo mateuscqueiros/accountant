@@ -3,7 +3,7 @@
 import { initialOrdernateValue } from '@/consts/actions';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
-import { Box } from '@mantine/core';
+import { Box, rem } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 
@@ -26,11 +26,11 @@ export default function Home() {
 	useEffect(() => {
 		const activeData = data.selectActiveData();
 		setDisplayData(activeData);
-	}, []);
+	}, [data]);
 
 	return (
 		<>
-			<Box mx="auto">
+			<Box mx="auto" maw={rem('1200px')}>
 				<HomeActions displayDataState={displayDataState} />
 				{displayDataState.length > 0 ? (
 					<>

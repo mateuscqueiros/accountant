@@ -1,6 +1,7 @@
 import { itemFormInitialValues as initialValues } from '@/consts/forms';
 import { getCategoriesForm } from '@/lib/categories';
 import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '@/lib/form';
+import { confirmModal } from '@/lib/modals';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { ItemForm } from '@/types/forms/forms.types';
@@ -13,8 +14,6 @@ import {
 	Modal,
 	NumberInput,
 	Select,
-	Stack,
-	Text,
 	TextInput,
 	Textarea,
 	Tooltip,
@@ -24,18 +23,14 @@ import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionIcon } from '../Icons';
 
 export function ItemsForm() {
 	const modal = useContext(ModalsContext).item;
 	const data = useContext(DataContext);
-
-	let [confirmModal, setConfirmModal] = useState({
-		confirmed: false,
-		opened: false,
-	});
+	const categories = data.values.user.categories;
 
 	const theme = useMantineTheme();
 	const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -62,14 +57,14 @@ export function ItemsForm() {
 	const handleSubmit = useCallback(
 		(values: ItemForm) => {
 			if (modal.values.action === 'update') {
-				data.item.update(
-					sanitizeBeforeCommiting(modal.values.updateItem, values, data.values.user.categories)
-				);
+				const sanitizedItem = sanitizeBeforeCommiting(modal.values.updateItem, values);
+				data.item.update(sanitizedItem);
 				modal.reset();
 			} else {
+				const sanitizedItem = sanitizeBeforeCommiting(uuidv4(), values);
 				itemForm.reset();
 				modal.reset();
-				data.item.create(sanitizeBeforeCommiting(uuidv4(), values, data.values.user.categories));
+				data.item.create(sanitizedItem);
 			}
 		},
 		[itemForm, modal]
@@ -85,7 +80,11 @@ export function ItemsForm() {
 				title={modal.values.action === 'create' ? 'Criar item' : 'Atualizar item'}
 			>
 				<Box p="1rem" pt={0}>
-					<form onSubmit={itemForm.onSubmit((values) => handleSubmit(values))}>
+					<form
+						onSubmit={itemForm.onSubmit((values) => {
+							handleSubmit(values);
+						})}
+					>
 						<TextInput
 							withAsterisk
 							label="Nome"
@@ -190,7 +189,7 @@ export function ItemsForm() {
 							label="Categoria"
 							placeholder="Selecione etiquetas"
 							mb="md"
-							data={getCategoriesForm()}
+							data={getCategoriesForm(categories)}
 							// itemComponent={SelectItem}
 							searchable
 							allowDeselect={false}
@@ -212,7 +211,13 @@ export function ItemsForm() {
 									variant="outline"
 									color="red"
 									onClick={() => {
-										setConfirmModal({ ...confirmModal, opened: true });
+										confirmModal({
+											title: `Deseja deletar este item?`,
+											onConfirm: () => {
+												data.item.delete(modal.values.updateItem);
+												modal.close();
+											},
+										});
 									}}
 								>
 									<IconTrash size="1rem" />
@@ -232,50 +237,11 @@ export function ItemsForm() {
 								>
 									Cancelar
 								</Button>
-								<Button type="submit" data-testid="button-submit">
-									Salvar
-								</Button>
+								<Button type="submit">Salvar</Button>
 							</Group>
 						</Flex>
 					</form>
 				</Box>
-			</Modal>
-
-			<Modal
-				opened={confirmModal.opened}
-				onClose={() => {
-					setConfirmModal({
-						...confirmModal,
-						opened: false,
-					});
-				}}
-				withCloseButton={false}
-			>
-				<Stack gap={0}>
-					<Text mb="1.5rem" mt="0.5rem">
-						Deseja realmente deletar?
-					</Text>
-					<Group justify="flex-end">
-						<Button
-							variant="outline"
-							onClick={() => {
-								setConfirmModal({ opened: false, confirmed: false });
-							}}
-						>
-							Cancelar
-						</Button>
-						<Button
-							onClick={() => {
-								setConfirmModal({ opened: false, confirmed: true });
-								itemForm.reset();
-								data.item.delete(modal.values.updateItem);
-								modal.reset();
-							}}
-						>
-							Confirmar
-						</Button>
-					</Group>
-				</Stack>
 			</Modal>
 		</>
 	);

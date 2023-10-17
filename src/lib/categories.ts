@@ -1,7 +1,5 @@
-import { DataContext } from '@/providers/DataProvider';
 import { Category, Transaction } from '@/types/data/data.types';
 import { CategoryForm } from '@/types/forms/forms.types';
-import { useContext } from 'react';
 
 export type CategoryValue = {
 	id: number;
@@ -19,10 +17,7 @@ export function getCategoriesLabels(categories: Category[]): CategoryForm[] {
 	});
 }
 
-export function getNextCategoryId(): number {
-	const data = useContext(DataContext);
-	const categories = data.values.user.categories;
-
+export function getNextCategoryId(categories: Category[]): number {
 	const nextId =
 		Math.max.apply(
 			null,
@@ -31,12 +26,9 @@ export function getNextCategoryId(): number {
 	return nextId;
 }
 
-export function getCategoriesForm(id?: number): CategoryForm[] {
-	const data = useContext(DataContext);
-	const categories = data.values.user.categories;
-
+export function getCategoriesForm(categories: Category[], id?: number): CategoryForm[] {
 	if (id !== undefined) {
-		let foundCategory = getCategoryById(id);
+		let foundCategory = getCategoryById(id, categories);
 		if (foundCategory) {
 			return [
 				{
@@ -56,10 +48,7 @@ export function getCategoriesForm(id?: number): CategoryForm[] {
 	});
 }
 
-export function getCategoriesExpensesTotals(items: Transaction[]) {
-	const data = useContext(DataContext);
-	const categories = data.values.user.categories;
-
+export function getCategoriesExpensesTotals(items: Transaction[], categories: Category[]) {
 	let categoriesValues: CategoryValue[] = [];
 
 	items.map((item) => {
@@ -80,7 +69,7 @@ export function getCategoriesExpensesTotals(items: Transaction[]) {
 		}
 		categoriesValues.push({
 			id: item.categoryId,
-			label: getCategoryById(item.categoryId).label,
+			label: getCategoryById(item.categoryId, categories).label,
 			value: item.value,
 		});
 	});
@@ -102,10 +91,7 @@ function getCategoryValueItem(categoriesValues: CategoryValue[], categoryId: num
 	return categoryValue;
 }
 
-export function getCategoryById(id: number): Category {
-	const data = useContext(DataContext);
-	const categories = data.values.user.categories;
-
+export function getCategoryById(id: number, categories: Category[]): Category {
 	return categories.filter((category) => category.id === id)[0];
 }
 

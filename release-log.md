@@ -13,3 +13,9 @@
 - Better favicons
 - Refactor Categories code and logic
 - Fix color bugs on Config Nav
+
+- Dynamic imports for most pages.
+- Test in local storage Mantine Hook.
+- Change deletion modal in Item Modal.
+- Fix: items in main screen not updating when data changed.
+- Fix: Context not resolving in categories. This prevented items from being updated or created.

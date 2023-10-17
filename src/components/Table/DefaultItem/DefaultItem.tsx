@@ -8,9 +8,9 @@ import { useContext } from 'react';
 
 export function DefaultItem({ item }: { item: Transaction }) {
 	const modals = useContext(ModalsContext);
-	const data = useContext(DataContext);
+	const categories = useContext(DataContext).values.user.categories;
 
-	const category = getCategoryById(item.categoryId);
+	const category = getCategoryById(item.categoryId, categories);
 	const theme = useMantineTheme();
 	const categoryColor = parseThemeColor({ color: category.color, theme }).color;
 
