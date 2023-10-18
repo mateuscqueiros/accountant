@@ -1,1 +1,1 @@
-export { defaultCategories, defaultData } from './data.consts';
+export { defaultCategories, defaultData, randomData, randomItems } from './data.consts';

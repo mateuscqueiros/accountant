@@ -1,6 +1,7 @@
 'use client';
 
 import { initialOrdernateValue } from '@/consts/actions';
+import { generateTransaction } from '@/lib/mocks/random';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { Box, rem } from '@mantine/core';
@@ -27,6 +28,17 @@ export default function Home() {
 		const activeData = data.selectActiveData();
 		setDisplayData(activeData);
 	}, [data]);
+
+	generateTransaction({
+		categoryId: {
+			min: 0,
+			max: data.values.user.categories.length - 1,
+		},
+		date: {
+			min: new Date(2023, 9, 1),
+			max: new Date(2023, 9, 30),
+		},
+	});
 
 	return (
 		<>

@@ -1,3 +1,4 @@
+import { generateTransaction } from '@/lib/mocks/random';
 import { Category, UserData } from '@/types/data';
 import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
@@ -333,4 +334,25 @@ export const defaultData: UserData = {
 			active: true,
 		},
 	],
+};
+
+export const randomItems = Array(50)
+	.fill(0)
+	.map(() => {
+		return generateTransaction({
+			// date: {
+			// 	min: new Date(2023, 9, 1),
+			// 	max: new Date(2023, 9, 30),
+			// },
+		});
+	});
+
+export const randomData: UserData = {
+	activeMonth: startOfMonth(new Date()),
+	user: {
+		name: 'Mateus Queirós',
+		image: '/avatar.jpg',
+		categories: defaultCategories,
+	},
+	items: randomItems,
 };

@@ -1,4 +1,4 @@
-import { defaultData as dataInitialValues } from '@/consts/data';
+import { defaultData as dataInitialValues, randomData } from '@/consts/data';
 import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
@@ -286,7 +286,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 		}
 
 		return NotificationError({
-			message: `A categoria ${categoryToDelete.label} é uma categoria padrão. Não é possível deletar categorias padrão`,
+			message: `A categoria ${categoryToDelete.label} é uma categoria padrão. Não é possível deletar a categoria padrão.`,
 		});
 	};
 
@@ -295,7 +295,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 		defaultValue: dataInitialValues,
 	}) as unknown as [UserData, Dispatch<SetStateAction<UserData>>];
 
-	const [data, setData] = useState<UserData>(dataInitialValues) as unknown as [
+	const [data, setData] = useState<UserData>(randomData) as unknown as [
 		UserData,
 		Dispatch<SetStateAction<UserData>>,
 	];
