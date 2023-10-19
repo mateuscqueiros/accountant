@@ -1,4 +1,4 @@
-import { defaultData as dataInitialValues } from '@/consts/data';
+import { defaultData as dataInitialValues, randomData } from '@/consts/data';
 import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
@@ -6,7 +6,14 @@ import { Category, DataContextType, Transaction, TransferData, UserData } from '
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useEffect } from 'react';
+import {
+	Dispatch,
+	PropsWithChildren,
+	SetStateAction,
+	createContext,
+	useEffect,
+	useState,
+} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const DataContext = createContext<DataContextType>({} as DataContextType);
@@ -279,19 +286,26 @@ export function DataProvider({ children }: PropsWithChildren) {
 		}
 
 		return NotificationError({
-			message: `A categoria ${categoryToDelete.label} é uma categoria padrão. Não é possível deletar categorias padrão`,
+			message: `A categoria ${categoryToDelete.label} é uma categoria padrão. Não é possível deletar a categoria padrão.`,
 		});
 	};
 
-	const [data, setData] = useLocalStorage<UserData>({
+	const initialData = process.env.NODE_ENV === 'production' ? dataInitialValues : randomData;
+
+	const [storageData, setStorageData] = useLocalStorage<UserData>({
 		key: 'accountant-data',
-		defaultValue: dataInitialValues,
+		defaultValue: initialData,
 	}) as unknown as [UserData, Dispatch<SetStateAction<UserData>>];
 
-	// const [data, setData] = useState<UserData>(dataInitialValues) as unknown as [UserData, Dispatch<SetStateAction<UserData>>];
+	const [data, setData] = useState<UserData>(initialData) as unknown as [
+		UserData,
+		Dispatch<SetStateAction<UserData>>,
+	];
 
 	useEffect(() => {
-		console.log(selectActiveData());
+		if (process.env.NODE_ENV === 'production') {
+			setStorageData(data);
+		}
 	}, [data]);
 
 	return (

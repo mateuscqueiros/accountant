@@ -212,7 +212,7 @@ export function CategoriesActions() {
 							<Table.Tr>
 								<Table.Td fw="bold">Nome</Table.Td>
 								<Table.Td fw="bold">Cor</Table.Td>
-								<Table.Td fw="bold">Ações</Table.Td>
+								<Table.Td></Table.Td>
 							</Table.Tr>
 						</Table.Thead>
 						<Table.Tbody>

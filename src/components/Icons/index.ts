@@ -2,6 +2,8 @@ export { ActionIcon } from './ActionIcon/ActionIcon';
 export { IconArrowDoubleVertical } from './IconArrowDoubleVertical/IconArrowDoubleVertical';
 export { IconArrowDown } from './IconArrowDown/IconArrowDown';
 export { IconArrowUp } from './IconArrowUp/IconArrowUp';
+export { IconDelete } from './IconDelete/IconDelete';
+export { IconEffectivate } from './IconEffectivate/IconEffectivate';
 export { IconFilter } from './IconFilter/IconFilter';
 export { IconFilterFilled } from './IconFilterFilled/IconFilterFilled';
 export { IconFixed } from './IconFixed/IconFixed';

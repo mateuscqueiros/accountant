@@ -45,7 +45,7 @@ export function HomeStatistics({ dataState }: HomeStatisticsProps) {
 							</Text>
 						</Group>
 					</Flex>
-					<RingProgress roundCaps thickness={15} sections={ringProgressStatistics} />
+					<RingProgress thickness={15} sections={ringProgressStatistics} />
 				</Flex>
 			</Paper>
 		</>

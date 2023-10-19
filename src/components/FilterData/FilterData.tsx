@@ -49,8 +49,8 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 				<Menu.Label>
 					<Flex justify="space-between">
 						<Text fz="xs" fw={500}>
-							{dataLength - displayData.length > 0
-								? `Filtrando ${displayData.length} de ${dataLength}`
+							{someKeyIsNotEmpty(filter)
+								? `${displayData.length} de ${dataLength} itens`
 								: `${dataLength} itens`}
 						</Text>
 						<Anchor

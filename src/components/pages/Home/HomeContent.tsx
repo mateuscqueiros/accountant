@@ -3,7 +3,7 @@ import {
 	TableHeaderItem,
 	TransactionItem,
 	TransactionItemOptions,
-} from '@/components/Transactions';
+} from '@/components/Transaction';
 import { Transaction } from '@/types/data';
 import { MantineBreakpoint, Table, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';

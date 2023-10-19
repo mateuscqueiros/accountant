@@ -5,8 +5,9 @@ import { compareStartOfMonth } from '@/lib/dates';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
-import { Box, Flex, Group, Modal, Title } from '@mantine/core';
+import { Box, Flex, Group, Modal, Title, rem, useMantineTheme } from '@mantine/core';
 import { MonthPicker } from '@mantine/dates';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
 import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -23,19 +24,26 @@ export function HomeActions({ displayDataState }: HomeActionsProps) {
 		locale: ptBR,
 	});
 
+	const theme = useMantineTheme();
+	const isExtraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
+
 	const [monthPickerStateSelect, setMonthPickerStateSelect] = useState(false);
 
 	return (
 		<>
 			<Flex justify="space-between" align="center" mb="md" wrap="wrap" gap="md">
 				<Group
-					w="fit-content"
+					w={isExtraSmallScreen ? '100%' : 'fit-content'}
 					style={{ cursor: 'pointer' }}
 					onClick={() => {
 						setMonthPickerStateSelect(!monthPickerStateSelect);
 					}}
+					wrap="nowrap"
+					justify="space-between"
 				>
-					<Title order={1}>{capitalizeFirstLetter(activeMonthDisplay)}</Title>
+					<Title order={1} fz={isExtraSmallScreen ? rem(32) : undefined}>
+						{capitalizeFirstLetter(activeMonthDisplay)}
+					</Title>
 					{monthPickerStateSelect ? <IconCaretUpFilled /> : <IconCaretDownFilled />}
 				</Group>
 				<Modal

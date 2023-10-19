@@ -22,37 +22,37 @@ export interface DataContextType {
 
 export type Transaction = {
 	id: string;
-	/* Nome do item para ser mostrado*/
+	/**  Nome do item para ser mostrado*/
 	label: string;
 
-	/* Valor do item */
+	/** Valor do item */
 	value: number;
 
-	/* Tipo do item */
+	/** Tipo do item */
 	type: 'monthly' | 'fixed' | 'installment';
 
-	/* Se o item é uma despesa ou receita */
+	/** Se o item é uma despesa ou receita */
 	class: 'expense' | 'recipe';
 
-	/* Date é usado para inserir o item no billData certo dele */
+	/** Data de quando o item foi criado ou a que mês pertence */
 	date: Date;
 
-	/* Categoria personalizada do item */
+	/** ID da categoria do item */
 	categoryId: number;
 
-	/* Propriedades da parcela se type == 'installment */
+	/** Propriedades da parcela se type === "installment" */
 	installments: {
 		current: number;
 		total: number;
 	};
 
-	/* Dia do vencimento para parcelas e fixas */
+	/** Dia do vencimento para parcelas e fixas */
 	dueDay: number;
 
-	/* Nota personalizada */
+	/** Nota personalizada */
 	note: string;
 
-	/* Define se o sistema deve usar o item em contagens */
+	/** Define se o sistema deve usar o item em contagens */
 	active: boolean;
 };
 

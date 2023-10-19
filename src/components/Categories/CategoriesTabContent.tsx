@@ -1,8 +1,4 @@
-import {
-	TableHeaderItem,
-	TransactionItem,
-	TransactionItemOptions,
-} from '@/components/Transactions';
+import { TableHeaderItem, TransactionItem, TransactionItemOptions } from '@/components/Transaction';
 import { TableHeaderData } from '@/components/pages/Home';
 import { initialOrdernateValue } from '@/consts/actions';
 import { getCategoryById } from '@/lib/categories';

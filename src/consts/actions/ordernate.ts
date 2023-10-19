@@ -1,4 +1,4 @@
-import { OrdersOptions } from '@/components/Transactions';
+import { OrdersOptions } from '@/components/Transaction';
 
 /**
  *  - `0` - Nenhuma verificação é feita, os itens são retornados como vieram.

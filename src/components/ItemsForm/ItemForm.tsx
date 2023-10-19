@@ -22,10 +22,9 @@ import {
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconTrash } from '@tabler/icons-react';
 import { useCallback, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { ActionIcon } from '../Icons';
+import { ActionIcon, IconDelete } from '../Icons';
 
 export function ItemsForm() {
 	const modal = useContext(ModalsContext).item;
@@ -206,22 +205,24 @@ export function ItemsForm() {
 						/>
 						<Flex justify="space-between" mt="xl">
 							{modal.values.action === 'update' && (
-								<ActionIcon
-									size="2.2rem"
-									variant="outline"
-									color="red"
-									onClick={() => {
-										confirmModal({
-											title: `Deseja deletar este item?`,
-											onConfirm: () => {
-												data.item.delete(modal.values.updateItem);
-												modal.close();
-											},
-										});
-									}}
-								>
-									<IconTrash size="1rem" />
-								</ActionIcon>
+								<>
+									<ActionIcon
+										size="2.2rem"
+										variant="outline"
+										color="red"
+										onClick={() => {
+											confirmModal({
+												title: `Deseja deletar este item?`,
+												onConfirm: () => {
+													data.item.delete(modal.values.updateItem);
+													modal.close();
+												},
+											});
+										}}
+									>
+										<IconDelete size="1rem" />
+									</ActionIcon>
+								</>
 							)}
 							<Group w="100%" justify="flex-end">
 								<Button
