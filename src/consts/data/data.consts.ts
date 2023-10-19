@@ -1,4 +1,4 @@
-import { generateTransaction } from '@/lib/mocks/random';
+import { generateTransaction } from '@/lib/mocks/generate';
 import { Category, UserData } from '@/types/data';
 import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
@@ -336,14 +336,18 @@ export const defaultData: UserData = {
 	],
 };
 
-export const randomItems = Array(50)
+export const randomItems = Array(5)
 	.fill(0)
 	.map(() => {
 		return generateTransaction({
-			// date: {
-			// 	min: new Date(2023, 9, 1),
-			// 	max: new Date(2023, 9, 30),
-			// },
+			date: {
+				min: new Date(2023, 9, 1),
+				max: new Date(2023, 9, 30),
+			},
+			value: {
+				min: 10,
+				max: 10,
+			},
 		});
 	});
 

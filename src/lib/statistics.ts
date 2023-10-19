@@ -28,17 +28,24 @@ export function getCategoryStatistics(items: Transaction[], categories: Category
 	return statistics;
 }
 
+/**
+ * Recebe itens e retorna o total de gastos e receitas.
+ * @param data Os itens a serem processados.
+ * @returns Um objeto com os totais
+ *  - `expenses` O total das despesas
+ *  - `recipes` O total das receitas
+ */
 export function getTotalValues(data: Transaction[]) {
 	let expenses = 0;
 	let recipes = 0;
 
 	expenses = data
-		.filter((item) => item.active && !(item.class === 'recipe'))
-		.reduce((partialSum, a) => partialSum + a.value, 0);
+		.filter((item) => item.active && item.class === 'expense')
+		.reduce((partialSum, item) => partialSum + item.value, 0);
 
 	recipes = data
 		.filter((item) => item.active && item.class === 'recipe')
-		.reduce((partialSum, a) => partialSum + a.value, 0);
+		.reduce((partialSum, item) => partialSum + item.value, 0);
 
 	return { expenses, recipes };
 }

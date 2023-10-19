@@ -290,12 +290,14 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
+	const initialData = process.env.NODE_ENV === 'production' ? dataInitialValues : randomData;
+
 	const [storageData, setStorageData] = useLocalStorage<UserData>({
 		key: 'accountant-data',
-		defaultValue: dataInitialValues,
+		defaultValue: initialData,
 	}) as unknown as [UserData, Dispatch<SetStateAction<UserData>>];
 
-	const [data, setData] = useState<UserData>(randomData) as unknown as [
+	const [data, setData] = useState<UserData>(initialData) as unknown as [
 		UserData,
 		Dispatch<SetStateAction<UserData>>,
 	];

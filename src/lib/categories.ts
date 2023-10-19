@@ -52,7 +52,7 @@ export function getCategoriesExpensesTotals(items: Transaction[], categories: Ca
 	let categoriesValues: CategoryValue[] = [];
 
 	items.map((item) => {
-		if (item.class === 'recipe') {
+		if (item.class === 'recipe' || !item.active) {
 			return;
 		}
 		if (containsCategory(categoriesValues, item.categoryId)) {

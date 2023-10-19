@@ -160,3 +160,44 @@ export function getNumberOfItemsByPropValue(
 
 	return count;
 }
+
+interface RandomOptions {
+	integer: boolean;
+}
+
+/**
+ * Gera um número aleatório dentro do intervalo especificado. Se min e max não forem providos o intervalo será entre 0 e 100
+ * @param min O intervalo mínimo
+ * @param max O intervalo máximo
+ * @param options Objeto de opções.
+ * - `integer` Se o número deve ou não ser inteiro
+ */
+export function randomInt(min?: number, max?: number, options?: RandomOptions) {
+	let minRange = 0;
+	let maxRange = 100;
+	let integer = options?.integer || true;
+
+	if (min) {
+		minRange = min;
+	}
+	if (max) {
+		maxRange = max;
+	}
+
+	let randomNum = Math.random() * (maxRange - minRange) + minRange;
+
+	if (integer) {
+		randomNum = Math.round(randomNum);
+	}
+
+	return randomNum;
+}
+
+/**
+ * Gera uma data aleatória dentro do intervalo provido
+ * @param from O intervalo mínimo
+ * @param to O intervalo máximo
+ */
+export function randomDate(from: Date, to: Date) {
+	return new Date(from.getTime() + Math.random() * (to.getTime() - from.getTime()));
+}

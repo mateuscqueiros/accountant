@@ -28,6 +28,14 @@ function getMenuItemsData(data: UserData): any {
 		};
 	});
 
+	const active = [
+		{
+			label: 'Ativo',
+			prop: 'active',
+			value: true,
+		},
+	];
+
 	const classes = [
 		{
 			label: 'Despesa',
@@ -65,9 +73,21 @@ function getMenuItemsData(data: UserData): any {
 	];
 
 	const itemsData = {
-		classes,
-		types,
-		categories,
+		active: {
+			items: [...active],
+		},
+		classes: {
+			items: [...classes],
+			group: 'Classes',
+		},
+		types: {
+			items: [...types],
+			group: 'Tipos',
+		},
+		categories: {
+			items: [...categories],
+			group: 'Categorias',
+		},
 	};
 
 	return itemsData;
@@ -115,12 +135,18 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 				{contains ? 'Contém' : 'Não contém'}
 			</Menu.Item>
 
-			{Object.entries(getMenuItemsData(dataProvider.values)).map((entry) => {
-				const values = entry[1] as MenuItemComponentType<FilterOptions<Transaction>>[];
+			{Object.values(getMenuItemsData(dataProvider.values)).map((entry: any) => {
+				const values = entry.items as MenuItemComponentType<FilterOptions<Transaction>>[];
+				const group = entry.group;
+				console.log(values, group);
 				return (
 					<Box key={entry[0]}>
-						<Menu.Divider />
-						<Menu.Label>Classe</Menu.Label>
+						{group && (
+							<>
+								<Menu.Divider />
+								<Menu.Label>{group}</Menu.Label>
+							</>
+						)}
 
 						{values.map((value) => {
 							return (

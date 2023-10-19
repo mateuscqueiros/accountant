@@ -31,11 +31,9 @@ export function useLightDark(light: string, dark: string) {
 	}, [colorScheme]);
 
 	if (isLight) {
-		const parseLight = parseColor(light);
-		return parseLight.isThemeColor ? parseLight.color : parseLight.value;
+		return parseColor(light);
 	} else {
-		const parseDark = parseColor(dark);
-		return parseDark.isThemeColor ? parseDark.color : parseDark.value;
+		return parseColor(dark);
 	}
 }
 
@@ -43,16 +41,20 @@ export function parseColor(color: MantineColor) {
 	const theme = useMantineTheme();
 	const parseColor = parseThemeColor({ color, theme });
 
-	return parseColor;
+	return parseColor.value;
 }
 
+/**
+ * Tema do Accountant
+ */
 export function useColors() {
 	const colors = {
 		logo: useLightDark('black', 'white'),
 		expenses: useLightDark('red.6', 'red.7'),
 		recipes: useLightDark('green.6', 'green.8'),
 		text: {
-			secondary: 'gray.6',
+			primary: useLightDark('black', 'white'),
+			secondary: useLightDark('gray.6', 'gray.7'),
 		},
 	};
 

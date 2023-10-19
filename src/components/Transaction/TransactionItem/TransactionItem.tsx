@@ -1,13 +1,11 @@
-import { ActionIcon } from '@/components/Icons';
+import { ActionActivateItem, ActionDeleteItem } from '@/components/Actions/Item';
 import { getCategoryById } from '@/lib/categories';
 import { getItemTypeIcon } from '@/lib/item';
-import { confirmModal } from '@/lib/modals';
 import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data';
 import { Group, Table, Text, rem } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useContext } from 'react';
 import { CategoryBadge } from '../CategoryBadge/CategoryBadge';
@@ -51,7 +49,7 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 		>
 			{optionsValues.label && (
 				<Table.Td>
-					<Text>{item.label}</Text>
+					<Text c={item.active ? undefined : colors.text.secondary}>{item.label}</Text>
 				</Table.Td>
 			)}
 			{optionsValues.date && (
@@ -66,7 +64,7 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 			)}
 			{optionsValues.type && (
 				<Table.Td>
-					<IconType />
+					<IconType color={colors.text.primary} stroke={1.2} />
 				</Table.Td>
 			)}
 			{optionsValues.value && (
@@ -76,21 +74,10 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 			)}
 
 			{optionsValues.actions && (
-				<Table.Td>
-					<Group gap={0} justify="flex-end">
-						<ActionIcon
-							onClick={(e) => {
-								e.stopPropagation();
-								confirmModal({
-									title: `Deseja deletar o item ${item.label}?`,
-									onConfirm: () => data.item.delete(item.id),
-								});
-							}}
-							variant="subtle"
-							color="red"
-						>
-							<IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-						</ActionIcon>
+				<Table.Td maw={rem(150)}>
+					<Group gap="sm" justify="flex-end">
+						{!item.active && <ActionActivateItem item={item} />}
+						<ActionDeleteItem item={item} />
 					</Group>
 				</Table.Td>
 			)}
