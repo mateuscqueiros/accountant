@@ -19,12 +19,10 @@ Um app para controlar gastos financeiros em base mensal com suporte a assinatura
 - Typescript
 - Mantine
 - @tabler/icons-react
-- lodash
 - date-fns
 
 ## Futuro
 
 - Mudar forma como os itens são organizados e mostrados mensalmente.
-- Página de estatísticas
-- Edição das etiquetas.
+- Página de estatísticas.
 - Criação de carteiras.
