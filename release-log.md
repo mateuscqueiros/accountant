@@ -1,6 +1,6 @@
 ## Other changes across versions
 
-# 0.4.4
+# 0.4.5
 
 - Refactor: BillsDataItem -> Transaction. Change in type name across the app.
 - Refactor: Move Categories from inside Config to its own component.
