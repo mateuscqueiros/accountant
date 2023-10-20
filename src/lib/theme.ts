@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 export const theme = createTheme({
 	cursorType: 'pointer',
-	primaryColor: 'indigo',
+	primaryColor: '',
 	primaryShade: { light: 5, dark: 6 },
 	fontSizes: {
 		xxs: '0.7rem',
