@@ -89,7 +89,7 @@ export function ConfigNav({
 	route: string;
 }) {
 	const theme = useMantineTheme();
-	const isMobile = useMediaQuery(`(max-width: ${theme.other.mobile}`);
+	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 	const { width } = useViewportSize();
 
 	return isMobile ? (
