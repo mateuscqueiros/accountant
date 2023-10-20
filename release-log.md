@@ -34,3 +34,4 @@
 - Refactor: Make ConfigNav more dynamic.
 - Feat: Wallet page first appearance.
 - Feat: Cor do tema: Indigo.
+- Refactor: Responsive.
