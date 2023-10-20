@@ -31,3 +31,5 @@
 # 0.4.5
 
 - Fix: Items not updating on categories view.
+- Refactor: Make ConfigNav more dynamic.
+- Feat: Wallet page first appearance.
