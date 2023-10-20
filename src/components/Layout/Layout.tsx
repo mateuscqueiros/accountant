@@ -102,13 +102,14 @@ export function Layout({
 	withPadding = true,
 }: PropsWithChildren<{ withPadding?: boolean }>) {
 	const [opened, setOpened] = useState(false);
+	const theme = useMantineTheme();
 
 	return (
 		<AppShell
 			className={classes.app_shell}
 			navbar={{
-				width: { sm: 60 },
-				breakpoint: 'sm',
+				width: { [theme.other.mobile]: 60 },
+				breakpoint: theme.other.mobile,
 				collapsed: { mobile: !opened },
 			}}
 			header={{ height: 60 }}

@@ -1,5 +1,5 @@
 'use client';
-import { Group, Text, Tooltip, UnstyledButton } from '@mantine/core';
+import { Group, Text, Tooltip, UnstyledButton, useMantineTheme } from '@mantine/core';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
@@ -15,6 +15,7 @@ export type NavIconProps = {
 export const NavIcon = ({ data }: { data: NavIconProps }) => {
 	const { icon, label, link, setOpened } = data;
 	const path = usePathname().split('/');
+	const theme = useMantineTheme();
 
 	let isActive = link.split('/')[1] === path[1];
 
@@ -27,7 +28,7 @@ export const NavIcon = ({ data }: { data: NavIconProps }) => {
 			className={classes.link}
 			style={{ textDecoration: 'inherit' }}
 		>
-			<Tooltip label={label} position="right">
+			<Tooltip label={label} position="right" visibleFrom={theme.other.mobile}>
 				<UnstyledButton className={[classes.unstyled_button, isActive && classes.active].join(' ')}>
 					<Group>
 						{icon}

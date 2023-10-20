@@ -7,11 +7,10 @@
 .unstyled_button {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	width: 100%;
 	padding: var(--mantine-spacing-xs);
 	border-radius: var(--mantine-radius-sm);
-	background-color: none;
 	height: 40px;
 
 	@mixin dark {
@@ -24,20 +23,20 @@
 	@mixin hover {
 		background-color: var(--mantine-primary-color-light);
 	}
-	&.active {
-		color: var(--mantine-color-white);
-		background-color: var(--mantine-primary-color-filled);
-		@mixin hover {
-			background-color: var(--mantine-primary-color-filled-hover);
-		}
-	}
 
 	@media (min-width: $mantine-breakpoint-sm) {
 		justify-content: center;
-		align-items: center;
 		width: 100%;
+
 		.text {
 			display: none;
+		}
+		&.active {
+			color: var(--mantine-color-white);
+			background-color: var(--mantine-primary-color-filled);
+			@mixin hover {
+				background-color: var(--mantine-primary-color-filled-hover);
+			}
 		}
 	}
 }

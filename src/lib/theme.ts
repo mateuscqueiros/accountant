@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 
 export const theme = createTheme({
 	cursorType: 'pointer',
-	primaryColor: '',
-	primaryShade: { light: 5, dark: 6 },
+	primaryColor: 'indigo',
+	primaryShade: { light: 7, dark: 9 },
 	fontSizes: {
 		xxs: '0.7rem',
 	},
@@ -21,6 +21,10 @@ export const theme = createTheme({
 	},
 	spacing: {
 		xxs: '0.3rem',
+	},
+	other: {
+		mobile: 'sm',
+		configMobile: 'md',
 	},
 });
 
@@ -60,7 +64,7 @@ export function useColors() {
 			tertiary: useLightDark('gray.6', 'gray.7'),
 		},
 		state: {
-			hover: useLightDark('gray.1', 'dark.5'),
+			hover: useLightDark('gray.1', 'dark.7'),
 		},
 	};
 

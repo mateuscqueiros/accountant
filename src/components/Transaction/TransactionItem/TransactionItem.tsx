@@ -7,7 +7,7 @@ import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data';
 import { Group, Table, Text, rem } from '@mantine/core';
 import { format } from 'date-fns';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CategoryBadge } from '../CategoryBadge/CategoryBadge';
 
 export type TransactionItemOptions<T> = {
@@ -39,13 +39,17 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 	const IconType = getItemTypeIcon(item.type);
 	const isExpense = item.class === 'expense';
 
+	const [hovered, setHovered] = useState(false);
+
 	return (
 		<Table.Tr
 			style={{ cursor: 'pointer' }}
 			onClick={() => {
 				modals.item.openUpdate(item);
-				// modals.item.open();
 			}}
+			bg={hovered ? colors.state.hover : undefined}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
 		>
 			{optionsValues.label && (
 				<Table.Td>

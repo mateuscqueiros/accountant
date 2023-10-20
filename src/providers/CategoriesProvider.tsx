@@ -16,7 +16,7 @@ export const CategoriesProvider = ({
 	categoryId,
 }: PropsWithChildren<CategoriesProvidersProps>) => {
 	const theme = useMantineTheme();
-	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
+	const isMobile = useMediaQuery(`(max-width: ${theme.other.mobile}`);
 
 	const data = useContext(DataContext);
 	const categories = data.values.user.categories;

@@ -8,35 +8,10 @@ import { Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useContext, useEffect, useState } from 'react';
 
-const tableHeaderData: TableHeaderData[] = [
-	{
-		label: 'Nome',
-		prop: 'label',
-	},
-	{
-		label: 'Data',
-		prop: 'date',
-	},
-	{
-		label: 'Categoria',
-		prop: 'categoryId',
-		visibleFrom: 'md',
-	},
-	{
-		label: 'Tipo',
-		prop: 'type',
-		visibleFrom: 'md',
-	},
-	{
-		label: 'Valor',
-		prop: 'value',
-	},
-];
-
 export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 	const data = useContext(DataContext);
 	const theme = useMantineTheme();
-	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
+	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 	const ordenationState = useState(initialOrdernateValue);
 	const categories = useContext(DataContext).values.user.categories;
 
@@ -58,6 +33,31 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 	useEffect(() => {
 		setCategoryItems(data.values.items.filter((item) => item.categoryId === categoryId));
 	}, [data.values.items]);
+
+	const tableHeaderData: TableHeaderData[] = [
+		{
+			label: 'Nome',
+			prop: 'label',
+		},
+		{
+			label: 'Data',
+			prop: 'date',
+		},
+		{
+			label: 'Categoria',
+			prop: 'categoryId',
+			visibleFrom: theme.other.mobile,
+		},
+		{
+			label: 'Tipo',
+			prop: 'type',
+			visibleFrom: theme.other.mobile,
+		},
+		{
+			label: 'Valor',
+			prop: 'value',
+		},
+	];
 
 	return (
 		<>

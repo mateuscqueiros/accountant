@@ -16,7 +16,7 @@ export const WalletsProvider = ({
 	walletId,
 }: PropsWithChildren<WalletsProvidersProps>) => {
 	const theme = useMantineTheme();
-	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
+	const isMobile = useMediaQuery(`(max-width: ${theme.other.mobile}`);
 
 	const data = useContext(DataContext);
 	const wallets = data.values.user.wallets;
