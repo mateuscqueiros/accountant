@@ -18,7 +18,7 @@ const ItemsForm = dynamic(() => import('@/components/ItemsForm').then((mod) => m
 export const AppProvider = ({ children }: PropsWithChildren) => {
 	const path = usePathname();
 
-	const shouldHavePadding = !path.includes('categories');
+	const shouldHavePadding = !path.includes('categories') && !path.includes('wallets');
 
 	return (
 		<MantineProvider theme={theme} defaultColorScheme="auto">

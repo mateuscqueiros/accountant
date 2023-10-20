@@ -35,6 +35,7 @@ export function ModalsProvider({ children }: PropsWithChildren) {
 						command: {
 							...transaction,
 							categoryId: String(transaction.categoryId),
+							walletId: String(transaction.walletId),
 						},
 						updateItem: transaction.id,
 						action: 'update',

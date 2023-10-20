@@ -1,4 +1,4 @@
-import { Category, Transaction } from '@/types/data';
+import { Transaction } from '@/types/data';
 import { ItemForm } from '@/types/forms/forms.types';
 import { FormValidateInput } from 'node_modules/@mantine/form/lib/types';
 
@@ -16,13 +16,13 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 			total: undefined,
 		},
 		dueDay: undefined,
+		walletId: undefined,
 	};
-	// Label
+
 	validate.label = (value) => {
 		return value.length < 2 ? 'O nome deve ter pelo menos dois caracteres' : null;
 	};
 
-	// Value
 	validate.value = (value) => {
 		return typeof value === 'number' && !(value > 0)
 			? 'O valor deve ser maior que 0'
@@ -30,7 +30,6 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 			? 'Por favor insira um valor'
 			: null;
 	};
-	// Date
 
 	validate.installments = {
 		current: (value, values) => {
@@ -67,8 +66,9 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 	return validate;
 }
 
-export function getTransformObject(values: ItemForm, categories: Category[]): ItemForm {
-	/* Obtêm um objeto "transform" para o mantine, que vai transformar os itens depois do submit */
+/* Obtêm um objeto "transform" para o mantine, que vai transformar os itens depois do submit */
+export function getTransformObject(values: ItemForm): ItemForm {
+	console.log('-----', values);
 
 	let transform: ItemForm = {
 		...values,
@@ -94,14 +94,18 @@ export function getTransformObject(values: ItemForm, categories: Category[]): It
 		};
 	}
 	if (values.categoryId !== null) {
-		// const category = getCategoryById(Number(values.categoryId));
-		// if (category) {
 		transform = {
 			...transform,
-			// categoryId: String(category.id),
 			categoryId: String(values.categoryId),
+			walletId: String(values.walletId),
 		};
-		// }
+	}
+
+	if (values.walletId !== null) {
+		transform = {
+			...transform,
+			walletId: String(values.walletId),
+		};
 	}
 
 	return transform;
@@ -109,8 +113,6 @@ export function getTransformObject(values: ItemForm, categories: Category[]): It
 
 /** Adapta os itens do formulário (ItemForm) para inserção no banco (Transaction) */
 export function sanitizeBeforeCommiting(id: string, values: ItemForm): Transaction {
-	// const category = getCategoryById(0);
-
 	return {
 		id,
 		label: values.label,
@@ -121,14 +123,11 @@ export function sanitizeBeforeCommiting(id: string, values: ItemForm): Transacti
 		installments: {
 			current: values.installments.current === '' ? 0 : values.installments.current,
 			total: values.installments.total === '' ? 0 : values.installments.total,
-			// dueDay: values.installments.dueDay === '' ? 0 : values.installments.dueDay,
 		},
-		// fixed: {
-		// 	dueDay: values.fixed.dueDay === '' ? 0 : values.fixed.dueDay,
-		// },
 		type: values.type as Transaction['type'],
 		class: values.class as Transaction['class'],
 		note: values.note,
 		active: values.active,
+		walletId: values.walletId !== null ? Number(values.walletId) : 0,
 	};
 }

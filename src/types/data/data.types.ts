@@ -54,6 +54,9 @@ export type Transaction = {
 
 	/** Define se o sistema deve usar o item em contagens */
 	active: boolean;
+
+	/** ID da carteira da transação */
+	walletId: number;
 };
 
 export type UserData = {
@@ -66,6 +69,7 @@ export type User = {
 	name: string;
 	image: string;
 	categories: Category[];
+	wallets: Wallet[];
 };
 
 export type TransferData = {
@@ -83,5 +87,11 @@ export type Category = {
 	label: string;
 	color: string;
 	slug: string;
+	default?: boolean;
+};
+
+export type Wallet = {
+	id: number;
+	label: string;
 	default?: boolean;
 };

@@ -175,6 +175,7 @@ export function DataProvider({ children }: PropsWithChildren) {
 	};
 
 	const updateItem = (item: Transaction) => {
+		console.log(item);
 		setData((prev) => {
 			let itemToUpdate = prev.items.filter((billItem) => billItem.id === item.id)[0];
 

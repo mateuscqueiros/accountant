@@ -2,7 +2,7 @@
 import { useColors } from '@/lib/theme';
 import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartBar, IconHome2, IconList } from '@tabler/icons-react';
+import { IconChartBar, IconHome2, IconList, IconWallet } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
@@ -62,6 +62,11 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 			link: '/categories',
 		},
 		{
+			icon: <IconWallet />,
+			label: 'Carteiras',
+			link: '/wallets',
+		},
+		{
 			icon: <IconChartBar />,
 			label: 'Relatórios',
 			link: '/reports',
@@ -97,13 +102,14 @@ export function Layout({
 	withPadding = true,
 }: PropsWithChildren<{ withPadding?: boolean }>) {
 	const [opened, setOpened] = useState(false);
+	const theme = useMantineTheme();
 
 	return (
 		<AppShell
 			className={classes.app_shell}
 			navbar={{
-				width: { sm: 60 },
-				breakpoint: 'sm',
+				width: { [theme.other.mobile]: 60 },
+				breakpoint: theme.other.mobile,
 				collapsed: { mobile: !opened },
 			}}
 			header={{ height: 60 }}

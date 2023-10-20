@@ -2,6 +2,7 @@ import { itemFormInitialValues as initialValues } from '@/consts/forms';
 import { getCategoriesForm } from '@/lib/categories';
 import { getTransformObject, getValidateObject, sanitizeBeforeCommiting } from '@/lib/form';
 import { confirmModal } from '@/lib/modals';
+import { getWalletsForm } from '@/lib/wallets';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { ItemForm } from '@/types/forms/forms.types';
@@ -30,6 +31,7 @@ export function ItemsForm() {
 	const modal = useContext(ModalsContext).item;
 	const data = useContext(DataContext);
 	const categories = data.values.user.categories;
+	const wallets = data.values.user.wallets;
 
 	const theme = useMantineTheme();
 	const extraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -37,7 +39,7 @@ export function ItemsForm() {
 	const itemForm = useForm<ItemForm>({
 		initialValues,
 		validate: getValidateObject(),
-		transformValues: (values) => getTransformObject(values, data.values.user.categories),
+		transformValues: (values) => getTransformObject(values),
 	});
 
 	const updateForm = useCallback(
@@ -57,6 +59,7 @@ export function ItemsForm() {
 		(values: ItemForm) => {
 			if (modal.values.action === 'update') {
 				const sanitizedItem = sanitizeBeforeCommiting(modal.values.updateItem, values);
+				console.log(sanitizedItem);
 				data.item.update(sanitizedItem);
 				modal.reset();
 			} else {
@@ -186,13 +189,25 @@ export function ItemsForm() {
 
 						<Select
 							label="Categoria"
-							placeholder="Selecione etiquetas"
+							placeholder="Selecione a categoria"
 							mb="md"
 							data={getCategoriesForm(categories)}
 							// itemComponent={SelectItem}
 							searchable
 							allowDeselect={false}
+							checkIconPosition="right"
 							{...itemForm.getInputProps('categoryId')}
+						/>
+						<Select
+							label="Carteira"
+							placeholder="Selecione a carteira"
+							mb="md"
+							data={getWalletsForm(wallets)}
+							// itemComponent={SelectItem}
+							searchable
+							allowDeselect={false}
+							checkIconPosition="right"
+							{...itemForm.getInputProps('walletId')}
 						/>
 						<Textarea
 							label="Notas"

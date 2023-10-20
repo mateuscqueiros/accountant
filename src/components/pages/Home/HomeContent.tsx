@@ -20,31 +20,6 @@ export interface TableHeaderData {
 	visibleFrom?: MantineBreakpoint;
 }
 
-const tableHeaderData: TableHeaderData[] = [
-	{
-		label: 'Nome',
-		prop: 'label',
-	},
-	{
-		label: 'Data',
-		prop: 'date',
-	},
-	{
-		label: 'Categoria',
-		prop: 'categoryId',
-		visibleFrom: 'sm',
-	},
-	{
-		label: 'Tipo',
-		prop: 'type',
-		visibleFrom: 'sm',
-	},
-	{
-		label: 'Valor',
-		prop: 'value',
-	},
-];
-
 export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 	const [data, setData] = dataState;
 	const theme = useMantineTheme();
@@ -59,6 +34,31 @@ export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 		categoryId: isDesktop,
 		actions: isDesktop,
 	};
+
+	const tableHeaderData: TableHeaderData[] = [
+		{
+			label: 'Nome',
+			prop: 'label',
+		},
+		{
+			label: 'Data',
+			prop: 'date',
+		},
+		{
+			label: 'Categoria',
+			prop: 'categoryId',
+			visibleFrom: theme.other.mobile,
+		},
+		{
+			label: 'Tipo',
+			prop: 'type',
+			visibleFrom: theme.other.mobile,
+		},
+		{
+			label: 'Valor',
+			prop: 'value',
+		},
+	];
 
 	return (
 		<>

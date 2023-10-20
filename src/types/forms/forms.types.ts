@@ -12,6 +12,7 @@ export interface ItemForm {
 		total: number | '';
 	};
 	dueDay: number | '';
+	walletId: string | null;
 }
 
 export type TransferDataForm = {
@@ -27,4 +28,9 @@ export type CategoryForm = {
 	value: string;
 	label: string;
 	color: string;
+};
+
+export type WalletForm = {
+	value: string;
+	label: string;
 };

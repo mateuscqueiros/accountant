@@ -24,4 +24,5 @@ export const itemFormInitialValues: ItemForm = {
 		current: 1,
 		total: 2,
 	},
+	walletId: '0',
 };
