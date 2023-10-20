@@ -1,6 +1,6 @@
 ## Other changes across versions
 
-# 0.4.5
+# 0.4.4 -> 0.4.5
 
 - Refactor: BillsDataItem -> Transaction. Change in type name across the app.
 - Refactor: Move Categories from inside Config to its own component.
@@ -27,3 +27,7 @@
 - Feat: Actions components.
 - Fix: Filter itens calculations.
 - Fix: Names of groups in filter.
+
+# 0.4.5
+
+- Fix: Items not updating on categories view.

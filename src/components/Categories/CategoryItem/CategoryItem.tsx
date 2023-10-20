@@ -1,5 +1,4 @@
 import { ActionDeleteCategory } from '@/components/Actions/Categories';
-import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/data';
 import { ColorSwatch, Table, Text, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { useContext } from 'react';
@@ -12,7 +11,6 @@ type CategoryItemProps = {
 
 export const CategoryItem = ({ category }: CategoryItemProps) => {
 	const categoriesModalCtx = useContext(CategoriesModalContext);
-	const data = useContext(DataContext);
 	const theme = useMantineTheme();
 
 	const categoryColor = parseThemeColor({ color: category.color, theme }).color;
@@ -26,10 +24,7 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
 						categoriesModalCtx.setValues(category);
 					}}
 				>
-					<Text fw={category.default ? 'bold' : undefined}>
-						{category.label}
-						{}
-					</Text>
+					<Text fw={category.default ? 'bold' : undefined}>{category.label}</Text>
 				</Table.Td>
 				<Table.Td
 					onClick={() => {

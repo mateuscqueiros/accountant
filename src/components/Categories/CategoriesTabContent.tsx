@@ -6,7 +6,7 @@ import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const tableHeaderData: TableHeaderData[] = [
 	{
@@ -54,6 +54,10 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 		categoryId: isMediumDesktop,
 		actions: isMediumDesktop,
 	};
+
+	useEffect(() => {
+		setCategoryItems(data.values.items.filter((item) => item.categoryId === categoryId));
+	}, [data.values.items]);
 
 	return (
 		<>

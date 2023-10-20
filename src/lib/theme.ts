@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 
 export const theme = createTheme({
 	cursorType: 'pointer',
+	primaryColor: 'indigo',
+	primaryShade: { light: 5, dark: 6 },
 	fontSizes: {
 		xxs: '0.7rem',
 	},
@@ -54,7 +56,11 @@ export function useColors() {
 		recipes: useLightDark('green.6', 'green.8'),
 		text: {
 			primary: useLightDark('black', 'white'),
-			secondary: useLightDark('gray.6', 'gray.7'),
+			secondary: useLightDark('gray.7', 'gray.6'),
+			tertiary: useLightDark('gray.6', 'gray.7'),
+		},
+		state: {
+			hover: useLightDark('gray.1', 'dark.5'),
 		},
 	};
 

@@ -23,7 +23,7 @@ export function HomeStatistics({ dataState }: HomeStatisticsProps) {
 
 	return (
 		<>
-			<Paper mb="md" p="md" px="2rem">
+			<Paper mb="md" p="md" px="2rem" withBorder>
 				<Flex
 					direction={isSmallMobile ? 'column' : 'row'}
 					justify="space-between"

@@ -1,35 +1,36 @@
 'use client';
 
 import { ConfigNav } from '@/components/Config';
-import { sortCategories } from '@/lib/categories';
+import { sortWallets } from '@/lib/wallets';
 import { Flex, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { PropsWithChildren, useContext } from 'react';
 import { DataContext } from './DataProvider';
 
-interface CategoriesProvidersProps {
-	categoryId: number | null;
+interface WalletsProvidersProps {
+	walletId: number | null;
 }
 
-export const CategoriesProvider = ({
+export const WalletsProvider = ({
 	children,
-	categoryId,
-}: PropsWithChildren<CategoriesProvidersProps>) => {
+	walletId,
+}: PropsWithChildren<WalletsProvidersProps>) => {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 
 	const data = useContext(DataContext);
-	const categories = data.values.user.categories;
-	const sortedCategories = sortCategories(categories);
+	const wallets = data.values.user.wallets;
+	const sortedWallets = sortWallets(wallets);
+
+	const navItems = sortedWallets.map((wallet) => ({
+		id: wallet.id,
+		label: wallet.label,
+		color: theme.primaryColor,
+	}));
 
 	return (
 		<Flex direction={isMobile ? 'column' : 'row'}>
-			<ConfigNav
-				title="Categorias"
-				route="/categories"
-				items={sortedCategories}
-				activeId={categoryId}
-			/>
+			<ConfigNav title="Carteiras" route="/wallets" items={navItems} activeId={walletId} />
 			{children}
 		</Flex>
 	);

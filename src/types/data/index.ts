@@ -5,4 +5,5 @@ export type {
 	TransferData,
 	User,
 	UserData,
+	Wallet,
 } from './data.types';

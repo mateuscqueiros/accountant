@@ -22,6 +22,7 @@ interface GenerateTransactionOverrides {
 	type?: Transaction['type'];
 	class?: Transaction['class'];
 	note?: string;
+	walletId?: MinMaxOverrides;
 }
 
 /**
@@ -62,6 +63,11 @@ export function generateTransaction(options?: GenerateTransactionOverrides) {
 		max: 28,
 	};
 
+	const mockWalletId = (options && options.walletId) || {
+		min: 0,
+		max: 1,
+	};
+
 	const mockNote = 'Uma nota que ninguém vai ler';
 	const mockActive: Transaction['active'][] = [false, true];
 
@@ -80,9 +86,10 @@ export function generateTransaction(options?: GenerateTransactionOverrides) {
 	const objActive =
 		(options && options.active) ||
 		mockActive[randomInt(0, mockActive.length - 1, { integer: true })];
+	const objWalletId = randomInt(mockWalletId.min, mockWalletId.max, { integer: true });
 
-	const installmentTotal = randomInt(0, 12);
-	const installmentCurrent = randomInt(0, installmentTotal - 1);
+	const installmentTotalObj = randomInt(0, 12);
+	const installmentCurrentObj = randomInt(0, installmentTotalObj - 1);
 
 	const randomTransaction: Transaction = {
 		id: uuidv4(),
@@ -93,12 +100,13 @@ export function generateTransaction(options?: GenerateTransactionOverrides) {
 		date: objDate,
 		categoryId: objCategoryId,
 		installments: {
-			current: installmentCurrent,
-			total: installmentTotal,
+			total: installmentTotalObj,
+			current: installmentCurrentObj,
 		},
 		dueDay: objDueDay,
 		note: objNote,
 		active: objActive,
+		walletId: objWalletId,
 	};
 
 	return randomTransaction;

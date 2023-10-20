@@ -7,27 +7,36 @@ import tabClasses from './Tabs.module.css';
 interface NavItem {
 	id: number;
 	label: string;
-	color: string;
+	color: string | undefined;
 }
 
-function AllNavItem({ isMobile, activeId }: { isMobile: boolean; activeId: number | null }) {
+function AllNavItem({
+	isMobile,
+	activeId,
+	route,
+}: {
+	isMobile: boolean;
+	activeId: number | null;
+	route: string;
+}) {
+	const theme = useMantineTheme();
 	const mobile = (
-		<Link className={tabClasses.link} href={`/categories`}>
+		<Link className={tabClasses.link} href={route}>
 			<Tabs.Tab value={String(null)}>Todas</Tabs.Tab>
 		</Link>
 	);
 
+	console.log(theme.primaryColor);
+
 	const desktop = (
-		<Link className={navBarClasses.link_wrapper} href={`/categories`}>
-			<div
-				style={{
-					backgroundColor: activeId === null ? `var(--mantine-color-blue-6)` : undefined,
-				}}
+		<Link className={navBarClasses.link_wrapper} href={route}>
+			<Box
+				bg={activeId === null ? theme.primaryColor : undefined}
 				className={navBarClasses.link}
 				data-active={activeId === null}
 			>
 				Todas
-			</div>
+			</Box>
 		</Link>
 	);
 
@@ -38,13 +47,15 @@ function TabItem({
 	isMobile,
 	item,
 	activeId,
+	route,
 }: {
 	isMobile: boolean;
 	item: NavItem;
 	activeId: number | null;
+	route: string;
 }) {
 	const mobile = (
-		<Link key={item.id} className={tabClasses.link} href={`/categories/${item.id}`}>
+		<Link key={item.id} className={tabClasses.link} href={`${route}/${item.id}`}>
 			<Tabs.Tab value={String(item.id)} key={item.label}>
 				{item.label}
 			</Tabs.Tab>
@@ -52,11 +63,7 @@ function TabItem({
 	);
 
 	const desktop = (
-		<Link
-			className={navBarClasses.link_wrapper}
-			key={item.id}
-			href={`/categories/${String(item.id)}`}
-		>
+		<Link className={navBarClasses.link_wrapper} key={item.id} href={`${route}/${String(item.id)}`}>
 			<Box
 				bg={activeId === item.id ? item.color : undefined}
 				className={navBarClasses.link}
@@ -70,7 +77,17 @@ function TabItem({
 	return isMobile ? mobile : desktop;
 }
 
-export function ConfigNav({ items, activeId }: { items: NavItem[]; activeId: number | null }) {
+export function ConfigNav({
+	title,
+	items,
+	activeId,
+	route,
+}: {
+	title: string;
+	items: NavItem[];
+	activeId: number | null;
+	route: string;
+}) {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
 	const { width } = useViewportSize();
@@ -91,9 +108,15 @@ export function ConfigNav({ items, activeId }: { items: NavItem[]; activeId: num
 			>
 				<ScrollArea offsetScrollbars="x">
 					<Tabs.List w={width}>
-						{<AllNavItem isMobile={true} activeId={activeId} />}
+						{<AllNavItem route={route} isMobile={true} activeId={activeId} />}
 						{items.map((item, index) => (
-							<TabItem key={item.label + index} isMobile={true} item={item} activeId={activeId} />
+							<TabItem
+								route={route}
+								key={item.label + index}
+								isMobile={true}
+								item={item}
+								activeId={activeId}
+							/>
 						))}
 					</Tabs.List>
 				</ScrollArea>
@@ -103,10 +126,16 @@ export function ConfigNav({ items, activeId }: { items: NavItem[]; activeId: num
 		<nav className={navBarClasses.navbar}>
 			<div className={navBarClasses.wrapper}>
 				<div className={navBarClasses.main}>
-					<Text className={navBarClasses.title}>Categorias</Text>
-					{<AllNavItem isMobile={false} activeId={activeId} />}
+					<Text className={navBarClasses.title}>{title}</Text>
+					{<AllNavItem route={route} isMobile={false} activeId={activeId} />}
 					{items.map((item, index) => (
-						<TabItem key={item.label + index} isMobile={false} item={item} activeId={activeId} />
+						<TabItem
+							route={route}
+							key={item.label + index}
+							isMobile={false}
+							item={item}
+							activeId={activeId}
+						/>
 					))}
 				</div>
 			</div>

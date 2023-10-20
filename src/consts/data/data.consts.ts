@@ -55,6 +55,16 @@ export const defaultData: UserData = {
 		name: 'Mateus Queirós',
 		image: '/avatar.jpg',
 		categories: defaultCategories,
+		wallets: [
+			{
+				id: 0,
+				label: 'Nubank',
+			},
+			{
+				id: 1,
+				label: 'Bradesco',
+			},
+		],
 	},
 	items: [
 		{
@@ -72,6 +82,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -89,6 +100,7 @@ export const defaultData: UserData = {
 
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -103,9 +115,9 @@ export const defaultData: UserData = {
 				total: 0,
 			},
 			dueDay: 23,
-
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -120,9 +132,9 @@ export const defaultData: UserData = {
 				total: 12,
 			},
 			dueDay: 17,
-
 			note: 'Uma nota que ninguém vai ler',
 			active: false,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -139,6 +151,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -156,6 +169,7 @@ export const defaultData: UserData = {
 
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -172,6 +186,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -188,6 +203,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -204,6 +220,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -220,6 +237,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -236,6 +254,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -252,6 +271,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -268,6 +288,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -284,6 +305,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -300,6 +322,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -316,6 +339,7 @@ export const defaultData: UserData = {
 			dueDay: 0,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 		{
 			id: uuidv4(),
@@ -332,6 +356,7 @@ export const defaultData: UserData = {
 			dueDay: 12,
 			note: 'Uma nota que ninguém vai ler',
 			active: true,
+			walletId: 0,
 		},
 	],
 };
@@ -352,11 +377,7 @@ export const randomItems = Array(5)
 	});
 
 export const randomData: UserData = {
-	activeMonth: startOfMonth(new Date()),
-	user: {
-		name: 'Mateus Queirós',
-		image: '/avatar.jpg',
-		categories: defaultCategories,
-	},
+	activeMonth: defaultData.activeMonth,
+	user: defaultData.user,
 	items: randomItems,
 };

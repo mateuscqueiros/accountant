@@ -22,7 +22,6 @@ interface TransactionItemProps {
 
 export function TransactionItem({ item, options, dateFormat }: TransactionItemProps) {
 	const modals = useContext(ModalsContext);
-	const data = useContext(DataContext);
 	const categories = useContext(DataContext).values.user.categories;
 
 	const colors = useColors();
@@ -45,6 +44,7 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 			style={{ cursor: 'pointer' }}
 			onClick={() => {
 				modals.item.openUpdate(item);
+				// modals.item.open();
 			}}
 		>
 			{optionsValues.label && (

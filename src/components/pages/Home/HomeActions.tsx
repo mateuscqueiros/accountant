@@ -1,5 +1,5 @@
 import { FilterData } from '@/components/FilterData';
-import { ItemFormAddButton } from '@/components/ItemsForm';
+import { AddItem } from '@/components/ItemsForm';
 import { TransferDataModal } from '@/components/TransferDataModal';
 import { compareStartOfMonth } from '@/lib/dates';
 import { capitalizeFirstLetter } from '@/lib/utils';
@@ -106,7 +106,7 @@ export function HomeActions({ displayDataState }: HomeActionsProps) {
 					<Group>
 						<FilterData displayDataState={displayDataState} />
 						<TransferDataModal />
-						<ItemFormAddButton />
+						<AddItem />
 					</Group>
 				)}
 			</Flex>

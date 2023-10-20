@@ -1,5 +1,5 @@
-import { Category, Transaction } from '@/types/data/data.types';
-import { CategoryForm } from '@/types/forms/forms.types';
+import { Category, Transaction } from '@/types/data';
+import { CategoryForm } from '@/types/forms';
 
 export type CategoryValue = {
 	id: number;

@@ -1,1 +1,1 @@
-export type { CategoryForm, ItemForm, TransferDataForm } from './forms.types';
+export type { CategoryForm, ItemForm, TransferDataForm, WalletForm } from './forms.types';

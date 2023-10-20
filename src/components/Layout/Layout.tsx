@@ -2,7 +2,7 @@
 import { useColors } from '@/lib/theme';
 import { AppShell, Box, Burger, Flex, Group, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconChartBar, IconHome2, IconList } from '@tabler/icons-react';
+import { IconChartBar, IconHome2, IconList, IconWallet } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
@@ -60,6 +60,11 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 			icon: <IconList />,
 			label: 'Categorias',
 			link: '/categories',
+		},
+		{
+			icon: <IconWallet />,
+			label: 'Carteiras',
+			link: '/wallets',
 		},
 		{
 			icon: <IconChartBar />,
