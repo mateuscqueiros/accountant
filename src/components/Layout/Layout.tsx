@@ -108,8 +108,8 @@ export function Layout({
 		<AppShell
 			className={classes.app_shell}
 			navbar={{
-				width: { [theme.other.mobile]: 60 },
-				breakpoint: theme.other.mobile,
+				width: { sm: 60 },
+				breakpoint: 'sm',
 				collapsed: { mobile: !opened },
 			}}
 			header={{ height: 60 }}

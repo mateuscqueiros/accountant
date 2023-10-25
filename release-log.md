@@ -35,3 +35,13 @@
 - Feat: Wallet page first appearance.
 - Feat: Cor do tema: Indigo.
 - Refactor: Responsive.
+- Feat: Wallets Page, Modal and Tabs.
+- Feat: Center items in ConfigContent.
+
+- Feat: Add input and brand icons.
+- Feat: Visualize brand items.
+- Feat: Show items for each wallet. Wallet items now are editable and have statistics.
+- Feat: Add scroll to items visualization in categories and wallets.
+
+- Refactor: FilterData - data to display is customizable as well as filter options.
+- Change: Change input colors.

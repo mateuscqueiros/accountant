@@ -4,6 +4,7 @@ import {
 	MantineColor,
 	createTheme,
 	parseThemeColor,
+	rem,
 	useMantineColorScheme,
 	useMantineTheme,
 } from '@mantine/core';
@@ -23,8 +24,7 @@ export const theme = createTheme({
 		xxs: '0.3rem',
 	},
 	other: {
-		mobile: 'sm',
-		configMobile: 'md',
+		centerMaw: rem('1200px'),
 	},
 });
 
@@ -50,6 +50,21 @@ export function parseColor(color: MantineColor) {
 	return parseColor.value;
 }
 
+export const inputColors = [
+	'red.6',
+	'pink.6',
+	'grape.6',
+	'violet.6',
+	'indigo.6',
+	'blue.3',
+	'cyan.6',
+	'teal.6',
+	'green.6',
+	'lime.6',
+	'yellow.5',
+	'orange.6',
+];
+
 /**
  * Tema do Accountant
  */
@@ -57,7 +72,7 @@ export function useColors() {
 	const colors = {
 		logo: useLightDark('black', 'white'),
 		expenses: useLightDark('red.6', 'red.7'),
-		recipes: useLightDark('green.6', 'green.8'),
+		recipes: useLightDark('teal.7', 'green.8'),
 		text: {
 			primary: useLightDark('black', 'white'),
 			secondary: useLightDark('gray.7', 'gray.6'),
@@ -66,6 +81,9 @@ export function useColors() {
 		state: {
 			hover: useLightDark('gray.1', 'dark.7'),
 		},
+		input: inputColors.map((color) => {
+			return useLightDark(color, color);
+		}),
 	};
 
 	return colors;

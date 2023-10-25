@@ -4,9 +4,34 @@ import { initialOrdernateValue } from '@/consts/actions';
 import { getCategoryById } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
-import { Table, Text, useMantineTheme } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { ScrollArea, Table, Text, useMantineTheme } from '@mantine/core';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { useContext, useEffect, useState } from 'react';
+
+const tableHeaderData: TableHeaderData[] = [
+	{
+		label: 'Nome',
+		prop: 'label',
+	},
+	{
+		label: 'Data',
+		prop: 'date',
+	},
+	{
+		label: 'Tipo',
+		prop: 'type',
+		visibleFrom: 'sm',
+	},
+	{
+		label: 'Carteira',
+		prop: 'walletId',
+		visibleFrom: 'sm',
+	},
+	{
+		label: 'Valor',
+		prop: 'value',
+	},
+];
 
 export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 	const data = useContext(DataContext);
@@ -14,6 +39,7 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 	const ordenationState = useState(initialOrdernateValue);
 	const categories = useContext(DataContext).values.user.categories;
+	const { height } = useViewportSize();
 
 	const categoryExists = getCategoryById(categoryId, categories);
 
@@ -21,12 +47,13 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 		data.values.items.filter((item) => item.categoryId === categoryId)
 	);
 
-	const itemOptions: TransactionItemOptions<Transaction> = {
+	const tableContentData: TransactionItemOptions<Transaction> = {
 		label: true,
 		date: true,
 		value: true,
+		categoryId: false,
 		type: isMediumDesktop,
-		categoryId: isMediumDesktop,
+		walletId: isMediumDesktop,
 		actions: isMediumDesktop,
 	};
 
@@ -34,36 +61,11 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 		setCategoryItems(data.values.items.filter((item) => item.categoryId === categoryId));
 	}, [data.values.items]);
 
-	const tableHeaderData: TableHeaderData[] = [
-		{
-			label: 'Nome',
-			prop: 'label',
-		},
-		{
-			label: 'Data',
-			prop: 'date',
-		},
-		{
-			label: 'Categoria',
-			prop: 'categoryId',
-			visibleFrom: theme.other.mobile,
-		},
-		{
-			label: 'Tipo',
-			prop: 'type',
-			visibleFrom: theme.other.mobile,
-		},
-		{
-			label: 'Valor',
-			prop: 'value',
-		},
-	];
-
 	return (
 		<>
 			{categoryExists ? (
 				categoryItems.length > 0 ? (
-					<>
+					<ScrollArea h={height - 200} w="100%">
 						<Table highlightOnHover>
 							<Table.Thead>
 								<Table.Tr fw="bold">
@@ -85,13 +87,13 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 							</Table.Thead>
 							<Table.Tbody>
 								{categoryItems.map((item) => (
-									<TransactionItem options={itemOptions} key={item.id} item={item} />
+									<TransactionItem key={item.id} options={tableContentData} item={item} />
 								))}
 							</Table.Tbody>
 						</Table>
-					</>
+					</ScrollArea>
 				) : (
-					<Text>Sem itens.</Text>
+					<Text>Sem itens</Text>
 				)
 			) : (
 				<Text fw="bold">Não existe categoria com ID {categoryId}</Text>

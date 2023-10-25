@@ -1,6 +1,6 @@
 import { ActionDeleteCategory } from '@/components/Actions/Categories';
 import { Category } from '@/types/data';
-import { ColorSwatch, Table, Text, parseThemeColor, useMantineTheme } from '@mantine/core';
+import { ColorSwatch, Flex, Table, Text, parseThemeColor, useMantineTheme } from '@mantine/core';
 import { useContext } from 'react';
 import { CategoriesModalContext } from '../CategoriesActions';
 import classes from './CategoryItem.module.css';
@@ -34,7 +34,11 @@ export const CategoryItem = ({ category }: CategoryItemProps) => {
 				>
 					<ColorSwatch color={categoryColor} />
 				</Table.Td>
-				<Table.Td>{!category.default && <ActionDeleteCategory category={category} />}</Table.Td>
+				<Table.Td>
+					<Flex justify={'flex-end'}>
+						{!category.default && <ActionDeleteCategory category={category} />}
+					</Flex>
+				</Table.Td>
 			</Table.Tr>
 		</>
 	);

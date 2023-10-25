@@ -1,6 +1,6 @@
 'use client';
 
-import { ConfigNav } from '@/components/Config';
+import { ConfigNav } from '@/components/Config/ConfigNav';
 import { sortCategories } from '@/lib/categories';
 import { Flex, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';

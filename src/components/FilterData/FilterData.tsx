@@ -10,18 +10,25 @@ import { FilterDataMenu } from './FilterDataMenu';
 
 interface FilterDataProps {
 	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
+	filterState: [FilterOptions<Transaction>, Dispatch<SetStateAction<FilterOptions<Transaction>>>];
+	data: Transaction[];
 }
 
-export function FilterData({ displayDataState }: FilterDataProps) {
+/**
+ *
+ * @param data Todos os itens que devem ser filtrados.
+ * @param filterState Um estado com as opções de filtro a serem utilizadas.
+ * @param displayDataState Um estado que possui os dados a serem mostrados após a filtragem.
+ * @returns
+ */
+export function FilterData({ data, filterState, displayDataState }: FilterDataProps) {
 	const dataProvider = useContext(DataContext);
-	const activeData = dataProvider.selectActiveData();
 	const theme = useMantineTheme();
 
 	const [opened, setOpened] = useState(false);
 	const [displayData] = displayDataState;
-	const dataLength = activeData.length;
+	const dataLength = data.length;
 
-	const filterState = useState<FilterOptions<Transaction>>(initialFilterValue);
 	const [filter, setFilters] = filterState;
 
 	const isSmallMobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
@@ -64,11 +71,7 @@ export function FilterData({ displayDataState }: FilterDataProps) {
 						</Anchor>
 					</Flex>
 				</Menu.Label>
-				<FilterDataMenu
-					data={activeData}
-					displayDataState={displayDataState}
-					filterState={filterState}
-				/>
+				<FilterDataMenu data={data} displayDataState={displayDataState} filterState={filterState} />
 			</Menu.Dropdown>
 		</Menu>
 	);

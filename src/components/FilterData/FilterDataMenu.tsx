@@ -98,7 +98,7 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 	const colors = useColors();
 
 	const [filter] = filterState;
-	const [displayData, setDisplayData] = displayDataState;
+	const [_, setDisplayData] = displayDataState;
 	const [contains, setContains] = useState(true);
 
 	useEffect(() => {
@@ -138,9 +138,8 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 			{Object.values(getMenuItemsData(dataProvider.values)).map((entry: any) => {
 				const values = entry.items as MenuItemComponentType<FilterOptions<Transaction>>[];
 				const group = entry.group;
-				console.log(values, group);
 				return (
-					<Box key={entry[0]}>
+					<Box key={group + values.length}>
 						{group && (
 							<>
 								<Menu.Divider />

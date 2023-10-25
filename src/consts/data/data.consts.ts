@@ -1,4 +1,5 @@
 import { generateTransaction } from '@/lib/mocks/generate';
+import { inputColors } from '@/lib/theme';
 import { Category, UserData } from '@/types/data';
 import { startOfMonth } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,43 +9,43 @@ export const defaultCategories: Category[] = [
 		id: 1,
 		label: 'Carro',
 		slug: 'carro',
-		color: 'violet.6',
+		color: inputColors[0],
 	},
 	{
 		label: 'Casa',
 		slug: 'casa',
 		id: 2,
-		color: 'orange.6',
+		color: inputColors[4],
 	},
 	{
 		label: 'Investimento',
 		slug: 'investimento',
 		id: 3,
-		color: 'red.6',
+		color: inputColors[1],
 	},
 	{
 		label: 'Roupas',
 		slug: 'roupas',
 		id: 4,
-		color: 'green.6',
+		color: inputColors[10],
 	},
 	{
 		label: 'Entretenimento',
 		slug: 'entretenimento',
 		id: 5,
-		color: 'indigo.6',
+		color: inputColors[7],
 	},
 	{
 		label: 'Assinaturas',
 		slug: 'assinaturas',
 		id: 6,
-		color: 'yellow.6',
+		color: inputColors[8],
 	},
 	{
 		label: 'Outros',
 		slug: 'outros',
 		id: 0,
-		color: 'blue.6',
+		color: inputColors[5],
 		default: true,
 	},
 ];
@@ -59,10 +60,13 @@ export const defaultData: UserData = {
 			{
 				id: 0,
 				label: 'Nubank',
+				slug: 'nubank',
+				default: true,
 			},
 			{
 				id: 1,
 				label: 'Bradesco',
+				slug: 'bradesco',
 			},
 		],
 	},
@@ -361,17 +365,14 @@ export const defaultData: UserData = {
 	],
 };
 
-export const randomItems = Array(5)
+export const randomItems = Array(20)
 	.fill(0)
 	.map(() => {
 		return generateTransaction({
+			active: true,
 			date: {
-				min: new Date(2023, 9, 1),
-				max: new Date(2023, 9, 30),
-			},
-			value: {
-				min: 10,
-				max: 10,
+				min: new Date('10/09/2023'),
+				max: new Date('11/09/2023'),
 			},
 		});
 	});

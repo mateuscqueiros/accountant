@@ -2,6 +2,7 @@ import { ActionActivateItem, ActionDeleteItem } from '@/components/Actions/Item'
 import { getCategoryById } from '@/lib/categories';
 import { getItemTypeIcon } from '@/lib/item';
 import { useColors } from '@/lib/theme';
+import { getWalletById } from '@/lib/wallets';
 import { DataContext } from '@/providers/DataProvider';
 import { ModalsContext } from '@/providers/ModalsProvider';
 import { Transaction } from '@/types/data';
@@ -22,7 +23,6 @@ interface TransactionItemProps {
 
 export function TransactionItem({ item, options, dateFormat }: TransactionItemProps) {
 	const modals = useContext(ModalsContext);
-	const categories = useContext(DataContext).values.user.categories;
 
 	const colors = useColors();
 	let optionsValues = {
@@ -32,11 +32,21 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 		label: true,
 		type: true,
 		value: true,
+		walletId: false,
 		...options,
 	};
 
-	const category = getCategoryById(item.categoryId, categories);
-	const IconType = getItemTypeIcon(item.type);
+	const data = useContext(DataContext);
+	const categories = optionsValues.categoryId ? data.values.user.categories : undefined;
+	const wallets = optionsValues.walletId ? data.values.user.wallets : undefined;
+
+	const category =
+		optionsValues.categoryId && categories
+			? getCategoryById(item.categoryId, categories)
+			: undefined;
+	const wallet =
+		optionsValues.walletId && wallets ? getWalletById(item.walletId, wallets) : undefined;
+	const IconType = optionsValues.type ? getItemTypeIcon(item.type) : undefined;
 	const isExpense = item.class === 'expense';
 
 	const [hovered, setHovered] = useState(false);
@@ -61,14 +71,19 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 					<Text>{format(new Date(item.date), dateFormat || 'dd/MM/yyyy')}</Text>
 				</Table.Td>
 			)}
-			{optionsValues.categoryId && (
+			{optionsValues.categoryId && category && (
 				<Table.Td>
 					<CategoryBadge category={category} />
 				</Table.Td>
 			)}
-			{optionsValues.type && (
+			{optionsValues.type && IconType && (
 				<Table.Td>
 					<IconType color={colors.text.primary} stroke={1.2} />
+				</Table.Td>
+			)}
+			{optionsValues.walletId && wallet && (
+				<Table.Td>
+					<Text>{wallet.label}</Text>
 				</Table.Td>
 			)}
 			{optionsValues.value && (

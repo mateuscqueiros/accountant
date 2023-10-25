@@ -1,3 +1,5 @@
+import { WalletForm } from '../forms';
+
 export interface DataContextType {
 	values: UserData;
 
@@ -13,11 +15,15 @@ export interface DataContextType {
 		delete: (id: number) => void;
 	};
 
+	wallet: {
+		add: (props: WalletForm) => void;
+		edit: (wallet: Wallet) => void;
+		delete: (id: number) => void;
+	};
+
 	setActiveMonth: (date: string) => void;
 	transferData: (transferData: TransferData) => void;
 	selectActiveData: () => Transaction[];
-
-	log: () => void;
 }
 
 export type Transaction = {
@@ -93,5 +99,6 @@ export type Category = {
 export type Wallet = {
 	id: number;
 	label: string;
+	slug: string;
 	default?: boolean;
 };

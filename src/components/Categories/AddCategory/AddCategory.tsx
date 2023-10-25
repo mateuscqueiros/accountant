@@ -1,5 +1,5 @@
-import { Button } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { IconAdd } from '@/components/Icons';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { useContext } from 'react';
 import { CategoriesModalContext } from '../CategoriesActions';
 
@@ -7,13 +7,17 @@ export function AddCategory() {
 	const categoryCtx = useContext(CategoriesModalContext);
 
 	return (
-		<Button
-			variant="subtle"
-			onClick={() => categoryCtx.openModal('add')}
-			mt={10}
-			leftSection={<IconPlus />}
-		>
-			Adicionar categoria
-		</Button>
+		<Tooltip label={'Adicionar carteira'}>
+			<ActionIcon
+				size={'2.1rem'}
+				variant={'default'}
+				color={'default'}
+				onClick={() => {
+					categoryCtx.openModal();
+				}}
+			>
+				<IconAdd />
+			</ActionIcon>
+		</Tooltip>
 	);
 }

@@ -38,6 +38,7 @@ export function getCategoryStatistics(items: Transaction[], categories: Category
 export function getTotalValues(data: Transaction[]) {
 	let expenses = 0;
 	let recipes = 0;
+	let total = 0;
 
 	expenses = data
 		.filter((item) => item.active && item.class === 'expense')
@@ -47,5 +48,7 @@ export function getTotalValues(data: Transaction[]) {
 		.filter((item) => item.active && item.class === 'recipe')
 		.reduce((partialSum, item) => partialSum + item.value, 0);
 
-	return { expenses, recipes };
+	total = recipes - expenses;
+
+	return { expenses, recipes, total };
 }

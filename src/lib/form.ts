@@ -68,8 +68,6 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 
 /* Obtêm um objeto "transform" para o mantine, que vai transformar os itens depois do submit */
 export function getTransformObject(values: ItemForm): ItemForm {
-	console.log('-----', values);
-
 	let transform: ItemForm = {
 		...values,
 		date: values.date,

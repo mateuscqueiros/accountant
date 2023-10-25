@@ -2,7 +2,16 @@ import { defaultData as dataInitialValues, randomData } from '@/consts/data';
 import { getNextCategoryId } from '@/lib/categories';
 import { compareStartOfMonth } from '@/lib/dates';
 import { NotificationError, NotificationSuccess } from '@/lib/notifications';
-import { Category, DataContextType, Transaction, TransferData, UserData } from '@/types/data';
+import { getDefaultWallet, getNextWalletId } from '@/lib/wallets';
+import {
+	Category,
+	DataContextType,
+	Transaction,
+	TransferData,
+	UserData,
+	Wallet,
+} from '@/types/data';
+import { WalletForm } from '@/types/forms';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getMonth, getYear, setMonth, setYear, startOfMonth } from 'date-fns';
@@ -151,14 +160,6 @@ export function DataProvider({ children }: PropsWithChildren) {
 		return activeMonthItems;
 	};
 
-	const log = (pre?: string) => {
-		if (pre) {
-			console.log(pre, data);
-		} else {
-			console.log(data);
-		}
-	};
-
 	/* Items */
 	const createItem = (item: Transaction) => {
 		setData((prev) => {
@@ -175,7 +176,6 @@ export function DataProvider({ children }: PropsWithChildren) {
 	};
 
 	const updateItem = (item: Transaction) => {
-		console.log(item);
 		setData((prev) => {
 			let itemToUpdate = prev.items.filter((billItem) => billItem.id === item.id)[0];
 
@@ -225,7 +225,6 @@ export function DataProvider({ children }: PropsWithChildren) {
 				},
 			};
 		});
-		log();
 	};
 
 	const editCategory = (category: Category) => {
@@ -291,6 +290,171 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
+	/* Wallet */
+	const addWallet = (props: WalletForm) => {
+		const wallets = data.user.wallets;
+		const nextId = getNextWalletId(wallets);
+		let nextWallets: Wallet[] = [...wallets];
+
+		const { label, slug } = props;
+
+		const formattedWallet: Wallet = {
+			id: nextId,
+			default: props.default,
+			label,
+			slug,
+		};
+
+		// 1 - Wallet vem como padrão: Remover padrão de outras e usar essa.
+		// 2 - Wallet vem como NÃO padrão: Verificar se existe outra padrão.
+		//   2.1 - Se EXISTIR, prosseguir.
+		//   2.2 - Se NÃO existir, setar essa como padrão
+
+		if (formattedWallet.default === true) {
+			nextWallets = wallets.map((walletItem) => {
+				walletItem.default = false;
+
+				return walletItem;
+			});
+
+			nextWallets.push(formattedWallet);
+
+			NotificationSuccess({
+				message: `A carteira ${formattedWallet.label} foi criada. Ela é a nova categoria padrão.`,
+			});
+		} else {
+			let otherWallets = data.user.wallets.filter((walletItem) => {
+				return walletItem.id !== formattedWallet.id;
+			});
+
+			if (getDefaultWallet(wallets) === undefined) {
+				NotificationSuccess({
+					message: `A carteira ${formattedWallet.label} foi criada como a categoria padrão pois não existe outra.`,
+				});
+				nextWallets = [...otherWallets, { ...formattedWallet, default: true }];
+			} else {
+				NotificationSuccess({
+					message: `A carteira ${formattedWallet.label} foi criada.`,
+				});
+				nextWallets = [...otherWallets, formattedWallet];
+			}
+		}
+
+		setData((prev) => {
+			return {
+				...prev,
+				user: {
+					...prev.user,
+					wallets: nextWallets,
+				},
+			};
+		});
+	};
+
+	const editWallet = (wallet: Wallet) => {
+		const wallets = data.user.wallets;
+		let nextWallets: Wallet[] = [...wallets];
+
+		const { id, label, slug } = wallet;
+
+		const formattedWallet: Wallet = {
+			id,
+			label,
+			slug,
+			default: wallet.default,
+		};
+
+		// 1 - Wallet vem como padrão: Remover todas as outras padrão e setar essa.
+		// 2 - Wallet vem como NÃO padrão: Verificar se existe outra padrão.
+		//   2.1 - Se EXISTIR, prosseguir
+		//   2.2 - Se NÃO existir, setar essa como padrão
+
+		if (formattedWallet.default === true) {
+			NotificationSuccess({
+				message: `A carteira ${formattedWallet.label} foi editada. Ela é a nova categoria padrão.`,
+			});
+
+			nextWallets = wallets.map((oldWallet) => {
+				if (oldWallet.id === formattedWallet.id) {
+					oldWallet = formattedWallet;
+				} else {
+					oldWallet.default = false;
+				}
+
+				return oldWallet;
+			});
+		} else {
+			let otherWallets = data.user.wallets.filter((walletItem) => {
+				return walletItem.id !== formattedWallet.id;
+			});
+			if (getDefaultWallet([...otherWallets, formattedWallet]) === undefined) {
+				NotificationSuccess({
+					message: `A carteira ${formattedWallet.label} foi editada. Ela é a nova categoria padrão pois não foi encontrada outra categoria padrão.`,
+				});
+
+				nextWallets = [...otherWallets, { ...formattedWallet, default: true }];
+			} else {
+				NotificationSuccess({
+					message: `A carteira ${formattedWallet.label} foi editada.`,
+				});
+				nextWallets = [...otherWallets, formattedWallet];
+			}
+		}
+
+		setData((prev) => {
+			return {
+				...prev,
+				user: {
+					...prev.user,
+					wallets: nextWallets,
+				},
+			};
+		});
+	};
+
+	const deleteWallet = (id: number) => {
+		const wallets = data.user.wallets;
+
+		let walletToDelete = data.user.wallets.filter((wallet) => {
+			return wallet.id === id;
+		})[0];
+
+		let defaultWallet = getDefaultWallet(wallets);
+
+		if (!walletToDelete.default) {
+			let otherWallets = data.user.wallets.filter((walletItem) => {
+				return walletItem.id !== id;
+			});
+
+			// Remove wallet from items and set to default wallet
+			let items = data.items.map((item) => {
+				if (item.walletId === id) {
+					item.walletId = defaultWallet.id;
+				}
+				return item;
+			});
+
+			setData((prev) => {
+				return {
+					...prev,
+					items,
+					user: {
+						...prev.user,
+						wallets: [...otherWallets],
+					},
+				};
+			});
+
+			return NotificationSuccess({
+				message: `A cateira ${walletToDelete.label} foi deletada. Seus itens agora pertencem à cateira ${defaultWallet.label}.`,
+			});
+		}
+
+		return NotificationError({
+			message: `A cateira ${walletToDelete.label} é uma cateira padrão. Não é possível deletar a cateira padrão.`,
+		});
+	};
+
 	const initialData = process.env.NODE_ENV === 'production' ? dataInitialValues : randomData;
 
 	const [storageData, setStorageData] = useLocalStorage<UserData>({
@@ -327,11 +491,15 @@ export function DataProvider({ children }: PropsWithChildren) {
 					delete: deleteCategory,
 				},
 
+				wallet: {
+					add: addWallet,
+					edit: editWallet,
+					delete: deleteWallet,
+				},
+
 				setActiveMonth,
 				transferData,
 				selectActiveData,
-
-				log,
 			}}
 		>
 			{children}

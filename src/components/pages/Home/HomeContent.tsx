@@ -5,8 +5,8 @@ import {
 	TransactionItemOptions,
 } from '@/components/Transaction';
 import { Transaction } from '@/types/data';
-import { MantineBreakpoint, Table, useMantineTheme } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { MantineBreakpoint, ScrollArea, Table, useMantineTheme } from '@mantine/core';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Dispatch, SetStateAction } from 'react';
 
 interface HomeContentProps {
@@ -20,9 +20,35 @@ export interface TableHeaderData {
 	visibleFrom?: MantineBreakpoint;
 }
 
+const tableHeaderData: TableHeaderData[] = [
+	{
+		label: 'Nome',
+		prop: 'label',
+	},
+	{
+		label: 'Data',
+		prop: 'date',
+	},
+	{
+		label: 'Categoria',
+		prop: 'categoryId',
+		visibleFrom: 'sm',
+	},
+	{
+		label: 'Tipo',
+		prop: 'type',
+		visibleFrom: 'sm',
+	},
+	{
+		label: 'Valor',
+		prop: 'value',
+	},
+];
+
 export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 	const [data, setData] = dataState;
 	const theme = useMantineTheme();
+	const { height } = useViewportSize();
 
 	const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 
@@ -35,65 +61,42 @@ export function HomeContent({ dataState, ordenationState }: HomeContentProps) {
 		actions: isDesktop,
 	};
 
-	const tableHeaderData: TableHeaderData[] = [
-		{
-			label: 'Nome',
-			prop: 'label',
-		},
-		{
-			label: 'Data',
-			prop: 'date',
-		},
-		{
-			label: 'Categoria',
-			prop: 'categoryId',
-			visibleFrom: theme.other.mobile,
-		},
-		{
-			label: 'Tipo',
-			prop: 'type',
-			visibleFrom: theme.other.mobile,
-		},
-		{
-			label: 'Valor',
-			prop: 'value',
-		},
-	];
-
 	return (
 		<>
-			<Table verticalSpacing="sm">
-				<Table.Thead>
-					<Table.Tr fw="bold">
-						{tableHeaderData.map((dataItem) => {
+			<ScrollArea h={height - 360}>
+				<Table verticalSpacing="sm">
+					<Table.Thead>
+						<Table.Tr fw="bold">
+							{tableHeaderData.map((dataItem) => {
+								return (
+									<TableHeaderItem
+										key={dataItem.prop}
+										items={data}
+										prop={dataItem.prop}
+										ordenationState={ordenationState}
+										setData={setData}
+										visibleFrom={dataItem.visibleFrom}
+									>
+										{dataItem.label}
+									</TableHeaderItem>
+								);
+							})}
+						</Table.Tr>
+					</Table.Thead>
+					<Table.Tbody>
+						{data.map((item) => {
 							return (
-								<TableHeaderItem
-									key={dataItem.prop}
-									items={data}
-									prop={dataItem.prop}
-									ordenationState={ordenationState}
-									setData={setData}
-									visibleFrom={dataItem.visibleFrom}
-								>
-									{dataItem.label}
-								</TableHeaderItem>
+								<TransactionItem
+									key={item.id}
+									options={itemOptions}
+									dateFormat="'Dia ' dd"
+									item={item}
+								/>
 							);
 						})}
-					</Table.Tr>
-				</Table.Thead>
-				<Table.Tbody>
-					{data.map((item) => {
-						return (
-							<TransactionItem
-								options={itemOptions}
-								dateFormat="'Dia ' dd"
-								key={item.id}
-								item={item}
-							/>
-						);
-					})}
-				</Table.Tbody>
-			</Table>
+					</Table.Tbody>
+				</Table>
+			</ScrollArea>
 		</>
 	);
 }

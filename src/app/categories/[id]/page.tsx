@@ -6,10 +6,10 @@ import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
 const ConfigContentWrapper = dynamic(() =>
-	import('@/components/Config').then((mod) => mod.ConfigContentWrapper)
+	import('@/components/Config/ConfigContent').then((mod) => mod.ConfigContentWrapper)
 );
 const CategoriesTabContent = dynamic(() =>
-	import('@/components/Config').then((mod) => mod.CategoriesTabContent)
+	import('@/components/Config/ConfigContent').then((mod) => mod.CategoriesTabContent)
 );
 
 export default function CategoryIdPage() {

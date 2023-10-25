@@ -1,4 +1,5 @@
 export { ActionIcon } from './ActionIcon/ActionIcon';
+export { IconAdd } from './IconAdd/IconAdd';
 export { IconArrowDoubleVertical } from './IconArrowDoubleVertical/IconArrowDoubleVertical';
 export { IconArrowDown } from './IconArrowDown/IconArrowDown';
 export { IconArrowUp } from './IconArrowUp/IconArrowUp';

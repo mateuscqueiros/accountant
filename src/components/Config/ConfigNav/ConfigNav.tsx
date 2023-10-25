@@ -26,8 +26,6 @@ function AllNavItem({
 		</Link>
 	);
 
-	console.log(theme.primaryColor);
-
 	const desktop = (
 		<Link className={navBarClasses.link_wrapper} href={route}>
 			<Box
@@ -111,8 +109,8 @@ export function ConfigNav({
 						{<AllNavItem route={route} isMobile={true} activeId={activeId} />}
 						{items.map((item, index) => (
 							<TabItem
-								route={route}
 								key={item.label + index}
+								route={route}
 								isMobile={true}
 								item={item}
 								activeId={activeId}
@@ -130,8 +128,8 @@ export function ConfigNav({
 					{<AllNavItem route={route} isMobile={false} activeId={activeId} />}
 					{items.map((item, index) => (
 						<TabItem
-							route={route}
 							key={item.label + index}
+							route={route}
 							isMobile={false}
 							item={item}
 							activeId={activeId}
