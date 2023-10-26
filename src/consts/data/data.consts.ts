@@ -195,7 +195,7 @@ export const defaultData: UserData = {
 		{
 			id: uuidv4(),
 			label: 'Outras compras',
-			categoryId: 7,
+			categoryId: 5,
 			value: 24,
 			date: new Date('06/10/2023'),
 			type: 'monthly',
