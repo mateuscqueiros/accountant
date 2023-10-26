@@ -53,3 +53,5 @@
 # 0.5.0
 
 - Fix: Number display on Wallets.
+- Feat: Add a 404 page.
+- Performance: Added more dynamic imports to new pages.
