@@ -93,7 +93,7 @@ export function CategoriesTabContent({ displayData, categorySlug }: CategoriesTa
 					<Text>Sem itens</Text>
 				)
 			) : (
-				<Text fw="bold">Não existe categoria '{categorySlug}'</Text>
+				<Text fw="bold">Não existe categoria &apos;{categorySlug}&apos;</Text>
 			)}
 		</>
 	);

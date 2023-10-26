@@ -8,7 +8,7 @@ import {
 	useMantineColorScheme,
 	useMantineTheme,
 } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const theme = createTheme({
 	cursorType: 'pointer',
@@ -36,14 +36,17 @@ export function useLightDark(light: string, dark: string) {
 		setIsLight(colorScheme === 'light');
 	}, [colorScheme]);
 
+	const lightColor = useParseColor(light);
+	const darkColor = useParseColor(dark);
+
 	if (isLight) {
-		return parseColor(light);
+		return lightColor;
 	} else {
-		return parseColor(dark);
+		return darkColor;
 	}
 }
 
-export function parseColor(color: MantineColor) {
+export function useParseColor(color: MantineColor) {
 	const theme = useMantineTheme();
 	const parseColor = parseThemeColor({ color, theme });
 
@@ -69,6 +72,12 @@ export const inputColors = [
  * Tema do Accountant
  */
 export function useColors() {
+	const getInputColors = useCallback((inputColors: string[]) => {
+		return inputColors.map((color) => {
+			return useLightDark(color, color);
+		});
+	}, []);
+
 	const colors = {
 		logo: useLightDark('black', 'white'),
 		expenses: useLightDark('red.6', 'red.7'),
@@ -81,9 +90,7 @@ export function useColors() {
 		state: {
 			hover: useLightDark('gray.1', 'dark.7'),
 		},
-		input: inputColors.map((color) => {
-			return useLightDark(color, color);
-		}),
+		input: getInputColors(inputColors),
 	};
 
 	return colors;

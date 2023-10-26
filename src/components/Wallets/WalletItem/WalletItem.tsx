@@ -31,6 +31,7 @@ export function WalletItem({ wallet }: WalletItem) {
 			style={{ cursor: 'pointer' }}
 			bg={hovered ? colors.state.hover : undefined}
 			withBorder
+			h="100%"
 		>
 			<Box ref={ref}>
 				<Group justify="space-between" align="flex-start">
