@@ -11,6 +11,7 @@ Um app para controlar gastos financeiros em base mensal com suporte a assinatura
 - Transferir itens entre os meses.
 - Balanço e estatísticas mensais.
 - Tema dark e light.
+- Gerenciamento de carteiras.
 
 ## Tecnologias
 
@@ -25,4 +26,3 @@ Um app para controlar gastos financeiros em base mensal com suporte a assinatura
 
 - Mudar forma como os itens são organizados e mostrados mensalmente.
 - Página de estatísticas.
-- Criação de carteiras.
