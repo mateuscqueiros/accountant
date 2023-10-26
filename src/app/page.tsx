@@ -18,6 +18,7 @@ const HomePageFallback = dynamic(() =>
 
 export default function Home() {
 	const data = useContext(DataContext);
+	const allData = data.selectActiveData();
 	const displayDataState = useState<Transaction[]>([]);
 	const [_, setDisplayData] = displayDataState;
 
@@ -31,7 +32,7 @@ export default function Home() {
 	return (
 		<>
 			<Box mx="auto" maw={rem('1200px')}>
-				<HomeActions displayDataState={displayDataState} />
+				<HomeActions data={allData} displayDataState={displayDataState} />
 				{displayDataState.length > 0 ? (
 					<>
 						<HomeStatistics dataState={displayDataState} />

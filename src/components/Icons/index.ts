@@ -1,4 +1,5 @@
 export { ActionIcon } from './ActionIcon/ActionIcon';
+export { IconAdd } from './IconAdd/IconAdd';
 export { IconArrowDoubleVertical } from './IconArrowDoubleVertical/IconArrowDoubleVertical';
 export { IconArrowDown } from './IconArrowDown/IconArrowDown';
 export { IconArrowUp } from './IconArrowUp/IconArrowUp';
@@ -10,3 +11,4 @@ export { IconFixed } from './IconFixed/IconFixed';
 export { IconInstallment } from './IconInstallment/IconInstallment';
 export { IconLogo } from './IconLogo/IconLogo';
 export { IconMonthly } from './IconMonthly/IconMonthly';
+export { IconSettings } from './IconSettings/IconSettings';

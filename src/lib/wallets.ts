@@ -11,25 +11,48 @@ export function getWalletsForm(wallets: Wallet[], id?: number): WalletForm[] {
 		if (foundWallet) {
 			return [
 				{
+					id: foundWallet.id,
 					value: String(foundWallet.id),
+					slug: foundWallet.label.toLocaleLowerCase(),
 					label: foundWallet.label,
+					default: foundWallet.default ? true : false,
 				},
 			];
 		} else return [];
 	}
 	return wallets.map((wallet) => {
 		return {
+			id: wallet.id,
 			value: String(wallet.id),
+			slug: wallet.label.toLocaleLowerCase(),
 			label: wallet.label,
+			default: wallet.default ? true : false,
 		};
 	});
 }
 
-export function sortWallets(categories: Wallet[]) {
-	return categories.sort((a, b) => {
+export function sortWallets(wallets: Wallet[]) {
+	return wallets.sort((a, b) => {
 		if (a.default) {
 			return 1;
 		}
 		return a.label.localeCompare(b.label);
 	});
+}
+
+export function getNextWalletId(wallets: Wallet[]): number {
+	const nextId = Math.max(...wallets.map((item) => item.id)) + 1;
+	return nextId;
+}
+
+export function getDefaultWallet(wallets: Wallet[]): Wallet {
+	const defaultWallet = wallets.filter((wallet) => {
+		return wallet.default === true;
+	})[0];
+
+	return defaultWallet;
+}
+
+export function getWalletBySlug(slug: string, wallets: Wallet[]): Wallet {
+	return wallets.filter((wallet) => wallet.slug === slug)[0];
 }

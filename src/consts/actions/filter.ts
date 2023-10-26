@@ -6,4 +6,5 @@ export const initialFilterValue: FilterOptions<Transaction> = {
 	type: [],
 	categoryId: [],
 	class: [],
+	walletId: [],
 };

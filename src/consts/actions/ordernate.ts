@@ -11,4 +11,5 @@ export const initialOrdernateValue: OrdersOptions = {
 	date: 0,
 	type: 0,
 	value: 0,
+	walletId: 0,
 };

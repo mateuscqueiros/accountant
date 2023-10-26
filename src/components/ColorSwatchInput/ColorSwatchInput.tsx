@@ -10,12 +10,12 @@ export const ColorSwatchInput = ({
 	setColor: (color: string) => void;
 }) => {
 	const theme = useMantineTheme();
-	const parsedColor = parseThemeColor({ color, theme }).color;
+	const parsedColor = parseThemeColor({ color, theme });
 
 	return (
 		<ColorSwatch
 			style={{ cursor: 'pointer', color: '#fff' }}
-			color={parsedColor}
+			color={parsedColor.color}
 			onClick={() => setColor(color)}
 		>
 			{color === selected && <CheckIcon style={{ width: rem(12), height: rem(12) }} />}

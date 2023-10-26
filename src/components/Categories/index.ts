@@ -1,3 +1,4 @@
+export { ColorSwatchInput } from '../ColorSwatchInput/ColorSwatchInput';
 export { AddCategory } from './AddCategory/AddCategory';
 export {
 	CategoriesActions,
@@ -6,4 +7,3 @@ export {
 } from './CategoriesActions';
 export { CategoriesTabContent } from './CategoriesTabContent';
 export { CategoryItem } from './CategoryItem/CategoryItem';
-export { ColorSwatchInput } from './ColorSwatchInput/ColorSwatchInput';

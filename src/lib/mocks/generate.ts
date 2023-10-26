@@ -42,8 +42,8 @@ export function generateTransaction(options?: GenerateTransactionOverrides) {
 		'Jinbe',
 	];
 	const mockValue = (options && options.value) || {
-		min: 1,
-		max: 2000,
+		min: 50,
+		max: 1000,
 	};
 	const mockType: Transaction['type'][] = ['monthly', 'fixed', 'installment'];
 
