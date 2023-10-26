@@ -244,19 +244,19 @@ export function DataProvider({ children }: PropsWithChildren) {
 		const categories = data.user.categories;
 
 		const slugExists = categories.some((categoryItem) => {
-			return categoryItem.slug === category.slug;
+			return categoryItem.slug === category.slug && categoryItem.id !== category.id;
 		});
 
 		if (slugExists) {
 			NotificationError({
-				message: `A categoria ${category.label} não pode ser editada pois já existe uma categoria com este nome.`,
+				message: `A categoria não pode ser editada pois já existe uma categoria com o nome ${category.label}.`,
 			});
 
 			return;
 		}
 
 		let otherCategories = data.user.categories.filter((categoryItem) => {
-			return categoryItem.id !== category.id;
+			return categoryItem.id !== category.id && categoryItem.id !== category.id;
 		});
 
 		setData((prev) => {
@@ -404,12 +404,12 @@ export function DataProvider({ children }: PropsWithChildren) {
 		};
 
 		const slugExists = wallets.some((wallet) => {
-			return wallet.slug === formattedWallet.slug;
+			return wallet.slug === formattedWallet.slug && wallet.id !== formattedWallet.id;
 		});
 
 		if (slugExists) {
 			NotificationError({
-				message: `A carteira ${formattedWallet.label} não pode ser editada pois já existe uma carteira com este nome.`,
+				message: `A carteira não pode ser editada pois já existe uma carteira com o nome ${formattedWallet.label}.`,
 			});
 
 			return;
