@@ -6,7 +6,7 @@ import { IconChartBar, IconHome2, IconList, IconWallet } from '@tabler/icons-rea
 import Link from 'next/link';
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react';
 import { NavIcon, ToggleTheme } from '.';
-import { IconLogo } from '../Icons';
+import { IconLogo, IconSettings } from '../Icons';
 import { VersionBadge } from '../Meta/VersionBadge/VersionBadge';
 import classes from './Layout.module.css';
 
@@ -70,6 +70,11 @@ const NavbarComponent = ({ setOpened }: { setOpened: Dispatch<SetStateAction<boo
 			icon: <IconChartBar />,
 			label: 'Relatórios',
 			link: '/reports',
+		},
+		{
+			icon: <IconSettings />,
+			label: 'Configurações',
+			link: '/settings',
 		},
 	];
 

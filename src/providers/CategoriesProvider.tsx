@@ -8,12 +8,12 @@ import { PropsWithChildren, useContext } from 'react';
 import { DataContext } from './DataProvider';
 
 interface CategoriesProvidersProps {
-	categoryId: number | null;
+	categorySlug: string | null;
 }
 
 export const CategoriesProvider = ({
 	children,
-	categoryId,
+	categorySlug,
 }: PropsWithChildren<CategoriesProvidersProps>) => {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
@@ -28,7 +28,7 @@ export const CategoriesProvider = ({
 				title="Categorias"
 				route="/categories"
 				items={sortedCategories}
-				activeId={categoryId}
+				activeSlug={categorySlug}
 			/>
 			{children}
 		</Flex>

@@ -11,3 +11,4 @@ export { IconFixed } from './IconFixed/IconFixed';
 export { IconInstallment } from './IconInstallment/IconInstallment';
 export { IconLogo } from './IconLogo/IconLogo';
 export { IconMonthly } from './IconMonthly/IconMonthly';
+export { IconSettings } from './IconSettings/IconSettings';

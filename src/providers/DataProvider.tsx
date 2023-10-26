@@ -208,6 +208,19 @@ export function DataProvider({ children }: PropsWithChildren) {
 		const { label, slug, color } = props;
 		const categories = data.user.categories;
 		const nextId = getNextCategoryId(categories);
+
+		const slugExists = categories.some((category) => {
+			return category.slug === slug;
+		});
+
+		if (slugExists) {
+			NotificationError({
+				message: `A categoria ${label} não pode ser criada pois já existe uma categoria com este nome.`,
+			});
+
+			return;
+		}
+
 		setData((prev) => {
 			return {
 				...prev,
@@ -228,6 +241,20 @@ export function DataProvider({ children }: PropsWithChildren) {
 	};
 
 	const editCategory = (category: Category) => {
+		const categories = data.user.categories;
+
+		const slugExists = categories.some((categoryItem) => {
+			return categoryItem.slug === category.slug;
+		});
+
+		if (slugExists) {
+			NotificationError({
+				message: `A categoria ${category.label} não pode ser editada pois já existe uma categoria com este nome.`,
+			});
+
+			return;
+		}
+
 		let otherCategories = data.user.categories.filter((categoryItem) => {
 			return categoryItem.id !== category.id;
 		});
@@ -305,6 +332,18 @@ export function DataProvider({ children }: PropsWithChildren) {
 			slug,
 		};
 
+		const slugExists = wallets.some((wallet) => {
+			return wallet.slug === formattedWallet.slug;
+		});
+
+		if (slugExists) {
+			NotificationError({
+				message: `A carteira ${formattedWallet.label} não pode ser criada pois já existe uma carteira com este nome.`,
+			});
+
+			return;
+		}
+
 		// 1 - Wallet vem como padrão: Remover padrão de outras e usar essa.
 		// 2 - Wallet vem como NÃO padrão: Verificar se existe outra padrão.
 		//   2.1 - Se EXISTIR, prosseguir.
@@ -364,6 +403,18 @@ export function DataProvider({ children }: PropsWithChildren) {
 			default: wallet.default,
 		};
 
+		const slugExists = wallets.some((wallet) => {
+			return wallet.slug === formattedWallet.slug;
+		});
+
+		if (slugExists) {
+			NotificationError({
+				message: `A carteira ${formattedWallet.label} não pode ser editada pois já existe uma carteira com este nome.`,
+			});
+
+			return;
+		}
+
 		// 1 - Wallet vem como padrão: Remover todas as outras padrão e setar essa.
 		// 2 - Wallet vem como NÃO padrão: Verificar se existe outra padrão.
 		//   2.1 - Se EXISTIR, prosseguir
@@ -412,23 +463,23 @@ export function DataProvider({ children }: PropsWithChildren) {
 		});
 	};
 
-	const deleteWallet = (id: number) => {
+	const deleteWallet = (walletId: number) => {
 		const wallets = data.user.wallets;
 
 		let walletToDelete = data.user.wallets.filter((wallet) => {
-			return wallet.id === id;
+			return wallet.id === walletId;
 		})[0];
 
 		let defaultWallet = getDefaultWallet(wallets);
 
 		if (!walletToDelete.default) {
 			let otherWallets = data.user.wallets.filter((walletItem) => {
-				return walletItem.id !== id;
+				return walletItem.id !== walletId;
 			});
 
-			// Remove wallet from items and set to default wallet
+			// Remove items from wallet and set to default wallet
 			let items = data.items.map((item) => {
-				if (item.walletId === id) {
+				if (item.walletId === walletId) {
 					item.walletId = defaultWallet.id;
 				}
 				return item;

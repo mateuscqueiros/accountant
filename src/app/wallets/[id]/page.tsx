@@ -2,7 +2,7 @@
 import { FilterData } from '@/components/FilterData';
 import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions } from '@/lib/utils';
-import { getWalletById } from '@/lib/wallets';
+import { getWalletBySlug } from '@/lib/wallets';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import dynamic from 'next/dynamic';
@@ -19,25 +19,25 @@ const WalletsTabContent = dynamic(() =>
 
 export default function WalletIdPage() {
 	const params = useParams();
-	const activeId = useMemo(() => Number(params.id), [params]);
+	const activeSlug = useMemo(() => String(params.id), [params]);
 	const data = useContext(DataContext);
 	const wallets = data.values.user.wallets;
 
-	const activeWallet = getWalletById(activeId, wallets);
+	const activeWallet = getWalletBySlug(activeSlug, wallets);
 
-	const allWalletItemData = data.values.items.filter((item) => item.walletId === activeId);
-
-	const walletItemDisplayDataState = useState(
-		data.values.items.filter((item) => item.walletId === activeId)
-	);
+	const allWalletItemData = data.values.items.filter((item) => item.walletId === activeWallet.id);
+	const walletItemDisplayDataState = useState(allWalletItemData);
+	const initialFilterState = {
+		...initialFilterValue,
+		walletId: undefined,
+	};
+	const filterState = useState<FilterOptions<Transaction>>(initialFilterState);
 
 	const [_, setWalletItems] = walletItemDisplayDataState;
 
 	useEffect(() => {
-		setWalletItems(data.values.items.filter((item) => item.walletId === activeId));
-	}, [data.values.items, activeId]);
-
-	const filterState = useState<FilterOptions<Transaction>>(initialFilterValue);
+		setWalletItems(data.values.items.filter((item) => item.walletId === activeWallet.id));
+	}, [data.values.items, activeSlug]);
 
 	return (
 		<ConfigContentWrapper
@@ -46,11 +46,12 @@ export default function WalletIdPage() {
 					data={allWalletItemData}
 					displayDataState={walletItemDisplayDataState}
 					filterState={filterState}
+					initialFilterState={initialFilterState}
 				/>
 			}
 			title={activeWallet ? activeWallet.label : ''}
 		>
-			<WalletsTabContent displayData={walletItemDisplayDataState} walletId={activeId} />
+			<WalletsTabContent displayData={walletItemDisplayDataState} walletSlug={activeSlug} />
 		</ConfigContentWrapper>
 	);
 }

@@ -52,3 +52,7 @@ export function getDefaultWallet(wallets: Wallet[]): Wallet {
 
 	return defaultWallet;
 }
+
+export function getWalletBySlug(slug: string, wallets: Wallet[]): Wallet {
+	return wallets.filter((wallet) => wallet.slug === slug)[0];
+}

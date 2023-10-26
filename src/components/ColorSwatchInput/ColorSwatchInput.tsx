@@ -12,8 +12,6 @@ export const ColorSwatchInput = ({
 	const theme = useMantineTheme();
 	const parsedColor = parseThemeColor({ color, theme });
 
-	console.log(color, selected);
-
 	return (
 		<ColorSwatch
 			style={{ cursor: 'pointer', color: '#fff' }}

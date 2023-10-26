@@ -31,6 +31,7 @@ export function HomeActions({ data, displayDataState }: HomeActionsProps) {
 
 	const [monthPickerStateSelect, setMonthPickerStateSelect] = useState(false);
 
+	const initialFilterState = initialFilterValue;
 	const filterState = useState<FilterOptions<Transaction>>(initialFilterValue);
 
 	return (
@@ -108,7 +109,12 @@ export function HomeActions({ data, displayDataState }: HomeActionsProps) {
 				</Modal>
 				{displayData !== undefined && (
 					<Group>
-						<FilterData data={data} filterState={filterState} displayDataState={displayDataState} />
+						<FilterData
+							initialFilterState={initialFilterState}
+							data={data}
+							filterState={filterState}
+							displayDataState={displayDataState}
+						/>
 						<TransferDataModal />
 						<AddItem />
 					</Group>

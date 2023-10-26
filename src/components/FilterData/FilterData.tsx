@@ -1,17 +1,20 @@
-import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions, someKeyIsNotEmpty } from '@/lib/utils';
-import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { Anchor, Flex, Menu, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { ActionIcon, IconFilter, IconFilterFilled } from '../Icons';
 import { FilterDataMenu } from './FilterDataMenu';
 
 interface FilterDataProps {
+	/** Um estado que possui os dados a serem mostrados após a filtragem. */
 	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
+	/** Um estado com as opções de filtro a serem utilizadas. */
 	filterState: [FilterOptions<Transaction>, Dispatch<SetStateAction<FilterOptions<Transaction>>>];
+	/** Todos os itens que devem ser filtrados. */
 	data: Transaction[];
+	/** Opções iniciais do filtro. */
+	initialFilterState: FilterOptions<Transaction>;
 }
 
 /**
@@ -21,8 +24,12 @@ interface FilterDataProps {
  * @param displayDataState Um estado que possui os dados a serem mostrados após a filtragem.
  * @returns
  */
-export function FilterData({ data, filterState, displayDataState }: FilterDataProps) {
-	const dataProvider = useContext(DataContext);
+export function FilterData({
+	data,
+	filterState,
+	displayDataState,
+	initialFilterState,
+}: FilterDataProps) {
 	const theme = useMantineTheme();
 
 	const [opened, setOpened] = useState(false);
@@ -64,7 +71,7 @@ export function FilterData({ data, filterState, displayDataState }: FilterDataPr
 							fz="xs"
 							onClick={() => {
 								setOpened((prev) => !prev);
-								setFilters(initialFilterValue);
+								setFilters(initialFilterState);
 							}}
 						>
 							Resetar

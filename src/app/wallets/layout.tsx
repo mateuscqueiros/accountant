@@ -12,11 +12,11 @@ const WalletsProvider = dynamic(() =>
 export default function CategoryLayout({ children }: PropsWithChildren) {
 	const params = useParams();
 
-	const walletId = params.id !== undefined ? Number(params.id) : null;
+	const walletSlug = params.id !== undefined ? String(params.id) : null;
 
 	return (
 		<WalletsModalProviders>
-			<WalletsProvider walletId={walletId}>{children}</WalletsProvider>
+			<WalletsProvider walletSlug={walletSlug}>{children}</WalletsProvider>
 		</WalletsModalProviders>
 	);
 }

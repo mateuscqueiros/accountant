@@ -63,7 +63,13 @@ export function TransactionItem({ item, options, dateFormat }: TransactionItemPr
 		>
 			{optionsValues.label && (
 				<Table.Td>
-					<Text c={item.active ? undefined : colors.text.secondary}>{item.label}</Text>
+					<Text
+						style={{ overflow: 'hidden', whiteSpace: 'pre-wrap' }}
+						maw={150}
+						c={item.active ? undefined : colors.text.secondary}
+					>
+						{item.label}
+					</Text>
 				</Table.Td>
 			)}
 			{optionsValues.date && (

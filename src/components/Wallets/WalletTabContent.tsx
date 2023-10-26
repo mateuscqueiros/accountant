@@ -1,7 +1,7 @@
 import { TableHeaderItem, TransactionItem, TransactionItemOptions } from '@/components/Transaction';
 import { TableHeaderData } from '@/components/pages/Home';
 import { initialOrdernateValue } from '@/consts/actions';
-import { getWalletById } from '@/lib/wallets';
+import { getWalletBySlug } from '@/lib/wallets';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { ScrollArea, Table, Text, useMantineTheme } from '@mantine/core';
@@ -36,25 +36,24 @@ const tableHeaderData: TableHeaderData[] = [
 
 interface WalletsTabContentProps {
 	displayData: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
-	walletId: number;
+	walletSlug: string;
 }
 
-export function WalletsTabContent({ displayData, walletId }: WalletsTabContentProps) {
-	const data = useContext(DataContext);
+export function WalletsTabContent({ displayData, walletSlug }: WalletsTabContentProps) {
 	const theme = useMantineTheme();
 	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 	const ordenationState = useState(initialOrdernateValue);
 	const wallets = useContext(DataContext).values.user.wallets;
 	const { height } = useViewportSize();
-
-	const walletsExists = getWalletById(walletId, wallets);
-
 	const [walletItems, setWalletItems] = displayData;
+
+	const walletsExists = getWalletBySlug(walletSlug, wallets);
 
 	const tableContentData: TransactionItemOptions<Transaction> = {
 		label: true,
 		date: true,
 		value: true,
+		walletId: false,
 		type: isMediumDesktop,
 		categoryId: isMediumDesktop,
 		actions: isMediumDesktop,
@@ -98,7 +97,7 @@ export function WalletsTabContent({ displayData, walletId }: WalletsTabContentPr
 					<Text>Sem itens</Text>
 				)
 			) : (
-				<Text fw="bold">Não existe carteira com ID {walletId}</Text>
+				<Text fw="bold">Não existe carteira '{walletSlug}'</Text>
 			)}
 		</>
 	);

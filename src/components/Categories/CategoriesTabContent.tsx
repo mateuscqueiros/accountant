@@ -1,12 +1,12 @@
 import { TableHeaderItem, TransactionItem, TransactionItemOptions } from '@/components/Transaction';
 import { TableHeaderData } from '@/components/pages/Home';
 import { initialOrdernateValue } from '@/consts/actions';
-import { getCategoryById } from '@/lib/categories';
+import { getCategoryBySlug } from '@/lib/categories';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { ScrollArea, Table, Text, useMantineTheme } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 const tableHeaderData: TableHeaderData[] = [
 	{
@@ -33,19 +33,20 @@ const tableHeaderData: TableHeaderData[] = [
 	},
 ];
 
-export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
-	const data = useContext(DataContext);
+interface CategoriesTabContentProps {
+	categorySlug: string;
+	displayData: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
+}
+
+export function CategoriesTabContent({ displayData, categorySlug }: CategoriesTabContentProps) {
 	const theme = useMantineTheme();
 	const isMediumDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 	const ordenationState = useState(initialOrdernateValue);
 	const categories = useContext(DataContext).values.user.categories;
 	const { height } = useViewportSize();
+	const [categoryItems, setCategoryItems] = displayData;
 
-	const categoryExists = getCategoryById(categoryId, categories);
-
-	const [categoryItems, setCategoryItems] = useState(
-		data.values.items.filter((item) => item.categoryId === categoryId)
-	);
+	const categoryExists = getCategoryBySlug(categorySlug, categories);
 
 	const tableContentData: TransactionItemOptions<Transaction> = {
 		label: true,
@@ -56,10 +57,6 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 		walletId: isMediumDesktop,
 		actions: isMediumDesktop,
 	};
-
-	useEffect(() => {
-		setCategoryItems(data.values.items.filter((item) => item.categoryId === categoryId));
-	}, [data.values.items]);
 
 	return (
 		<>
@@ -96,7 +93,7 @@ export function CategoriesTabContent({ categoryId }: { categoryId: number }) {
 					<Text>Sem itens</Text>
 				)
 			) : (
-				<Text fw="bold">Não existe categoria com ID {categoryId}</Text>
+				<Text fw="bold">Não existe categoria '{categorySlug}'</Text>
 			)}
 		</>
 	);

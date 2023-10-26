@@ -20,7 +20,7 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 	};
 
 	validate.label = (value) => {
-		return value.length < 2 ? 'O nome deve ter pelo menos dois caracteres' : null;
+		return value.length < 1 || value.length > 50 ? 'O nome deve ter entre 1 e 50 caracteres' : null;
 	};
 
 	validate.value = (value) => {

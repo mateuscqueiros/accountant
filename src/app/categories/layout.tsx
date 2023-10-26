@@ -12,11 +12,11 @@ const CategoriesProvider = dynamic(() =>
 export default function CategoryLayout({ children }: PropsWithChildren) {
 	const params = useParams();
 
-	const categoryId = params.id !== undefined ? Number(params.id) : null;
+	const categorySlug = params.id !== undefined ? String(params.id) : null;
 
 	return (
 		<CategoriesModalProvider>
-			<CategoriesProvider categoryId={categoryId}>{children}</CategoriesProvider>
+			<CategoriesProvider categorySlug={categorySlug}>{children}</CategoriesProvider>
 		</CategoriesModalProvider>
 	);
 }

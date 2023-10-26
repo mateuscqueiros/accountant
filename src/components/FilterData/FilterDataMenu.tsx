@@ -18,13 +18,22 @@ interface MenuItemComponentType<T> {
 	value: Transaction['type'] | Transaction['categoryId'] | Transaction['class'];
 }
 
-function getMenuItemsData(data: UserData): any {
+function getMenuItemsData(data: UserData, filterOptions: FilterOptions<Transaction>): any {
 	const categories = data.user.categories.map((category) => {
 		return {
 			label: category.label,
 			prop: 'categoryId',
 			value: category.id,
 			group: 'Categoria',
+		};
+	});
+
+	const wallets = data.user.wallets.map((wallet) => {
+		return {
+			label: wallet.label,
+			prop: 'walletId',
+			value: wallet.id,
+			group: 'Carteiras',
 		};
 	});
 
@@ -72,23 +81,41 @@ function getMenuItemsData(data: UserData): any {
 		},
 	];
 
-	const itemsData = {
-		active: {
+	const itemsData: any = {};
+
+	if (filterOptions.active !== undefined) {
+		itemsData.active = {
 			items: [...active],
-		},
-		classes: {
+		};
+	}
+
+	if (filterOptions.class !== undefined) {
+		itemsData.classes = {
 			items: [...classes],
 			group: 'Classes',
-		},
-		types: {
+		};
+	}
+
+	if (filterOptions.type !== undefined) {
+		itemsData.types = {
 			items: [...types],
 			group: 'Tipos',
-		},
-		categories: {
+		};
+	}
+
+	if (filterOptions.walletId !== undefined) {
+		itemsData.wallets = {
+			items: [...wallets],
+			group: 'Carteiras',
+		};
+	}
+
+	if (filterOptions.categoryId !== undefined) {
+		itemsData.categories = {
 			items: [...categories],
 			group: 'Categorias',
-		},
-	};
+		};
+	}
 
 	return itemsData;
 }
@@ -135,7 +162,7 @@ export function FilterDataMenu({ data, displayDataState, filterState }: FilterDa
 				{contains ? 'Contém' : 'Não contém'}
 			</Menu.Item>
 
-			{Object.values(getMenuItemsData(dataProvider.values)).map((entry: any) => {
+			{Object.values(getMenuItemsData(dataProvider.values, filter)).map((entry: any) => {
 				const values = entry.items as MenuItemComponentType<FilterOptions<Transaction>>[];
 				const group = entry.group;
 				return (

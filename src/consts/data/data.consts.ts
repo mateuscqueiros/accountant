@@ -365,16 +365,10 @@ export const defaultData: UserData = {
 	],
 };
 
-export const randomItems = Array(20)
+export const randomItems = Array(50)
 	.fill(0)
 	.map(() => {
-		return generateTransaction({
-			active: true,
-			date: {
-				min: new Date('10/09/2023'),
-				max: new Date('11/09/2023'),
-			},
-		});
+		return generateTransaction({});
 	});
 
 export const randomData: UserData = {

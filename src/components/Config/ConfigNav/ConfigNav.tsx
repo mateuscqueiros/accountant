@@ -5,18 +5,18 @@ import navBarClasses from './NavBar.module.css';
 import tabClasses from './Tabs.module.css';
 
 interface NavItem {
-	id: number;
+	slug: string;
 	label: string;
 	color: string | undefined;
 }
 
 function AllNavItem({
 	isMobile,
-	activeId,
+	activeSlug,
 	route,
 }: {
 	isMobile: boolean;
-	activeId: number | null;
+	activeSlug: string | null;
 	route: string;
 }) {
 	const theme = useMantineTheme();
@@ -29,9 +29,9 @@ function AllNavItem({
 	const desktop = (
 		<Link className={navBarClasses.link_wrapper} href={route}>
 			<Box
-				bg={activeId === null ? theme.primaryColor : undefined}
+				bg={activeSlug === null ? theme.primaryColor : undefined}
 				className={navBarClasses.link}
-				data-active={activeId === null}
+				data-active={activeSlug === null}
 			>
 				Todas
 			</Box>
@@ -44,28 +44,32 @@ function AllNavItem({
 function TabItem({
 	isMobile,
 	item,
-	activeId,
+	activeSlug,
 	route,
 }: {
 	isMobile: boolean;
 	item: NavItem;
-	activeId: number | null;
+	activeSlug: string | null;
 	route: string;
 }) {
 	const mobile = (
-		<Link key={item.id} className={tabClasses.link} href={`${route}/${item.id}`}>
-			<Tabs.Tab value={String(item.id)} key={item.label}>
+		<Link key={item.slug} className={tabClasses.link} href={`${route}/${item.slug}`}>
+			<Tabs.Tab value={String(item.slug)} key={item.label}>
 				{item.label}
 			</Tabs.Tab>
 		</Link>
 	);
 
 	const desktop = (
-		<Link className={navBarClasses.link_wrapper} key={item.id} href={`${route}/${String(item.id)}`}>
+		<Link
+			className={navBarClasses.link_wrapper}
+			key={item.slug}
+			href={`${route}/${String(item.slug)}`}
+		>
 			<Box
-				bg={activeId === item.id ? item.color : undefined}
+				bg={activeSlug === item.slug ? item.color : undefined}
 				className={navBarClasses.link}
-				data-active={activeId === item.id}
+				data-active={activeSlug === item.slug}
 			>
 				{item.label}
 			</Box>
@@ -78,12 +82,12 @@ function TabItem({
 export function ConfigNav({
 	title,
 	items,
-	activeId,
+	activeSlug,
 	route,
 }: {
 	title: string;
 	items: NavItem[];
-	activeId: number | null;
+	activeSlug: string | null;
 	route: string;
 }) {
 	const theme = useMantineTheme();
@@ -97,7 +101,7 @@ export function ConfigNav({
 				defaultValue="Todas"
 				variant="outline"
 				hiddenFrom="sm"
-				value={String(activeId)}
+				value={String(activeSlug)}
 				classNames={{
 					root: tabClasses.tabs,
 					list: tabClasses.tabsList,
@@ -106,14 +110,14 @@ export function ConfigNav({
 			>
 				<ScrollArea offsetScrollbars="x">
 					<Tabs.List w={width}>
-						{<AllNavItem route={route} isMobile={true} activeId={activeId} />}
+						{<AllNavItem route={route} isMobile={true} activeSlug={activeSlug} />}
 						{items.map((item, index) => (
 							<TabItem
 								key={item.label + index}
 								route={route}
 								isMobile={true}
 								item={item}
-								activeId={activeId}
+								activeSlug={activeSlug}
 							/>
 						))}
 					</Tabs.List>
@@ -125,14 +129,14 @@ export function ConfigNav({
 			<div className={navBarClasses.wrapper}>
 				<div className={navBarClasses.main}>
 					<Text className={navBarClasses.title}>{title}</Text>
-					{<AllNavItem route={route} isMobile={false} activeId={activeId} />}
+					{<AllNavItem route={route} isMobile={false} activeSlug={activeSlug} />}
 					{items.map((item, index) => (
 						<TabItem
 							key={item.label + index}
 							route={route}
 							isMobile={false}
 							item={item}
-							activeId={activeId}
+							activeSlug={activeSlug}
 						/>
 					))}
 				</div>

@@ -17,6 +17,7 @@ import {
 import { useForm } from '@mantine/form';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { WalletItem } from '.';
+import { ActionDeleteWallet } from '../Actions/Wallets/ActionDeleteWallet/ActionDeleteWallet';
 
 interface WalletsModalContext {
 	openModal: (action?: WalletsModalContext['action']) => void;
@@ -162,17 +163,22 @@ export function WalletModal() {
 						</Tooltip>
 					</Group>
 				</Stack>
-				<Group mt="lg" justify="flex-end">
-					<Button
-						variant="outline"
-						onClick={() => {
-							walletCtx.closeModal();
-							form.reset();
-						}}
-					>
-						Cancelar
-					</Button>
-					<Button type="submit">Salvar</Button>
+				<Group mt="lg" justify="space-between">
+					<Group>
+						<ActionDeleteWallet variant="outline" wallet={walletCtx.values} />
+					</Group>
+					<Group>
+						<Button
+							variant="outline"
+							onClick={() => {
+								walletCtx.closeModal();
+								form.reset();
+							}}
+						>
+							Cancelar
+						</Button>
+						<Button type="submit">Salvar</Button>
+					</Group>
 				</Group>
 			</form>
 		</Modal>
