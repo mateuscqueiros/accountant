@@ -97,7 +97,7 @@ export function WalletsTabContent({ displayData, walletSlug }: WalletsTabContent
 					<Text>Sem itens</Text>
 				)
 			) : (
-				<Text fw="bold">Não existe carteira '{walletSlug}'</Text>
+				<Text fw="bold">Não existe carteira &apos;{walletSlug}&apos;</Text>
 			)}
 		</>
 	);
