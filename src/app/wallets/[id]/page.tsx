@@ -1,5 +1,4 @@
 'use client';
-import { FilterData } from '@/components/FilterData';
 import { initialFilterValue } from '@/consts/actions';
 import { FilterOptions } from '@/lib/utils';
 import { getWalletBySlug } from '@/lib/wallets';
@@ -16,6 +15,8 @@ const ConfigContentWrapper = dynamic(() =>
 const WalletsTabContent = dynamic(() =>
 	import('@/components/Wallets/WalletTabContent').then((mod) => mod.WalletsTabContent)
 );
+
+const FilterData = dynamic(() => import('@/components/FilterData').then((mod) => mod.FilterData));
 
 export default function WalletIdPage() {
 	const params = useParams();

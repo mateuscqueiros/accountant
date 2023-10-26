@@ -53,13 +53,13 @@ export function WalletItem({ wallet }: WalletItem) {
 						<Group justify="space-between" w="100%">
 							<Text c={colors.text.secondary}>Saldo</Text>
 							<Text fw="bold" c={walletTotals.total > 0 ? colors.recipes : colors.expenses}>
-								${walletTotals.total}
+								${walletTotals.total.toFixed(2)}
 							</Text>
 						</Group>
 						<Group justify="space-between" w="100%">
 							<Text c={colors.text.secondary}>Gastos</Text>
 							<Text fw="bold" c={colors.expenses}>
-								${walletTotals.expenses}
+								${walletTotals.expenses.toFixed(2)}
 							</Text>
 						</Group>
 					</Stack>

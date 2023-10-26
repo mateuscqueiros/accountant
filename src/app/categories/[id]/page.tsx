@@ -1,5 +1,4 @@
 'use client';
-import { FilterData } from '@/components/FilterData';
 import { initialFilterValue } from '@/consts/actions';
 import { getCategoryBySlug } from '@/lib/categories';
 import { FilterOptions } from '@/lib/utils';
@@ -17,6 +16,8 @@ const CategoriesTabContent = dynamic(() =>
 	import('@/components/Config/ConfigContent').then((mod) => mod.CategoriesTabContent)
 );
 
+const FilterData = dynamic(() => import('@/components/FilterData').then((mod) => mod.FilterData));
+
 export default function CategoryIdPage() {
 	const params = useParams();
 	const activeSlug = useMemo(() => String(params.id), [params]);
@@ -32,16 +33,16 @@ export default function CategoryIdPage() {
 	const categoryItemDisplayDataState = useState(allCategoryItemData);
 	const [_, setCategoryItems] = categoryItemDisplayDataState;
 
+	useEffect(() => {
+		setCategoryItems(data.values.items.filter((item) => item.categoryId === activeCategory.id));
+	}, [data.values.items, activeSlug]);
+
 	// Filtros
 	const initialFilterState = {
 		...initialFilterValue,
 		categoryId: undefined,
 	};
 	const filterState = useState<FilterOptions<Transaction>>(initialFilterState);
-
-	useEffect(() => {
-		setCategoryItems(data.values.items.filter((item) => item.categoryId === activeCategory.id));
-	}, [data.values.items, activeSlug]);
 
 	return (
 		<ConfigContentWrapper

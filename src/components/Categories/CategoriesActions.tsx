@@ -207,7 +207,6 @@ export function CategoriesActions() {
 	const data = useContext(DataContext);
 
 	let sortedCategories = sortCategories(data.values.user.categories);
-
 	return (
 		<>
 			<Box w="100%">

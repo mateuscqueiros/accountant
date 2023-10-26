@@ -1,4 +1,3 @@
-import { FilterData } from '@/components/FilterData';
 import { AddItem } from '@/components/ItemsForm';
 import { TransferDataModal } from '@/components/TransferDataModal';
 import { initialFilterValue } from '@/consts/actions';
@@ -12,7 +11,10 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
 import { format, startOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import dynamic from 'next/dynamic';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
+
+const FilterData = dynamic(() => import('@/components/FilterData').then((mod) => mod.FilterData));
 
 interface HomeActionsProps {
 	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
