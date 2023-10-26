@@ -108,6 +108,8 @@ export function ItemsForm() {
 								withAsterisk
 								label="Tipo"
 								placeholder="Escolha um tipo"
+								allowDeselect={false}
+								checkIconPosition="right"
 								data={[
 									{ value: 'monthly', label: 'Mensal' },
 									{ value: 'installment', label: 'Parcelada' },
@@ -118,7 +120,9 @@ export function ItemsForm() {
 							<Select
 								withAsterisk
 								label="Classe"
+								allowDeselect={false}
 								placeholder="Escolha uma classe"
+								checkIconPosition="right"
 								data={[
 									{ value: 'expense', label: 'Despesa' },
 									{ value: 'recipe', label: 'Receita' },
