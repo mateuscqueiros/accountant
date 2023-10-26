@@ -1,12 +1,24 @@
 import { sortCategories } from '@/lib/categories';
+import { useColors } from '@/lib/theme';
 import { DataContext } from '@/providers/DataProvider';
 import { Category } from '@/types/data';
-import { Box, Button, Group, Modal, Stack, Table, Text, TextInput } from '@mantine/core';
+import {
+	Box,
+	Button,
+	ColorSwatch,
+	Group,
+	Modal,
+	Stack,
+	Table,
+	Text,
+	TextInput,
+	parseThemeColor,
+	useMantineTheme,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
-import { AddCategory } from './AddCategory/AddCategory';
+import { ColorSwatchInput } from '../ColorSwatchInput/ColorSwatchInput';
 import { CategoryItem } from './CategoryItem/CategoryItem';
-import { ColorSwatchInput } from './ColorSwatchInput/ColorSwatchInput';
 
 interface CategoriesModalContext {
 	openModal: (action?: CategoriesModalContext['action']) => void;
@@ -28,7 +40,7 @@ export function CategoriesModalProvider({ children }: PropsWithChildren) {
 			return {
 				...prev,
 				opened: true,
-				action: action || prev.action,
+				action: action || 'add',
 			};
 		});
 	};
@@ -55,6 +67,7 @@ export function CategoriesModalProvider({ children }: PropsWithChildren) {
 		setData((prev) => {
 			return {
 				...prev,
+				action: 'add',
 				values: {
 					id: -1,
 					slug: '',
@@ -118,21 +131,12 @@ function CategoryModal() {
 		} else if (categoryCtx.action === 'edit') {
 			data.category.edit(values);
 		}
+		categoryCtx.reset();
 	};
 
-	const inputColors = [
-		'red.6',
-		'pink.6',
-		'violet.6',
-		'indigo.6',
-		'blue.6',
-		'cyan.6',
-		'teal.6',
-		'green.6',
-		'lime.6',
-		'yellow.6',
-		'orange.6',
-	];
+	const theme = useMantineTheme();
+	const parsedColor = parseThemeColor({ color: 'violet.9', theme });
+	const colors = useColors();
 
 	return (
 		<Modal
@@ -152,6 +156,7 @@ function CategoryModal() {
 				})}
 			>
 				<Stack>
+					<ColorSwatch color={parsedColor.color} />
 					{form.values.default && (
 						<Text fz="sm">
 							Esta é a categoria padrão. Quando outras categorias são deletadas seus itens são
@@ -171,7 +176,7 @@ function CategoryModal() {
 					</Group>
 
 					<Group gap="xs">
-						{inputColors.map((inputColor) => (
+						{colors.input.map((inputColor) => (
 							<ColorSwatchInput
 								key={inputColor}
 								color={inputColor}
@@ -204,27 +209,24 @@ export function CategoriesActions() {
 	let sortedCategories = sortCategories(data.values.user.categories);
 
 	return (
-		<CategoriesModalProvider>
-			<>
-				<Box w="100%">
-					<Table maw={500}>
-						<Table.Thead>
-							<Table.Tr>
-								<Table.Td fw="bold">Nome</Table.Td>
-								<Table.Td fw="bold">Cor</Table.Td>
-								<Table.Td></Table.Td>
-							</Table.Tr>
-						</Table.Thead>
-						<Table.Tbody>
-							{sortedCategories.map((category) => (
-								<CategoryItem key={category.label} category={category} />
-							))}
-						</Table.Tbody>
-					</Table>
-				</Box>
-				<AddCategory />
-				<CategoryModal />
-			</>
-		</CategoriesModalProvider>
+		<>
+			<Box w="100%">
+				<Table>
+					<Table.Thead>
+						<Table.Tr>
+							<Table.Td fw="bold">Nome</Table.Td>
+							<Table.Td fw="bold">Cor</Table.Td>
+							<Table.Td></Table.Td>
+						</Table.Tr>
+					</Table.Thead>
+					<Table.Tbody>
+						{sortedCategories.map((category) => (
+							<CategoryItem key={category.label} category={category} />
+						))}
+					</Table.Tbody>
+				</Table>
+			</Box>
+			<CategoryModal />
+		</>
 	);
 }

@@ -20,7 +20,7 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 	};
 
 	validate.label = (value) => {
-		return value.length < 2 ? 'O nome deve ter pelo menos dois caracteres' : null;
+		return value.length < 1 || value.length > 50 ? 'O nome deve ter entre 1 e 50 caracteres' : null;
 	};
 
 	validate.value = (value) => {
@@ -68,8 +68,6 @@ export function getValidateObject(): FormValidateInput<ItemForm> {
 
 /* Obtêm um objeto "transform" para o mantine, que vai transformar os itens depois do submit */
 export function getTransformObject(values: ItemForm): ItemForm {
-	console.log('-----', values);
-
 	let transform: ItemForm = {
 		...values,
 		date: values.date,

@@ -1,8 +1,9 @@
 import { FilterData } from '@/components/FilterData';
 import { AddItem } from '@/components/ItemsForm';
 import { TransferDataModal } from '@/components/TransferDataModal';
+import { initialFilterValue } from '@/consts/actions';
 import { compareStartOfMonth } from '@/lib/dates';
-import { capitalizeFirstLetter } from '@/lib/utils';
+import { FilterOptions, capitalizeFirstLetter } from '@/lib/utils';
 import { DataContext } from '@/providers/DataProvider';
 import { Transaction } from '@/types/data';
 import { Box, Flex, Group, Modal, Title, rem, useMantineTheme } from '@mantine/core';
@@ -15,11 +16,12 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 interface HomeActionsProps {
 	displayDataState: [Transaction[], Dispatch<SetStateAction<Transaction[]>>];
+	data: Transaction[];
 }
 
-export function HomeActions({ displayDataState }: HomeActionsProps) {
+export function HomeActions({ data, displayDataState }: HomeActionsProps) {
 	const dataProvider = useContext(DataContext);
-	const [data] = displayDataState;
+	const [displayData] = displayDataState;
 	const activeMonthDisplay = format(new Date(dataProvider.values.activeMonth), "MMMM' de 'yyyy", {
 		locale: ptBR,
 	});
@@ -28,6 +30,9 @@ export function HomeActions({ displayDataState }: HomeActionsProps) {
 	const isExtraSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
 
 	const [monthPickerStateSelect, setMonthPickerStateSelect] = useState(false);
+
+	const initialFilterState = initialFilterValue;
+	const filterState = useState<FilterOptions<Transaction>>(initialFilterValue);
 
 	return (
 		<>
@@ -102,9 +107,14 @@ export function HomeActions({ displayDataState }: HomeActionsProps) {
 						/>
 					</Box>
 				</Modal>
-				{data !== undefined && (
+				{displayData !== undefined && (
 					<Group>
-						<FilterData displayDataState={displayDataState} />
+						<FilterData
+							initialFilterState={initialFilterState}
+							data={data}
+							filterState={filterState}
+							displayDataState={displayDataState}
+						/>
 						<TransferDataModal />
 						<AddItem />
 					</Group>

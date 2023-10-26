@@ -31,6 +31,9 @@ export type CategoryForm = {
 };
 
 export type WalletForm = {
-	value: string;
+	id: number;
 	label: string;
+	slug: string;
+	default: boolean;
+	value: string;
 };

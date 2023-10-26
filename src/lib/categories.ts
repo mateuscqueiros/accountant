@@ -103,3 +103,7 @@ export function sortCategories(categories: Category[]) {
 		return a.label.localeCompare(b.label);
 	});
 }
+
+export function getCategoryBySlug(slug: string, categories: Category[]): Category {
+	return categories.filter((category) => category.slug === slug)[0];
+}

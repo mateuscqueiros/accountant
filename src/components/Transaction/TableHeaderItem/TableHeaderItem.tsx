@@ -17,6 +17,7 @@ export interface OrdersOptions {
 	categoryId: number;
 	date: number;
 	type: number;
+	walletId: number;
 	value: number;
 }
 

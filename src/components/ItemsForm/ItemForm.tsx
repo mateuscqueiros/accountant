@@ -59,7 +59,6 @@ export function ItemsForm() {
 		(values: ItemForm) => {
 			if (modal.values.action === 'update') {
 				const sanitizedItem = sanitizeBeforeCommiting(modal.values.updateItem, values);
-				console.log(sanitizedItem);
 				data.item.update(sanitizedItem);
 				modal.reset();
 			} else {

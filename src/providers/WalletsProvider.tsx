@@ -1,6 +1,6 @@
 'use client';
 
-import { ConfigNav } from '@/components/Config';
+import { ConfigNav } from '@/components/Config/ConfigNav';
 import { sortWallets } from '@/lib/wallets';
 import { Flex, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -8,12 +8,12 @@ import { PropsWithChildren, useContext } from 'react';
 import { DataContext } from './DataProvider';
 
 interface WalletsProvidersProps {
-	walletId: number | null;
+	walletSlug: string | null;
 }
 
 export const WalletsProvider = ({
 	children,
-	walletId,
+	walletSlug,
 }: PropsWithChildren<WalletsProvidersProps>) => {
 	const theme = useMantineTheme();
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}`);
@@ -23,14 +23,14 @@ export const WalletsProvider = ({
 	const sortedWallets = sortWallets(wallets);
 
 	const navItems = sortedWallets.map((wallet) => ({
-		id: wallet.id,
+		slug: wallet.slug,
 		label: wallet.label,
 		color: theme.primaryColor,
 	}));
 
 	return (
 		<Flex direction={isMobile ? 'column' : 'row'}>
-			<ConfigNav title="Carteiras" route="/wallets" items={navItems} activeId={walletId} />
+			<ConfigNav title="Carteiras" route="/wallets" items={navItems} activeSlug={walletSlug} />
 			{children}
 		</Flex>
 	);

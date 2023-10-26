@@ -28,10 +28,24 @@
 - Fix: Filter itens calculations.
 - Fix: Names of groups in filter.
 
-# 0.4.5
+# 0.4.5 -> 0.5.0
 
 - Fix: Items not updating on categories view.
 - Refactor: Make ConfigNav more dynamic.
 - Feat: Wallet page first appearance.
 - Feat: Cor do tema: Indigo.
 - Refactor: Responsive.
+- Feat: Wallets Page, Modal and Tabs.
+- Feat: Center items in ConfigContent.
+
+- Feat: Add input and brand icons.
+- Feat: Visualize brand items.
+- Feat: Show items for each wallet. Wallet items now are editable and have statistics.
+- Feat: Add scroll to items visualization in categories and wallets.
+
+- Refactor: FilterData - data to display is customizable as well as filter options.
+- Change: Change input colors.
+- Feat: Filter data in categories.
+- Feat: Delete wallet.
+- Feat: Routes in categories and wallets pages are now filtered by slugs.
+- Refactor: FilterData is more dynamic.
