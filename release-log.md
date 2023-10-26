@@ -49,3 +49,9 @@
 - Feat: Delete wallet.
 - Feat: Routes in categories and wallets pages are now filtered by slugs.
 - Refactor: FilterData is more dynamic.
+
+# 0.5.0
+
+- Fix: Number display on Wallets.
+- Feat: Add a 404 page.
+- Performance: Added more dynamic imports to new pages.

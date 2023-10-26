@@ -1,5 +1,4 @@
 'use client';
-import { AddCategory } from '@/components/Categories';
 import dynamic from 'next/dynamic';
 
 const ConfigContentWrapper = dynamic(() =>
@@ -8,6 +7,8 @@ const ConfigContentWrapper = dynamic(() =>
 const CategoriesActions = dynamic(() =>
 	import('@/components/Categories').then((mod) => mod.CategoriesActions)
 );
+
+const AddCategory = dynamic(() => import('@/components/Categories').then((mod) => mod.AddCategory));
 
 export default function CategoriesPage() {
 	return (
