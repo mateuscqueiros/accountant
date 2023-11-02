@@ -1,6 +1,7 @@
 'use client';
 
 import { Layout } from '@/components/Layout';
+import { BlobBackground } from '@/components/Layout/BlobBackground/BlobBackground';
 import { MantineProvider } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
 import { ModalsProvider as MntModalsProvider } from '@mantine/modals';
@@ -19,6 +20,7 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
 	const path = usePathname();
 
 	const shouldHavePadding = !path.includes('categories') && !path.includes('wallets');
+	const shouldHaveBlobBackground = path.includes('login') || path.includes('signup');
 
 	return (
 		<MantineProvider theme={theme} defaultColorScheme="auto">
@@ -30,7 +32,10 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
 						<>
 							<DataProvider>
 								<ItemsForm />
-								<Layout withPadding={shouldHavePadding}>{children}</Layout>
+								{shouldHaveBlobBackground && <BlobBackground>{children}</BlobBackground>}
+								{!shouldHaveBlobBackground && (
+									<Layout withPadding={shouldHavePadding}>{children}</Layout>
+								)}
 							</DataProvider>
 						</>
 					</MntModalsProvider>
